@@ -1,0 +1,60 @@
+version: "3.9"
+services:
+  api:
+    container_name: backend
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+    volumes:
+      - ./backend:/app/backend
+    ports:
+      - "8000:8000"
+    tty: true
+    depends_on:
+      - db
+    command:
+      - wait-for-it.sh
+      - db:3306
+      - --timeout=120
+      - --strict
+      - --
+      - air
+      - -c
+      - .air.toml
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: developer
+      DB_PASSWORD: password
+      DB_NAME: TASCHOLA
+
+  web:
+    container_name: frontend
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    volumes:
+      - ./frontend:/app/frontend
+    ports:
+      - "3000:3000"
+    tty: true
+
+  db:
+    container_name: db
+    build:
+      context: .
+      dockerfile: ./db/Dockerfile
+    platform: linux/x86_64
+    volumes:
+      - ./db/sql:/docker-entrypoint-initdb.d
+      - ./db/data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    tty: true
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: TASCHOLA
+      MYSQL_USER: developer
+      MYSQL_PASSWORD: password
+      TZ: Asia/Tokyo
