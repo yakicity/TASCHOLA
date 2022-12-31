@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/okoge-kaz/taschola/backend/db"
-	"github.com/okoge-kaz/taschola/backend/router"
+	"taschola/db"
+	"taschola/router"
 )
 
 func main() {
