@@ -29,8 +29,18 @@ type OwnerShip struct {
 
 type Student struct {
 	ID        uint64 `db:"id"`
-	UserID		uint64 `db:"user_id"`
+	UserID    uint64 `db:"user_id"`
 	StudentID string `db:"student_id"` // 学籍番号
-	Password	[]byte `db:"password"` // パスワード(portal)
-	MatrixCode string `db:"matrix_code"` // マトリックスコード
+	Password  []byte `db:"password"`   // パスワード(portal)
+
+	MatrixCodeAColumn string `db:"matrix_code_a_column"` // マトリックスコードA列
+	MatrixCodeBColumn string `db:"matrix_code_b_column"` // マトリックスコードB列
+	MatrixCodeCColumn string `db:"matrix_code_c_column"` // マトリックスコードC列
+	MatrixCodeDColumn string `db:"matrix_code_d_column"` // マトリックスコードD列
+	MatrixCodeEColumn string `db:"matrix_code_e_column"` // マトリックスコードE列
+	MatrixCodeFColumn string `db:"matrix_code_f_column"` // マトリックスコードF列
+	MatrixCodeGColumn string `db:"matrix_code_g_column"` // マトリックスコードG列
+	MatrixCodeHColumn string `db:"matrix_code_h_column"` // マトリックスコードH列
+	MatrixCodeIColumn string `db:"matrix_code_i_column"` // マトリックスコードI列
+	MatrixCodeJColumn string `db:"matrix_code_j_column"` // マトリックスコードJ列
 }
