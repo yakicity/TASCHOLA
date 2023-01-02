@@ -34,14 +34,14 @@ func GetTasksByUserIDAndKeywordAndStatus(userID uint64, keyword string, status [
 	return tasks, nil
 }
 
-func GetTaskByTaskID(taskID uint64) (database.Task, error) {
+func GetTaskByUserIDAndTaskID(userID uint64, taskID uint64) (database.Task, error) {
 	db, err := database.GetConnection()
 	if err != nil {
 		return database.Task{}, err
 	}
 
 	var task database.Task
-	err = db.Get(&task, "SELECT * FROM tasks WHERE id = ?", taskID)
+	err = db.Get(&task, "SELECT * FROM tasks INNER JOIN ownerships ON task.id = ownerships.task_id WHERE ownerships.user_id = ? AND tasks.id = ?", userID, taskID)
 	if err != nil {
 		return database.Task{}, err
 	}
@@ -87,13 +87,13 @@ func CreateTask(task database.Task, userID uint64) (int, error) {
 	return taskID, nil
 }
 
-func UpdateTask(task database.Task) error {
+func UpdateTaskByUserIDAndTaskID(task database.Task, userID uint64, taskID uint64) error {
 	db, err := database.GetConnection()
 	if err != nil {
 		return err
 	}
 
-	_, err = db.Exec("UPDATE tasks SET title = ?, description = ?, status = ?, priority = ?, due_date = ? WHERE id = ?", task.Title, task.Description, task.Status, task.Priority, task.DueDate, task.ID)
+	_, err = db.Exec("UPDATE tasks SET title = ?, description = ?, status = ?, priority = ?, due_date = ? WHERE id = ? AND id IN (SELECT task_id FROM ownerships WHERE user_id = ?)", task.Title, task.Description, task.Status, task.Priority, task.DueDate, taskID, userID)
 	if err != nil {
 		return err
 	}
@@ -101,14 +101,13 @@ func UpdateTask(task database.Task) error {
 	return nil
 }
 
-func DeleteTask(taskID uint64) error {
+func DeleteTaskByUserIDAndTaskID(userID uint64, taskID uint64) error {
 	db, err := database.GetConnection()
 	if err != nil {
 		return err
 	}
 
-	// delete task from tasks table and ownerships table
-	_, err = db.Exec("DELETE tasks, ownerships FROM tasks INNER JOIN ownerships ON tasks.id = ownerships.task_id WHERE tasks.id = ?", taskID)
+	_, err = db.Exec("DELETE FROM tasks WHERE id = ? AND id IN (SELECT task_id FROM ownerships WHERE user_id = ?)", taskID, userID)
 	if err != nil {
 		return err
 	}
