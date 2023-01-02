@@ -23,7 +23,7 @@ func Init() *gin.Engine {
 	}))
 
 	// endpoints version 1
-	v1 := engine.Group("/api/v1")
+	v1 := engine.Group("v1")
 	{
 		// home
 		v1.GET("/", controllers.NotImplemented)
