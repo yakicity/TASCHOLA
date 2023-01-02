@@ -19,6 +19,33 @@ func GetUserByID(userID uint64) (database.User, error) {
 	return user, nil
 }
 
+func CreateUser(user database.User) (uint64, error) {
+	db, err := database.GetConnection()
+	if err != nil {
+		return 0, err
+	}
+
+	tx, err := db.Beginx()
+	if err != nil {
+		return 0, err
+	}
+
+	var userID uint64
+	err = tx.QueryRowx("INSERT INTO users (name, password) VALUES (?, ?)", user.Name, user.Password).Scan(&user.Name) // do not permit duplicate user name
+	if err != nil {
+		tx.Rollback()
+		return 0, err
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		tx.Rollback()
+		return 0, err
+	}
+
+	return userID, nil
+}
+
 func UpdateUser(user database.User) error {
 	db, err := database.GetConnection()
 	if err != nil {
