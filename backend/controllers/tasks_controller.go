@@ -10,6 +10,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GET /v1/tasks
+//
+// # No parameters
+//
+// @Success 200 { "tasks": []database.Task }
+// @Failure 401 { "error": "unauthorized" }
 func GetTasks(ctx *gin.Context) {
 	// Get user ID from sessions
 	session := sessions.Default(ctx)
