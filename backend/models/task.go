@@ -4,7 +4,7 @@ import (
 	database "taschola/db"
 )
 
-func GetTasksByUserID(userID int) ([]database.Task, error) {
+func GetTasksByUserID(userID uint64) ([]database.Task, error) {
 	db, err := database.GetConnection()
 	if err != nil {
 		return nil, err
@@ -19,7 +19,7 @@ func GetTasksByUserID(userID int) ([]database.Task, error) {
 	return tasks, nil
 }
 
-func GetTasksByUserIDAndKeywordAndStatus(userID int, keyword string, status []string) ([]database.Task, error) {
+func GetTasksByUserIDAndKeywordAndStatus(userID uint64, keyword string, status []string) ([]database.Task, error) {
 	db, err := database.GetConnection()
 	if err != nil {
 		return nil, err
@@ -34,7 +34,7 @@ func GetTasksByUserIDAndKeywordAndStatus(userID int, keyword string, status []st
 	return tasks, nil
 }
 
-func GetTaskByTaskID(taskID int) (database.Task, error) {
+func GetTaskByTaskID(taskID uint64) (database.Task, error) {
 	db, err := database.GetConnection()
 	if err != nil {
 		return database.Task{}, err
@@ -101,7 +101,7 @@ func UpdateTask(task database.Task) error {
 	return nil
 }
 
-func DeleteTask(taskID int) error {
+func DeleteTask(taskID uint64) error {
 	db, err := database.GetConnection()
 	if err != nil {
 		return err
