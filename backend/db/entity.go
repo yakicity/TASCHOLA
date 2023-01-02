@@ -8,11 +8,10 @@ type Task struct {
 	ID          uint64    `db:"id"`
 	Title       string    `db:"title"`
 	Description string    `db:"description"`
+	Status      string    `db:"status"`   // [TODO, DOING, DONE]
+	Priority    int       `db:"priority"` // [1, 2, 3, 4, 5] (1: highest, 5: lowest)
 	CreatedAt   time.Time `db:"created_at"`
-	IsDone      bool      `db:"is_done"`
-	Status      string    `db:"status"`
 	DueDate     time.Time `db:"due_date"`
-	Priority    int       `db:"priority"`
 }
 
 type User struct {
