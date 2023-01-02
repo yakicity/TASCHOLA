@@ -35,6 +35,13 @@ func GetTasks(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, tasks)
 }
 
+// GET /v1/tasks?keyword=foo&status=TODO&status=DOING&status=DONE
+//
+// @Param keyword [string]
+// @Param status [[]string]
+//
+// @Success 200 { "tasks": []database.Task }
+// @Failure 500 { "error": "Internal Server Error" }
 func GetTasksByKeywordAndStatus(ctx *gin.Context) {
 	// Get user ID from sessions
 	session := sessions.Default(ctx)
