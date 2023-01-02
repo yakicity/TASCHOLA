@@ -101,6 +101,13 @@ func GetTask(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, task)
 }
 
+// POST /v1/task/new
+//
+// @Param task [database.Task]
+//
+// @Success 200 { "task_id": uint64 }
+// @Failure 400 { "error": "invalid task" }
+// @Failure 401 { "error": "unauthorized" }
 func CreateTask(ctx *gin.Context) {
 	// Get user ID from sessions
 	session := sessions.Default(ctx)
@@ -128,6 +135,14 @@ func CreateTask(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"task_id": taskID})
 }
 
+// PUT /v1/task/:task_id
+//
+// @Param task_id [uint64]
+// @Param task [database.Task]
+//
+// @Success 200 { "task_id": uint64 }
+// @Failure 400 { "error": "invalid task ID" }
+// @Failure 401 { "error": "unauthorized" }
 func UpdateTask(ctx *gin.Context) {
 	// Get user ID from sessions
 	session := sessions.Default(ctx)
@@ -163,6 +178,13 @@ func UpdateTask(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"task_id": taskID})
 }
 
+// DELETE /v1/task/:task_id
+//
+// @Param task_id [uint64]
+//
+// @Success 200 { "task_id": uint64 }
+// @Failure 400 { "error": "invalid task ID" }
+// @Failure 401 { "error": "unauthorized" }
 func DeleteTask(ctx *gin.Context) {
 	// Get user ID from sessions
 	session := sessions.Default(ctx)
