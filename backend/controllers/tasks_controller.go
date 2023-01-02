@@ -67,6 +67,13 @@ func GetTasksByKeywordAndStatus(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, tasks)
 }
 
+// GET /v1/task/:task_id
+//
+// @Param task_id [uint64]
+//
+// @Success 200 { "task": database.Task }
+// @Failure 400 { "error": "invalid task ID" }
+// @Failure 401 { "error": "unauthorized" }
 func GetTask(ctx *gin.Context) {
 	// Get user ID from sessions
 	session := sessions.Default(ctx)
