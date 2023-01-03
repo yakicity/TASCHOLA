@@ -25,6 +25,14 @@ TSSCHOLA is a simple todo list manager which can sync with Tokyo Tech T2SCHOLA.
 
 - TablePlus について
 
+  DB の状態を確認する目的や、ダミーデータを作成する目的で TablePlus を使用している。
+
+  接続方法は、`Create a new connection` の後以下のように入力すればよい。
+  Password は、docker-compose.yml に記載されているものを使用する。
+  (`MYSQL_ROOT_PASSWORD`のところを参照)
+
+  ![TablePlus](./public/tablepuls.png)
+
 - MySQL との接続について
 
   `wait-for-it.sh`を用いて、MySQL が起動するまで待機するようにしていたが、`healthcheck:`を利用することにより、`docker-compose.yml`だけで依存関係と実行順番制御が行える。
