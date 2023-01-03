@@ -80,6 +80,10 @@ TSSCHOLA is a simple todo list manager which can sync with Tokyo Tech T2SCHOLA.
 3. `sql-migrate status`で、現在の DB の状態を確認する
 4. `sql-migrate up`で、migration を実行する
 
+`sql-migrate status`の具体例
+
+![sql-migrate status](./public/migration.png)
+
 - Migration
 
 DB の中身を変更することがあると思うので、Migration を楽にするツールを導入した。
