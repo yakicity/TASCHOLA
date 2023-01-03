@@ -73,6 +73,53 @@ TSSCHOLA is a simple todo list manager which can sync with Tokyo Tech T2SCHOLA.
 
 ### DB
 
+- Set Up
+
+1. `docker compose up -d`
+2. install sql-migrate (下記の 1. Installation を参照)
+3. `sql-migrate status`で、現在の DB の状態を確認する
+4. `sql-migrate up`で、migration を実行する
+
+`sql-migrate status`の具体例
+
+![sql-migrate status](./public/migration.png)
+
+- Migration
+
+DB の中身を変更することがあると思うので、Migration を楽にするツールを導入した。
+
+sql-migrate: https://github.com/rubenv/sql-migrate
+
+1. Installation
+
+   ```bash
+   go get -u github.com/rubenv/sql-migrate/...
+   ```
+
+2. Check Status
+
+   ```bash
+   sql-migrate status
+   ```
+
+3. Create Migration File
+
+   ```bash
+   sql-migrate new <migration_name>
+   ```
+
+4. Apply Migration
+
+   ```bash
+   sql-migrate up
+   ```
+
+5. Rollback Migration
+
+   ```bash
+   sql-migrate down
+   ```
+
 ### 参考資料
 
 #### Frontend
@@ -84,3 +131,6 @@ TSSCHOLA is a simple todo list manager which can sync with Tokyo Tech T2SCHOLA.
 - [Go Gin における CORS の設定](https://ti-tomo-knowledge.hatenablog.com/entry/2020/06/15/213401)
 
 #### DB
+
+- [Go 製マイグレーションツール sql-migrate](https://qiita.com/k-kurikuri/items/946e2bf8c79176ef3ff0)
+- [Go の migration ツールのデファクトってなくないですか？](https://onemuri.space/note/is3ev1-d1/)

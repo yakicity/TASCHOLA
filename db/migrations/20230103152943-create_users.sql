@@ -1,0 +1,11 @@
+-- +migrate Up
+CREATE TABLE users (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  password BINARY(60) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+) DEFAULT CHARSET = utf8mb4;
+
+-- +migrate Down
+DROP TABLE users;
