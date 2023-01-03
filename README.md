@@ -5,11 +5,13 @@ TSSCHOLA is a simple todo list manager which can sync with Tokyo Tech T2SCHOLA.
 ## Set Up
 
 1. Clone this repository
-2. `docker-compose up -d`
+2. `docker compose up -d`
+
+注意: DB(MySQL) -> API(Go Gin) -> Frontend(React) の順に起動するようになっている。そのため、起動までに時間がかかることが予想される。特に、MySQL は初回起動時に時間がかかる。(それぞれの PC のスペックにもよるが初回起動時は 5〜8 分程度要する場合もありうる。)
+
+注意: もし起動に失敗した場合は、`docker compose down`の後、`docker compose up`としてみよう。エラーメッセージが表示されているはずである。
 
 ## For Developers
-
-- Docker Compose について
 
 ### Frontend
 
