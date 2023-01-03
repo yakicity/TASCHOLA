@@ -1,0 +1,5 @@
+development:
+  dialect: mysql
+  dir: db/migrations
+  datasource: developer:password@tcp(127.0.0.1)/TASCHOLA?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=true&loc=Asia%2FTokyo
+  table: migrations
