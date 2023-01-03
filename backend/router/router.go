@@ -22,6 +22,9 @@ func Init() *gin.Engine {
 		MaxAge:           12 * 60 * 60,
 	}))
 
+	// health check
+	engine.GET("/health", controllers.HealthCheck)
+
 	// endpoints version 1
 	v1 := engine.Group("v1")
 	{
