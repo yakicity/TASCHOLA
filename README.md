@@ -73,6 +73,15 @@ TSSCHOLA is a simple todo list manager which can sync with Tokyo Tech T2SCHOLA.
 
 ### DB
 
+- Set Up
+
+1. `docker compose up -d`
+2. install sql-migrate (下記の 1. Installation を参照)
+3. `sql-migrate status`で、現在の DB の状態を確認する
+4. `sql-migrate up`で、migration を実行する
+
+- Migration
+
 DB の中身を変更することがあると思うので、Migration を楽にするツールを導入した。
 
 sql-migrate: https://github.com/rubenv/sql-migrate
