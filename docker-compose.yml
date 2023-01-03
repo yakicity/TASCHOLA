@@ -11,22 +11,21 @@ services:
       - "8000:8000"
     tty: true
     depends_on:
-      - db
-    command:
-      - wait-for-it.sh
-      - db:3306
-      - --timeout=120
-      - --strict
-      - --
-      - air
-      - -c
-      - .air.toml
+      db:
+        condition: service_healthy
+    command: [ "air", "-c", ".air.toml" ]
     environment:
       DB_HOST: db
       DB_PORT: 3306
       DB_USER: developer
       DB_PASSWORD: password
       DB_NAME: TASCHOLA
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   web:
     container_name: frontend
@@ -38,6 +37,9 @@ services:
     ports:
       - "3000:3000"
     tty: true
+    depends_on:
+      api:
+        condition: service_started
 
   db:
     container_name: db
@@ -58,3 +60,19 @@ services:
       MYSQL_USER: developer
       MYSQL_PASSWORD: password
       TZ: Asia/Tokyo
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "mysql",
+          "-pmysql"
+        ]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 40s
