@@ -25,6 +25,26 @@ TSSCHOLA is a simple todo list manager which can sync with Tokyo Tech T2SCHOLA.
 
 - CORS について
 
+  CORS 自体についての説明は以下
+
+  https://developer.mozilla.org/ja/docs/Web/HTTP/CORS
+
+  `backend/router/router.go`にて実装してある。
+  詳細な設定方法は、ドキュメント参照のこと
+
+  https://pkg.go.dev/github.com/gin-contrib/cors?utm_source=godoc#Config
+
+  注意点として、CORS の設定は routing の前に行う必要がある。
+
+  そのため、
+
+  ```go
+  // health check
+  engine.GET("/health", controllers.HealthCheck)
+  ```
+
+  の前に、CORS の設定を書く必要がある。
+
 - TablePlus について
 
   DB の状態を確認する目的や、ダミーデータを作成する目的で TablePlus を使用している。
@@ -61,5 +81,6 @@ TSSCHOLA is a simple todo list manager which can sync with Tokyo Tech T2SCHOLA.
 
 - [Go Gin CORS + 認証](https://qiita.com/bty__/items/f8c4393bd7701a1d703c)
 - [docker-compose におけるヘルスチェック](https://qiita.com/hichika/items/9b96634d471246359e66)
+- [Go Gin における CORS の設定](https://ti-tomo-knowledge.hatenablog.com/entry/2020/06/15/213401)
 
 #### DB
