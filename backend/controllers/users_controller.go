@@ -56,7 +56,7 @@ func CreateUser(ctx *gin.Context){
 //
 // @Success 200 { "user": database.User}
 // @Failure 404 
-func ShowUser(ctx *gin.Context){
+func GetUser(ctx *gin.Context){
 	userID, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"Bad Request (invalid user id)"})
