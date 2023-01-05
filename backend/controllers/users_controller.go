@@ -52,6 +52,7 @@ func CreateUser(ctx *gin.Context){
 //GET"v1/user/:id"
 //
 // @Param id [uint64]
+// @Param user [database.User]
 //
 // @Success 200 { "user": database.User}
 // @Failure 404 
