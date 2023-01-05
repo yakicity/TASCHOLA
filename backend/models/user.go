@@ -81,3 +81,18 @@ func DeleteUser(userID uint64) error {
 
 	return nil
 }
+
+
+func CheckDuplicateUserName(userName string) bool {
+	// connect to database
+	db, err := db.GetConnection()
+	if err != nil {
+		return false
+	}
+
+	var count int64
+	db.Model(&db.User{}).Where("user_name = ?", userName).Count(&count)
+	// SELECT count(*) FROM users WHERE user_name = 'userName';
+	return count > 0
+	// return true if user name is already taken
+}
