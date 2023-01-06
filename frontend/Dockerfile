@@ -1,8 +1,8 @@
 FROM node:18
 
 WORKDIR /app/frontend
-COPY ./frontend/package.json .
+COPY ./frontend .
 
-RUN npm install
+RUN yarn install
 
-CMD ["npm", "start"]
+CMD ["yarn", "dev"]
