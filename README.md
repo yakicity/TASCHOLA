@@ -134,3 +134,4 @@ sql-migrate: https://github.com/rubenv/sql-migrate
 
 - [Go 製マイグレーションツール sql-migrate](https://qiita.com/k-kurikuri/items/946e2bf8c79176ef3ff0)
 - [Go の migration ツールのデファクトってなくないですか？](https://onemuri.space/note/is3ev1-d1/)
+- [sql-migrate の使い方](https://k2ss.info/archives/3342/)
