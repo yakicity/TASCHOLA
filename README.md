@@ -4,22 +4,50 @@ TSSCHOLA is a simple todo list manager which can sync with Tokyo Tech T2SCHOLA.
 
 ## Set Up
 
-1. Clone this repository
+Docker 環境が用意されているのは、MySQL(DB)と Go Gin(Backend)のみである。
+
+フロントエンドについては、ローカルで開発するために、yarn を使用している。
+
+アプリケーション全体を試す場合は、Terminal のタブを 2 つ用意し、片方で Backend の起動、もう片方で Frontend の起動を行う。
+localhost は共有されているので、フロントエンドとバックエンドは CORS を通じて通信することができる。
+
+### For Backend
+
+1. Move to the directory `cd TASCHOLA`
 2. `docker compose up -d`
 
-注意: DB(MySQL) -> API(Go Gin) -> Frontend(React) の順に起動するようになっている。そのため、起動までに時間がかかることが予想される。特に、MySQL は初回起動時に時間がかかる。(それぞれの PC のスペックにもよるが初回起動時は 5〜8 分程度要する場合もありうる。)
+ログを見たい場合は、`docker compose up`を使用する。
+(`docker compose down`をするために Terminal のタブがもう一つ必要)
+
+注意: DB(MySQL) -> API(Go Gin) の順に起動するようになっている。そのため、起動までに時間がかかることが予想される。特に、MySQL は初回起動時に時間がかかる。(それぞれの PC のスペックにもよるが初回起動時は 5〜8 分程度要する場合もありうる。)
 
 注意: もし起動に失敗した場合は、`docker compose down`の後、`docker compose up`としてみよう。エラーメッセージが表示されているはずである。
+
+### For Frontend
+
+1. install yarn
+
+   - For Mac
+
+     ```bash
+     brew install yarn
+     ```
+
+   - For Windows
+
+     ```bash
+     npm install --global yarn
+     ```
+
+     brew でも問題ありません
+
+2. Move to the directory `cd frontend`
+3. `yarn install`
+4. `yarn dev`
 
 ## For Developers
 
 ### Frontend
-
-本プロジェクトにて採用した記述等に関する説明
-
-- React + TypeScript
-
-  Next.js を使用しなかった理由
 
 ### Backend
 
@@ -134,3 +162,4 @@ sql-migrate: https://github.com/rubenv/sql-migrate
 
 - [Go 製マイグレーションツール sql-migrate](https://qiita.com/k-kurikuri/items/946e2bf8c79176ef3ff0)
 - [Go の migration ツールのデファクトってなくないですか？](https://onemuri.space/note/is3ev1-d1/)
+- [sql-migrate の使い方](https://k2ss.info/archives/3342/)

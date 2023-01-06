@@ -19,41 +19,29 @@ func GetUserByID(userID uint64) (database.User, error) {
 	return user, nil
 }
 
-func CreateUser(user database.User) (uint64, error) {
+func CreateUser(user database.User) error {
 	db, err := database.GetConnection()
 	if err != nil {
-		return 0, err
+		return err
 	}
 
-	tx, err := db.Beginx()
+	// insert user into users table
+	_, err = db.Exec("INSERT INTO users (name, password) VALUES (?, ?)", user.Name, user.Password)
 	if err != nil {
-		return 0, err
+		return err
 	}
 
-	var userID uint64
-	err = tx.QueryRowx("INSERT INTO users (name, password) VALUES (?, ?)", user.Name, user.Password).Scan(&user.Name) // do not permit duplicate user name
-	if err != nil {
-		tx.Rollback()
-		return 0, err
-	}
-
-	err = tx.Commit()
-	if err != nil {
-		tx.Rollback()
-		return 0, err
-	}
-
-	return userID, nil
+	return nil
 }
 
-func UpdateUser(user database.User) error {
+func UpdateUser(userID uint64, user database.User) error {
 	db, err := database.GetConnection()
 	if err != nil {
 		return err
 	}
 
 	// userIDが一致するユーザーのnameとpasswordを更新
-	_, err = db.Exec("UPDATE users SET name = ?, password = ? WHERE id = ?", user.Name, user.Password, user.ID)
+	_, err = db.Exec("UPDATE users SET name = ?, password = ? WHERE id = ?", user.Name, user.Password, userID)
 	if err != nil {
 		return err
 	}
@@ -80,4 +68,22 @@ func DeleteUser(userID uint64) error {
 	}
 
 	return nil
+}
+
+func CheckDuplicateUserName(userName string) bool {
+	// connect to database
+	db, err := database.GetConnection()
+	if err != nil {
+		return true // return true if error occurs
+	}
+
+	var count int64
+	// count number of users with the same user name
+	err = db.Get(&count, "SELECT count(*) FROM users WHERE user_name = ?", userName)
+	if err != nil {
+		return true // return true if error occurs
+	}
+	// SELECT count(*) FROM users WHERE user_name = 'userName';
+	return count > 0
+	// return true if user name is already taken
 }
