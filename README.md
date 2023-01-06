@@ -19,6 +19,10 @@ localhost は共有されているので、フロントエンドとバックエ�
 ログを見たい場合は、`docker compose up`を使用する。
 (`docker compose down`をするために Terminal のタブがもう一つ必要)
 
+注意: DB(MySQL) -> API(Go Gin) の順に起動するようになっている。そのため、起動までに時間がかかることが予想される。特に、MySQL は初回起動時に時間がかかる。(それぞれの PC のスペックにもよるが初回起動時は 5〜8 分程度要する場合もありうる。)
+
+注意: もし起動に失敗した場合は、`docker compose down`の後、`docker compose up`としてみよう。エラーメッセージが表示されているはずである。
+
 ### For Frontend
 
 1. install yarn
@@ -40,10 +44,6 @@ localhost は共有されているので、フロントエンドとバックエ�
 2. Move to the directory `cd frontend`
 3. `yarn install`
 4. `yarn dev`
-
-注意: DB(MySQL) -> API(Go Gin) の順に起動するようになっている。そのため、起動までに時間がかかることが予想される。特に、MySQL は初回起動時に時間がかかる。(それぞれの PC のスペックにもよるが初回起動時は 5〜8 分程度要する場合もありうる。)
-
-注意: もし起動に失敗した場合は、`docker compose down`の後、`docker compose up`としてみよう。エラーメッセージが表示されているはずである。
 
 ## For Developers
 
