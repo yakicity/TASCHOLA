@@ -1,8 +1,14 @@
+import UserRegisterForm from "@/components/UserRegisterForm"
+import styles from '@/styles/Home.module.scss'
+
 const SignUp = () => {
   return (
-    <div>
-      <h1>SignUp</h1>
-    </div>
+    <>
+      <main className={styles.main}>
+        <h1>SignUp</h1>
+        <UserRegisterForm />
+      </main>
+    </>
   )
 }
 

@@ -1,8 +1,12 @@
+import styles from '@/styles/Home.module.scss'
+
 const TasksPage = () => {
   return (
-    <div>
-      <h1>Tasks</h1>
-    </div>
+    <>
+      <main className={styles.main}>
+        <h1>Tasks</h1>
+      </main>
+    </>
   )
 }
 

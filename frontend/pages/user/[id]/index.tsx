@@ -1,3 +1,4 @@
+import styles from '@/styles/Home.module.scss'
 import { useRouter } from 'next/router'
 
 const UserInfo = () => {
@@ -5,10 +6,12 @@ const UserInfo = () => {
   const { id } = router.query
 
   return (
-    <div>
-      <h1>User Info</h1>
-      <p>id: {id}</p>
-    </div>
+    <>
+      <main className={styles.main}>
+        <h1>User Info</h1>
+        <p>id: {id}</p>
+      </main>
+    </>
   )
 }
 

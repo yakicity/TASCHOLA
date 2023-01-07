@@ -1,9 +1,13 @@
+import styles from '@/styles/Home.module.scss'
+
 const TaskNewPage = () => {
   return (
-    <div>
-      <h1>New Task</h1>
-      {/* <TaskForm /> */}
-    </div>
+    <>
+      <main className={styles.main}>
+        <h1>New Task</h1>
+        {/* <TaskForm /> */}
+      </main>
+    </>
   )
 }
 
