@@ -120,7 +120,7 @@ func CreateTask(ctx *gin.Context) {
 	var task models.TaskForm
 	err := ctx.BindJSON(&task)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid task"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "taskForm is invalid"})
 		return
 	}
 
@@ -163,7 +163,7 @@ func UpdateTask(ctx *gin.Context) {
 	var task models.TaskForm
 	err = ctx.BindJSON(&task)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid task"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "taskForm is invalid"})
 		return
 	}
 

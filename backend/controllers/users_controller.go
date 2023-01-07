@@ -58,7 +58,7 @@ func CreateUser(ctx *gin.Context) {
 	var userInfo UserForm
 	err := ctx.BindJSON(&userInfo)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request (invalid user)"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request (userForm is invalid)"})
 		return
 	}
 
@@ -99,7 +99,7 @@ func UpdateUser(ctx *gin.Context) {
 	var userForm UpdateUserForm
 	err = ctx.BindJSON(&userForm)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request (invalid user)"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request (updateUserForm is invalid)"})
 		return
 	}
 
