@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"crypto/sha256"
 	"net/http"
 	"strconv"
 	"taschola/db"
@@ -8,6 +9,29 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
+
+// user information whose password is plaintext
+type UserInfo struct {
+	ID       uint64
+	Name     string
+	Password string
+}
+
+func hash(pw string) []byte {
+	const salt = "blue_taschola"
+	h := sha256.New()
+	h.Write([]byte(salt))
+	h.Write([]byte(pw))
+	return h.Sum(nil)
+}
+
+func encodeUserInfo(userInfo UserInfo) db.User {
+	var user db.User
+	user.ID = userInfo.ID
+	user.Name = userInfo.Name
+	user.Password = hash(userInfo.Password)
+	return user
+}
 
 // new user
 // POST v1/user/new
@@ -18,14 +42,17 @@ import (
 // @Failure 400 {"error": "Bad Request (invalid user)"}
 // @Failure 409 {"error": "Conflict (duplicate user name)"}
 // @Failure 500 {"error": "Internal Server Error"}
+
 func CreateUser(ctx *gin.Context) {
 	// get user
-	var user db.User
-	err := ctx.BindJSON(&user)
+	var userInfo UserInfo
+	err := ctx.BindJSON(&userInfo)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request (invalid user)"})
 		return
 	}
+	var user db.User
+	user = encodeUserInfo(userInfo)
 
 	// check duplicate user name
 	switch models.CheckDuplicateUserName(user.Name) {
@@ -71,8 +98,8 @@ func GetUser(ctx *gin.Context) {
 }
 
 type UserForm struct {
-	ConfirmPassword string  `json:"confirm_password"`
-	User            db.User `json:"user"`
+	ConfirmPassword string   `json:"confirm_password"`
+	UserInfo        UserInfo `json:"user"`
 }
 
 // PUT v1/user/:id
@@ -96,16 +123,18 @@ func EditUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request (invalid user)"})
 		return
 	}
+	var user db.User
+	user = encodeUserInfo(userForm.UserInfo)
 
 	// check duplicate user name
-	switch models.CheckDuplicateUserName(userForm.User.Name) {
+	switch models.CheckDuplicateUserName(user.Name) {
 	case true: // duplicate
 		ctx.JSON(http.StatusConflict, gin.H{"error": "Conflict (duplicate user name)"})
 		return
 
 	default: // not duplicate
 		// update user
-		err := models.UpdateUser(userID, userForm.User)
+		err := models.UpdateUser(userID, user)
 		if err != nil {
 			ctx.String(http.StatusInternalServerError, "Internal Server Error")
 			return
