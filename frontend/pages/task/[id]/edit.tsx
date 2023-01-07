@@ -1,3 +1,4 @@
+import styles from '@/styles/Home.module.scss'
 import { useRouter } from 'next/router'
 
 const TaskEditPage = () => {
@@ -5,9 +6,11 @@ const TaskEditPage = () => {
   const { id } = router.query
 
   return (
-    <div>
-      <h1>Edit Task {id}</h1>
-    </div>
+    <>
+      <main className={styles.main}>
+        <h1>Edit Task {id}</h1>
+      </main>
+    </>
   )
 }
 
