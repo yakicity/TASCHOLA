@@ -6,11 +6,11 @@ import (
 )
 
 type TaskForm struct {
-	Title       string    `db:"title"`
-	Description string    `db:"description"`
-	Status      string    `db:"status"`   // [TODO, DOING, DONE]
-	Priority    int       `db:"priority"` // [1, 2, 3, 4, 5] (1: highest, 5: lowest)
-	DueDate     time.Time `db:"due_date"`
+	Title       string
+	Description string
+	Status      string // [TODO, DOING, DONE]
+	Priority    int    // [1, 2, 3, 4, 5] (1: highest, 5: lowest)
+	DueDate     time.Time
 }
 
 func GetTasksByUserID(userID uint64) ([]database.Task, error) {
