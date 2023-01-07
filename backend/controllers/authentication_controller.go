@@ -33,4 +33,11 @@ func Login(ctx *gin.Context) {
 	ctx.Redirect(http.StatusFound, frontEndURL+"/tasks")
 }
 
-//logout
+// logout
+func Logout(ctx *gin.Context) {
+	session := sessions.Default(ctx)
+	session.Clear()
+	session.Options(sessions.Options{MaxAge: -1})
+	session.Save()
+	ctx.Redirect(http.StatusFound, frontEndURL+"/")
+}
