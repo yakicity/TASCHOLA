@@ -64,6 +64,16 @@ localhost は共有されているので、フロントエンドとバックエ�
   参考: https://tailwindcss.com/docs/guides/nextjs
   参考: [Next.js に Tailwind CSS を導入する](https://fwywd.com/tech/next-tailwind)
 
+  Tailwind CSS を読み込んでいるのは、`frontend/styles/globals.css`である。
+
+  ```scss
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+  ```
+
+  また、この`globals.css`は、`frontend/pages/_app.ts`で読み込んでいる。
+
 ### Backend
 
 - CORS について
