@@ -49,6 +49,21 @@ localhost は共有されているので、フロントエンドとバックエ�
 
 ### Frontend
 
+- import path alias
+
+  相対パスでの import は、ファイル構造を把握するのが難しくなるため、絶対パスでの import を行う。
+
+  import パスのルートは `frontend/`である。
+
+  参考: https://qiita.com/tatane616/items/e3ee99a181662ad6824b
+
+- tailwind css
+
+  CSS フレームワークとして、tailwind css を使用している。
+
+  参考: https://tailwindcss.com/docs/guides/nextjs
+  参考: [Next.js に Tailwind CSS を導入する](https://fwywd.com/tech/next-tailwind)
+
 ### Backend
 
 - CORS について
