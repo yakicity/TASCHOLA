@@ -5,6 +5,8 @@ const TasksPage = () => {
     <>
       <main className={styles.main}>
         <h1>Tasks</h1>
+        <div className={styles.center}>
+        </div>
       </main>
     </>
   )
