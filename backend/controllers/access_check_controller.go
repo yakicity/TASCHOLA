@@ -7,14 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const userkey = "user"
-const frontEndURL string = "http://localhost:3000"
+const userKey string = "user"
 
-// Logincheck
 func LoginCheck(ctx *gin.Context) {
-	userID := sessions.Default(ctx).Get(userkey)
+	userID := sessions.Default(ctx).Get(userKey)
 	if userID == nil {
-		ctx.Redirect(http.StatusFound, frontEndURL+"/login")
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		ctx.Abort()
 	} else {
 		ctx.Next()
