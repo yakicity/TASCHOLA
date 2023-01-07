@@ -4,72 +4,19 @@ import (
 	"crypto/sha256"
 	"net/http"
 	"strconv"
-	"taschola/db"
 	"taschola/models"
 
 	"github.com/gin-gonic/gin"
 )
 
-// user information whose password is plaintext
-type UserInfo struct {
-	ID       uint64
-	Name     string
-	Password string
+type UserForm struct {
+	Name     string `json:"name"`
+	Password string `json:"password"`
 }
 
-func hash(pw string) []byte {
-	const salt = "blue_taschola"
-	h := sha256.New()
-	h.Write([]byte(salt))
-	h.Write([]byte(pw))
-	return h.Sum(nil)
-}
-
-func encodeUserInfo(userInfo UserInfo) db.User {
-	var user db.User
-	user.ID = userInfo.ID
-	user.Name = userInfo.Name
-	user.Password = hash(userInfo.Password)
-	return user
-}
-
-// new user
-// POST v1/user/new
-//
-// @Param user [database.User]
-//
-// @Success 200 {"user": user}
-// @Failure 400 {"error": "Bad Request (invalid user)"}
-// @Failure 409 {"error": "Conflict (duplicate user name)"}
-// @Failure 500 {"error": "Internal Server Error"}
-
-func CreateUser(ctx *gin.Context) {
-	// get user
-	var userInfo UserInfo
-	err := ctx.BindJSON(&userInfo)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request (invalid user)"})
-		return
-	}
-	var user db.User
-	user = encodeUserInfo(userInfo)
-
-	// check duplicate user name
-	switch models.CheckDuplicateUserName(user.Name) {
-	case true: // duplicate
-		ctx.JSON(http.StatusConflict, gin.H{"error": "Conflict (duplicate user name)"})
-		return
-
-	default: // not duplicate
-		// create user
-		err := models.CreateUser(user)
-		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
-			return
-		}
-
-		ctx.JSON(http.StatusOK, gin.H{"status": "success"})
-	}
+type UpdateUserForm struct {
+	OldPassword string   `json:"old_password"`
+	User        UserForm `json:"user"`
 }
 
 // GET v1/user/:id
@@ -97,9 +44,41 @@ func GetUser(ctx *gin.Context) {
 	})
 }
 
-type UserForm struct {
-	ConfirmPassword string   `json:"confirm_password"`
-	UserInfo        UserInfo `json:"user"`
+// POST v1/user/new
+//
+// @Param user [database.User]
+//
+// @Success 200 {"user": user}
+// @Failure 400 {"error": "Bad Request (invalid user)"}
+// @Failure 409 {"error": "Conflict (duplicate user name)"}
+// @Failure 500 {"error": "Internal Server Error"}
+
+func CreateUser(ctx *gin.Context) {
+	// get user
+	var userInfo UserForm
+	err := ctx.BindJSON(&userInfo)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request (invalid user)"})
+		return
+	}
+
+	user := encryptUserInfo(userInfo)
+	// check duplicate user name
+	switch models.CheckDuplicateUserName(user.Name) {
+	case true: // duplicate
+		ctx.JSON(http.StatusConflict, gin.H{"error": "Conflict (duplicate user name)"})
+		return
+
+	default: // not duplicate
+		// create user
+		err := models.CreateUser(user)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{"status": "success"})
+	}
 }
 
 // PUT v1/user/:id
@@ -110,30 +89,40 @@ type UserForm struct {
 // @Failure 400 { "error": "invalid user id"}
 // @Failure 401 { "error": "Internal Server Error"}
 // @Failure 409 {"error": "Conflict (duplicate user name)"}
-func EditUser(ctx *gin.Context) {
+func UpdateUser(ctx *gin.Context) {
 	userID, err := strconv.ParseUint((ctx.Param("id")), 10, 64)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request (invalid user id)"})
 		return
 	}
 
-	var userForm UserForm
+	var userForm UpdateUserForm
 	err = ctx.BindJSON(&userForm)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request (invalid user)"})
 		return
 	}
-	var user db.User
-	user = encodeUserInfo(userForm.UserInfo)
+
+	// check old password
+	oldUserInfo, err := models.GetUserByID(userID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "The user is not found"})
+		return
+	}
+	if oldUserInfo.Password == nil || string(oldUserInfo.Password) != string(hash(userForm.OldPassword)) {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request (old password is wrong)"})
+		return
+	}
 
 	// check duplicate user name
-	switch models.CheckDuplicateUserName(user.Name) {
+	switch models.CheckDuplicateUserName(userForm.User.Name) {
 	case true: // duplicate
 		ctx.JSON(http.StatusConflict, gin.H{"error": "Conflict (duplicate user name)"})
 		return
 
 	default: // not duplicate
 		// update user
+		user := encryptUserInfo(userForm.User)
 		err := models.UpdateUser(userID, user)
 		if err != nil {
 			ctx.String(http.StatusInternalServerError, "Internal Server Error")
@@ -144,7 +133,6 @@ func EditUser(ctx *gin.Context) {
 	}
 }
 
-// user delete
 // DELETE v1/user/:id
 //
 // @Param id [uint64]
@@ -168,4 +156,22 @@ func DeleteUser(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"user_id": userID})
+}
+
+// private functions
+
+func hash(pw string) []byte {
+	const salt = "blue_taschola"
+	h := sha256.New()
+	h.Write([]byte(salt))
+	h.Write([]byte(pw))
+	return h.Sum(nil)
+}
+
+func encryptUserInfo(userInfo UserForm) models.EncryptedUserForm {
+	var user models.EncryptedUserForm
+	user.Name = userInfo.Name
+	user.Password = hash(userInfo.Password)
+
+	return user
 }
