@@ -3,7 +3,6 @@ package controllers
 import (
 	"net/http"
 	"strconv"
-	"taschola/db"
 	"taschola/models"
 
 	"github.com/gin-contrib/sessions"
@@ -118,7 +117,7 @@ func CreateTask(ctx *gin.Context) {
 	}
 
 	// Get task from request
-	var task db.Task
+	var task models.TaskForm
 	err := ctx.BindJSON(&task)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid task"})
@@ -161,7 +160,7 @@ func UpdateTask(ctx *gin.Context) {
 	}
 
 	// Get task from request
-	var task db.Task
+	var task models.TaskForm
 	err = ctx.BindJSON(&task)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid task"})
