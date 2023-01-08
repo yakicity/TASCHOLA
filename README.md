@@ -173,6 +173,13 @@ sql-migrate: https://github.com/rubenv/sql-migrate
    sql-migrate down
    ```
 
+- 暗号化
+
+SHA256: https://pkg.go.dev/crypto/sha256
+出力結果は、size = 32 bytes (= []byte)である
+
+そのため、users table の password は、size = 32 bytes のものを入れる必要がある
+
 ### 参考資料
 
 #### Frontend

@@ -2,7 +2,16 @@ package models
 
 import (
 	database "taschola/db"
+	"time"
 )
+
+type TaskForm struct {
+	Title       string
+	Description string
+	Status      string // [TODO, DOING, DONE]
+	Priority    int    // [1, 2, 3, 4, 5] (1: highest, 5: lowest)
+	DueDate     time.Time
+}
 
 func GetTasksByUserID(userID uint64) ([]database.Task, error) {
 	db, err := database.GetConnection()
@@ -49,7 +58,7 @@ func GetTaskByUserIDAndTaskID(userID uint64, taskID uint64) (database.Task, erro
 	return task, nil
 }
 
-func CreateTask(task database.Task, userID uint64) (int, error) {
+func CreateTask(task TaskForm, userID uint64) (int, error) {
 	db, err := database.GetConnection()
 	if err != nil {
 		return 0, err
@@ -87,7 +96,7 @@ func CreateTask(task database.Task, userID uint64) (int, error) {
 	return taskID, nil
 }
 
-func UpdateTaskByUserIDAndTaskID(task database.Task, userID uint64, taskID uint64) error {
+func UpdateTaskByUserIDAndTaskID(task TaskForm, userID uint64, taskID uint64) error {
 	db, err := database.GetConnection()
 	if err != nil {
 		return err

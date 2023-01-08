@@ -4,6 +4,13 @@ import (
 	database "taschola/db"
 )
 
+// user information whose password is plaintext
+// HTTP Request Body From Frontend
+type EncryptedUserForm struct {
+	Name     string
+	Password []byte
+}
+
 func GetUserByID(userID uint64) (database.User, error) {
 	db, err := database.GetConnection()
 	if err != nil {
@@ -19,7 +26,22 @@ func GetUserByID(userID uint64) (database.User, error) {
 	return user, nil
 }
 
-func CreateUser(user database.User) error {
+func GetUserByName(name string) (database.User, error) {
+	db, err := database.GetConnection()
+	if err != nil {
+		return database.User{}, err
+	}
+
+	var user database.User
+	err = db.Get(&user, "SELECT * FROM users WHERE name = ?", name) // unique constraint により、name は一意である
+	if err != nil {
+		return database.User{}, err
+	}
+
+	return user, nil
+}
+
+func CreateUser(user EncryptedUserForm) error {
 	db, err := database.GetConnection()
 	if err != nil {
 		return err
@@ -34,7 +56,7 @@ func CreateUser(user database.User) error {
 	return nil
 }
 
-func UpdateUser(userID uint64, user database.User) error {
+func UpdateUser(userID uint64, user EncryptedUserForm) error {
 	db, err := database.GetConnection()
 	if err != nil {
 		return err
