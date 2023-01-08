@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const userKey string = "user"
+const userKey string = "user_id"
 
 func LoginCheck(ctx *gin.Context) {
 	userID := sessions.Default(ctx).Get(userKey)
