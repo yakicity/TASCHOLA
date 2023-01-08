@@ -28,9 +28,6 @@ func Init() *gin.Engine {
 	// endpoints version 1
 	v1 := engine.Group("v1")
 	{
-		// home
-		v1.GET("/", controllers.NotImplemented)
-
 		// tasks
 		tasks := v1.Group("/tasks")
 		tasks.Use(controllers.LoginCheck)
@@ -38,6 +35,7 @@ func Init() *gin.Engine {
 			tasks.GET("/", controllers.GetTasks)
 			tasks.GET("/t2schola_sync", controllers.NotImplemented)
 		}
+
 		task := v1.Group("/task")
 		task.Use(controllers.LoginCheck)
 		{
@@ -53,6 +51,7 @@ func Init() *gin.Engine {
 
 		// user
 		v1.POST("/user/new", controllers.CreateUser)
+
 		user := v1.Group("/user")
 		user.Use(controllers.LoginCheck)
 		{
