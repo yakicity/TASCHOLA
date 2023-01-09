@@ -1,4 +1,4 @@
-import LoginForm from '@/components/LoginForm'
+import LoginForm from '@/components/auth/LoginForm'
 import styles from '@/styles/Home.module.scss'
 
 const Login = () => {
