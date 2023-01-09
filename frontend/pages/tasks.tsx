@@ -27,13 +27,13 @@ const TasksPage = () => {
   return (
     <>
       <main className={styles.main}>
-        <h1>Task List</h1>
-        <div className="flex justify-end gap-4">
+        <div>
+          <h1>Task List</h1>
           <a href="/task/new" className="btn btn-primary">
             Create Task
           </a>
+          <TaskList tasks={taskList} />
         </div>
-        <TaskList tasks={taskList} />
       </main>
     </>
   )
