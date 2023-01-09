@@ -1,4 +1,4 @@
-import UserRegisterForm from "@/components/UserRegisterForm"
+import UserRegisterForm from "@/components/user/UserRegisterForm"
 import styles from '@/styles/Home.module.scss'
 
 const SignUp = () => {

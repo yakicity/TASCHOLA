@@ -90,15 +90,16 @@ const Home = () => {
           </a>
 
           <a
-            href=""
+            href="/user"
             className={styles.card}
             rel="noopener noreferrer"
           >
             <h2 className={inter.className}>
-              Logout <span>-&gt;</span>
+              User Info <span>-&gt;</span>
             </h2>
             <p className={inter.className}>
-              Logout of your account.
+              View your user info.
+              Only for logged in users
             </p>
           </a>
         </div>

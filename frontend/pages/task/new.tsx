@@ -1,11 +1,11 @@
 import styles from '@/styles/Home.module.scss'
+import NewTaskForm from '@/components/task/NewTaskForm'
 
 const TaskNewPage = () => {
   return (
     <>
       <main className={styles.main}>
-        <h1>New Task</h1>
-        {/* <TaskForm /> */}
+        <NewTaskForm />
       </main>
     </>
   )
