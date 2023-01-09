@@ -3,10 +3,10 @@ export interface TaskForm {
   description: string;
   status: string
   priority: number
-  due_date: Date
+  due_date: string
 }
 
 export interface Task extends TaskForm {
   id: number;
-  created_at: Date;
+  created_at: string;
 }
