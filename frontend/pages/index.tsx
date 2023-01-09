@@ -76,11 +76,7 @@ const Home = () => {
             </p>
           </a>
 
-          <a
-            href="/tasks"
-            className={styles.card}
-            rel="noopener noreferrer"
-          >
+          <a href="/tasks" className={styles.card} rel="noopener noreferrer">
             <h2 className={inter.className}>
               Your Tasks <span>-&gt;</span>
             </h2>
