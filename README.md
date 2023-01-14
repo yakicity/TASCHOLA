@@ -184,6 +184,12 @@ SHA256: https://pkg.go.dev/crypto/sha256
 
 #### Frontend
 
+- [Next.js 公式ドキュメント](https://nextjs.org/docs/getting-started)
+- [Next.js 非公式日本語ドキュメント](https://nextjs-ja-translation-docs.vercel.app/docs/getting-started)
+
+- [axios 公式ドキュメント](https://axios-http.com/docs/api_intro)
+- [axios に型をつける](https://zenn.dev/mkt_engr/articles/axios-req-res-typescript)
+
 #### Backend
 
 - [Go Gin CORS + 認証](https://qiita.com/bty__/items/f8c4393bd7701a1d703c)
