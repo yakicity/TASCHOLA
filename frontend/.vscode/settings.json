@@ -1,36 +1,10 @@
 {
   // editor settings
   "editor.formatOnSave": true,
-  "editor.tabSize": 2,
-  "editor.bracketPairColorization.enabled": true,
   "editor.wordWrap": "on",
   "editor.formatOnPaste": false,
+  "editor.tabSize": 2,
   "editor.detectIndentation": false,
-
-  // go settins
-  "go.useLanguageServer": true,
-  "go.toolsManagement.autoUpdate": true,
-  "go.autocompleteUnimportedPackages": true,
-  "go.toolsEnvVars": { "GO111MODULE": "on" },
-  "gopls": {
-    "ui.semanticTokens": true
-  },
-  "[go]": {
-    "editor.defaultFormatter": "golang.go"
-  },
-  "go.installDependenciesWhenBuilding": true,
-  "go.useCodeSnippetsOnFunctionSuggest": true,
-  "[yaml]": {
-    "editor.defaultFormatter": "redhat.vscode-yaml"
-  },
-
-  // sql settings
-  "[sql]": {
-    "editor.defaultFormatter": "adpyke.vscode-sql-formatter"
-  },
-
-  // frontend settings
-
   // css and scss settings
   "[scss]": {
     "editor.defaultFormatter": "vscode.css-language-features"

@@ -1,6 +1,7 @@
 import TaskList from '@/components/task/TaskList'
 import { Task } from '@/interfaces/task'
 import styles from '@/styles/Home.module.scss'
+import Link from 'next/link'
 
 const taskList = [
   {
@@ -29,9 +30,9 @@ const TasksPage = () => {
       <main className={styles.main}>
         <div>
           <div>
-            <a href="/task/new" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+            <Link href="/task/new" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
               Create a new Task
-            </a>
+            </Link>
           </div>
 
           <div>

@@ -1,4 +1,5 @@
 import { Task } from '@/interfaces/task'
+import Link from 'next/link'
 
 type TaskRowProps = {
   task: Task
@@ -9,14 +10,12 @@ const TaskRow = (props: TaskRowProps) => {
   return (
     <tr className="hover:bg-gray-50">
       <th className="flex gap-3 px-6 py-4 font-normal text-gray-900">
-        <div className="relative h-10 w-10">
-
-          <span className="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-green-400 ring ring-white"></span>
-        </div>
-        <div className="text-sm">
-          <div className="font-medium text-gray-700">{task.title}</div>
-          <div className="text-gray-400">{task.description}</div>
-        </div>
+        <Link href={`/task/${task.id}`}>
+          <div className="text-sm">
+            <div className="font-medium text-gray-700">{task.title}</div>
+            <div className="text-gray-400">{task.description}</div>
+          </div>
+        </Link>
       </th>
       <td className="px-6 py-4">
         <span
