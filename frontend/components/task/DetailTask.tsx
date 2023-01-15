@@ -4,6 +4,7 @@ import Link from 'next/link'
 type TaskProps = {
   task: Task
 }
+
 const DetailTask = (props: TaskProps) => {
   const { task } = props
 
@@ -14,7 +15,7 @@ const DetailTask = (props: TaskProps) => {
           <ol role="list" className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
             <li>
               <div className="flex items-center">
-                <a href="/tasks" className="mr-2 text-sm font-medium text-gray-900">task</a>
+                <Link href="/tasks" className="mr-2 text-sm font-medium text-gray-900">task</Link>
                 <svg width="16" height="20" viewBox="0 0 16 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="h-5 w-4 text-gray-300">
                   <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
                 </svg>
@@ -67,7 +68,7 @@ const DetailTask = (props: TaskProps) => {
               <div>
                 <h3 className="text-sm font-medium text-gray-900">Priority</h3>
                 <fieldset className="mt-4">
-                  <legend className="sr-only">Status</legend>
+                  <legend className="sr-only">Priority</legend>
                   <div className="flex items-center space-x-3">
                     <label className="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-400">
                       <input type="radio" name="color-choice" value="White" className="sr-only" aria-labelledby="color-choice-0-label" />
