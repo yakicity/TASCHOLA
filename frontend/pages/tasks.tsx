@@ -1,30 +1,25 @@
 import TaskList from '@/components/task/TaskList'
 import { Task } from '@/interfaces/task'
 import styles from '@/styles/Home.module.scss'
+import axios from 'axios'
 import Link from 'next/link'
-
-const taskList = [
-  {
-    id: 1,
-    title: 'Task 1',
-    description: 'Task 1 description test test test test .....................',
-    status: 'TODO',
-    created_at: '2020-01-01',
-    priority: 1,
-    due_date: '2021-01-01',
-  } as Task,
-  {
-    id: 2,
-    title: 'Task 2',
-    description: 'Task 2 description',
-    status: 'TODO',
-    created_at: '2020-01-01',
-    priority: 1,
-    due_date: '2021-01-01',
-  } as Task,
-]
+import { useEffect, useState } from 'react'
 
 const TasksPage = () => {
+  const [tasks, setTasks] = useState<Task[]>([])
+  const [loading, setLoading] = useState<boolean>(false)
+
+  useEffect(() => {
+    (async () => {
+      await axios.get('http://localhost:8000/v1/tasks')
+        .then((res) => {
+          setTasks(res.data)
+          setLoading(false)
+        }
+        )
+    })()
+  }, [])
+
   return (
     <>
       <main className={styles.main}>
@@ -35,9 +30,9 @@ const TasksPage = () => {
             </Link>
           </div>
 
-          <div>
-            <TaskList tasks={taskList} />
-          </div>
+          {loading && <div>Loading...</div>}
+          {!loading && tasks.length === 0 && <div>No tasks found</div>}
+          {!loading && tasks.length > 0 && <TaskList tasks={tasks} />}
         </div>
       </main>
     </>
