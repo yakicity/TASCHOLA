@@ -17,7 +17,7 @@ const NewTaskForm = () => {
       due_date: dueDate,
     }
 
-    axios.post(`localhost:8000/v1/task`, data)
+    axios.post(`localhost:8000/v1/task/new`, data)
       .then((res) => {
         console.log(res)
       }
