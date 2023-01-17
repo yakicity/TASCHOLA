@@ -32,13 +32,13 @@ func NotImplemented(ctx *gin.Context) {
 
 // HealthCheck
 //
-//	@Summary	Health check
+//	@Summary		Health check
 //	@Description	Health check (for Docker health check)
-//	@Tags		default
-//	@Accept		json
-//	@Produce	json
-//	@Success	200	{string} OK "Health check OK"
-//	@Router		/health [get]
+//	@Tags			default
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{string}	OK	"Health check OK"
+//	@Router			/health [get]
 func HealthCheck(ctx *gin.Context) {
 	ctx.Header("Cache-Control", "no-cache")
 	ctx.String(http.StatusOK, "OK")
@@ -46,14 +46,14 @@ func HealthCheck(ctx *gin.Context) {
 
 // CheckDBConnection
 //
-//	@Summary	Check DB connection
+//	@Summary		Check DB connection
 //	@Description	Check DB connection
-//	@Tags		default
-//	@Accept		json
-//	@Produce	json
-//	@Success	200	{array}	string	"OK"
-//	@Failure	500	{object}	models.HTTPError
-//	@Router		/healthz [get]
+//	@Tags			default
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{array}		string	"OK"
+//	@Failure		500	{object}	models.HTTPError
+//	@Router			/healthz [get]
 func CheckDBConnection(ctx *gin.Context) {
 	db, err := database.GetConnection()
 	if err != nil {
