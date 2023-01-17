@@ -1,0 +1,433 @@
+basePath: /
+definitions:
+  controllers.UpdateUserForm:
+    properties:
+      old_password:
+        type: string
+      user:
+        $ref: '#/definitions/controllers.UserForm'
+    type: object
+  controllers.UserForm:
+    properties:
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  db.Task:
+    properties:
+      created_at:
+        example: "2020-01-01 00:00:00"
+        type: string
+      description:
+        example: description
+        type: string
+      due_date:
+        example: "2020-01-01 00:00:00"
+        type: string
+      id:
+        example: 1
+        type: integer
+      priority:
+        description: '[1, 2, 3, 4, 5] (1: highest, 5: lowest)'
+        example: 2
+        type: integer
+      status:
+        description: '[TODO, DOING, DONE]'
+        example: TODO
+        type: string
+      title:
+        example: title
+        type: string
+    type: object
+  db.User:
+    properties:
+      id:
+        example: 1
+        type: integer
+      name:
+        example: user-name
+        type: string
+      password:
+        items:
+          type: integer
+        type: array
+    type: object
+  models.HTTPError:
+    properties:
+      code:
+        type: integer
+      error:
+        type: string
+      place:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: TASCHOLA API Server
+  title: TASCHOLA API
+  version: "1.0"
+paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      description: for not implemented methods
+      produces:
+      - application/json
+      responses:
+        "501":
+          description: Not Implemented
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+      summary: Not implemented
+      tags:
+      - default
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: Health check (for Docker health check)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Health check OK
+          schema:
+            type: string
+      summary: Health check
+      tags:
+      - default
+  /healthz:
+    get:
+      consumes:
+      - application/json
+      description: Check DB connection
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+      summary: Check DB connection
+      tags:
+      - default
+  /v1/login:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+      summary: Login
+      tags:
+      - authentication
+  /v1/logout:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Logout
+      tags:
+      - authentication
+  /v1/tasks:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: keyword
+        in: query
+        name: keyword
+        type: string
+      - description: status
+        in: query
+        items:
+          type: string
+        name: status
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/db.Task'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+      summary: Get tasks by keyword and status
+      tags:
+      - task
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+      summary: Create task
+      tags:
+      - task
+  /v1/tasks/{task_id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: task ID
+        in: path
+        name: task_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+      summary: Delete task
+      tags:
+      - task
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: task ID
+        in: path
+        name: task_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.Task'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+      summary: Get task
+      tags:
+      - task
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: task ID
+        in: path
+        name: task_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+      summary: Update task
+      tags:
+      - task
+  /v1/user:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+      summary: Create User
+      tags:
+      - user
+  /v1/user/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+      summary: Delete User
+      tags:
+      - user
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+      summary: Get User
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UpdateUserForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+      summary: Update User
+      tags:
+      - user
+swagger: "2.0"
