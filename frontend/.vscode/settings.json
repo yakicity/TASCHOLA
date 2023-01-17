@@ -4,7 +4,21 @@
   "editor.wordWrap": "on",
   "editor.formatOnPaste": false,
   "editor.tabSize": 2,
+  "editor.suggestSelection": "first",
+  "editor.minimap.enabled": false,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.inlineSuggest.enabled": true,
+  "editor.accessibilitySupport": "off",
+  "editor.guides.bracketPairs": true,
+  "editor.suggest.showStatusBar": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
   "editor.detectIndentation": false,
+  "editor.tabCompletion": "on",
+  "editor.snippetSuggestions": "top",
+  "diffEditor.wordWrap": "on",
+  "files.insertFinalNewline": true,
   // css and scss settings
   "[scss]": {
     "editor.defaultFormatter": "vscode.css-language-features"
@@ -31,5 +45,9 @@
   },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
-  }
+  },
+  // sql settings
+  "[sql]": {
+    "editor.defaultFormatter": "adpyke.vscode-sql-formatter"
+  },
 }

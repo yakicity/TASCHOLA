@@ -2,6 +2,7 @@
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
   "editor.bracketPairColorization.enabled": true,
+  "files.insertFinalNewline": true,
 
   "go.useLanguageServer": true,
   "go.toolsManagement.autoUpdate": true,

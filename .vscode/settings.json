@@ -6,6 +6,7 @@
   "editor.wordWrap": "on",
   "editor.formatOnPaste": false,
   "editor.detectIndentation": false,
+  "files.insertFinalNewline": true,
 
   // go settins
   "go.useLanguageServer": true,
