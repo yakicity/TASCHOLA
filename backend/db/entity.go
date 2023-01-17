@@ -30,7 +30,7 @@ type Student struct {
 	ID        uint64 `db:"id" example:"1" json:"id"`
 	UserID    uint64 `db:"user_id" example:"1" json:"user_id"`
 	StudentID string `db:"student_id" example:"20B30790" json:"student_id"` // 学籍番号
-	Password  string `db:"password" example:"password" json:"password"`   // パスワード(portal) 平文
+	Password  string `db:"password" example:"password" json:"password"`     // パスワード(portal) 平文
 
 	MatrixCodeAColumn string `db:"matrix_code_a_column" example:"ABCDEFG" json:"matrix_code_a_column"` // マトリックスコードA列
 	MatrixCodeBColumn string `db:"matrix_code_b_column" example:"ABCDEFG" json:"matrix_code_b_column"` // マトリックスコードB列
