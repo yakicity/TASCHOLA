@@ -5,6 +5,11 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 
+	_ "taschola/docs"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
 	"taschola/controllers"
 )
 
@@ -24,6 +29,10 @@ func Init() *gin.Engine {
 
 	// health check
 	engine.GET("/health", controllers.HealthCheck)
+	engine.GET("/healthz", controllers.CheckDBConnection)
+
+	// swagger
+	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// endpoints version 1
 	v1 := engine.Group("v1")
