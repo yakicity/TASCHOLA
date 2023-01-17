@@ -146,7 +146,7 @@ sql-migrate: https://github.com/rubenv/sql-migrate
 1. Installation
 
    ```bash
-   go get -u github.com/rubenv/sql-migrate/...
+   go install github.com/rubenv/sql-migrate/...@latest
    ```
 
 2. Check Status
