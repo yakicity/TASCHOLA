@@ -124,6 +124,23 @@ localhost は共有されているので、フロントエンドとバックエ�
 
     また、health check の周期なども`docker-compose.yml`で設定している。
 
+- Swagger
+
+  API のドキュメントを作成するために、Swagger を使用している。
+
+  ただし、YAML で記述するのが面倒なので、Swagger 自動生成ツールである [swag](https://github.com/swaggo/swag) を使用している。
+
+  Go のコード中にある`// @Summary`などのコメントを元に、`swagger.yaml`を生成している。
+  (そのため、main.go や controllers/\*.go 中のコメントをむやみに変更してはいけない)
+
+  `docker compose up`後に http://localhost:8000/swagger/index.html にアクセスすると、Swagger の UI が表示される。
+
+  ![swagger](./public/swagger.png)
+
+  上記の Swagger から、API リクエストを送信することができる。
+
+  そのため、API の動作確認を行う際には、Swagger を利用するとよい。
+
 ### DB
 
 - Set Up
@@ -195,6 +212,9 @@ SHA256: https://pkg.go.dev/crypto/sha256
 - [Go Gin CORS + 認証](https://qiita.com/bty__/items/f8c4393bd7701a1d703c)
 - [docker-compose におけるヘルスチェック](https://qiita.com/hichika/items/9b96634d471246359e66)
 - [Go Gin における CORS の設定](https://ti-tomo-knowledge.hatenablog.com/entry/2020/06/15/213401)
+- [Github: swag](https://github.com/swaggo/swag)
+- [Swaggo Swag: Go の Swagger 生成ツール](https://qiita.com/pei0804/items/3a0b481d1e47e5a72078a)
+- [Go + Gin Swagger 自動生成ツール](https://qiita.com/takehanKosuke/items/bbeb7581330910e72bb2)
 
 #### DB
 
