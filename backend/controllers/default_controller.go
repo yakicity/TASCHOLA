@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	"net/http"
+	database "taschola/db"
 
 	"github.com/gin-gonic/gin"
 )
@@ -32,4 +33,39 @@ func NotImplemented(ctx *gin.Context) {
 func HealthCheck(ctx *gin.Context) {
 	ctx.Header("Cache-Control", "no-cache")
 	ctx.String(http.StatusOK, "OK")
+}
+
+// CheckDBConnection
+//	@Summary	Check DB connection
+// 	@Description	Check DB connection
+//	@Tags		default
+//	@Accept		json
+//	@Produce	json
+//	@Success	200	{string}	string	"OK"
+//	@Failure	500	{object}	models.Error
+//	@Router		/heathz [get]
+func CheckDBConnection(ctx *gin.Context) {
+	db, err := database.GetConnection()
+	if err != nil {
+		ctx.Header("Cache-Control", "no-cache")
+		ctx.String(http.StatusInternalServerError, "DB connection error")
+		return
+	}
+	err = db.Ping()
+	if err != nil {
+		ctx.Header("Cache-Control", "no-cache")
+		ctx.String(http.StatusInternalServerError, "DB connection error")
+		return
+	}
+
+	var tableNames []string
+	err = db.Select(&tableNames, "SHOW TABLES")
+	if err != nil {
+		ctx.Header("Cache-Control", "no-cache")
+		ctx.String(http.StatusInternalServerError, "DB connection error")
+		return
+	}
+
+	ctx.Header("Cache-Control", "no-cache")
+	ctx.JSON(http.StatusOK, tableNames)
 }
