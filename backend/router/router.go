@@ -27,6 +27,9 @@ func Init() *gin.Engine {
 		MaxAge:           12 * 60 * 60,
 	}))
 
+	// swagger
+	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	// health check
 	engine.GET("/health", controllers.HealthCheck)
 	engine.GET("/healthz", controllers.CheckDBConnection)
