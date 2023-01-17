@@ -34,9 +34,6 @@ func Init() *gin.Engine {
 	engine.GET("/health", controllers.HealthCheck)
 	engine.GET("/healthz", controllers.CheckDBConnection)
 
-	// swagger
-	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
 	// endpoints version 1
 	v1 := engine.Group("v1")
 	{
