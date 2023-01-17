@@ -9,44 +9,70 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// GET /v1/tasks
+// GetTasks
 //
-// # No parameters
-//
-// @Success 200 { "tasks": []database.Task }
-// @Failure 401 { "error": "unauthorized" }
+//	@Summary	Get tasks
+//	@Tags		task
+//	@Accept		json
+//	@Produce	json
+//	@Param		keyword	query		string		false	"keyword"
+//	@Param		status	query		[]string	false	"status"
+//	@Success	200		{object}	[]db.Task
+//	@Failure	401		{object}	models.HTTPError
+//	@Failure	500		{object}	models.HTTPError
+//	@Router		/v1/tasks [get]
 func GetTasks(ctx *gin.Context) {
 	// Get user ID from sessions
 	session := sessions.Default(ctx)
 	userID := session.Get("user_id")
 	if userID == nil {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
+		httpError := models.HTTPError{
+			Code:  http.StatusUnauthorized,
+			Error: "Unauthorized",
+			Place: "controllers.GetTasks",
+		}
+		ctx.JSON(http.StatusUnauthorized, httpError)
 		return
 	}
 
 	// Get tasks from database
 	tasks, err := models.GetTasksByUserID(userID.(uint64))
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		httpError := models.HTTPError{
+			Code:  http.StatusInternalServerError,
+			Error: "Internal Server Error (models error)" + err.Error(),
+			Place: "controllers.GetTasks",
+		}
+		ctx.JSON(http.StatusInternalServerError, httpError)
 		return
 	}
 
 	ctx.JSON(http.StatusOK, tasks)
 }
 
-// GET /v1/tasks?keyword=foo&status=TODO&status=DOING&status=DONE
+// GetTasksByKeywordAndStatus
 //
-// @Param keyword [string]
-// @Param status [[]string]
-//
-// @Success 200 { "tasks": []database.Task }
-// @Failure 500 { "error": "Internal Server Error" }
+//	@Summary	Get tasks by keyword and status
+//	@Tags		task
+//	@Accept		json
+//	@Produce	json
+//	@Param		keyword	query		string		false	"keyword"
+//	@Param		status	query		[]string	false	"status"
+//	@Success	200		{object}	[]db.Task
+//	@Failure	401		{object}	models.HTTPError
+//	@Failure	500		{object}	models.HTTPError
+//	@Router		/v1/tasks [get]
 func GetTasksByKeywordAndStatus(ctx *gin.Context) {
 	// Get user ID from sessions
 	session := sessions.Default(ctx)
 	userID := session.Get("user_id")
 	if userID == nil {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
+		httpError := models.HTTPError{
+			Code:  http.StatusUnauthorized,
+			Error: "Unauthorized",
+			Place: "controllers.GetTasksByKeywordAndStatus",
+		}
+		ctx.JSON(http.StatusUnauthorized, httpError)
 		return
 	}
 
@@ -59,26 +85,41 @@ func GetTasksByKeywordAndStatus(ctx *gin.Context) {
 	// Get tasks from database
 	tasks, err := models.GetTasksByUserIDAndKeywordAndStatus(userID.(uint64), keyword, status)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		httpError := models.HTTPError{
+			Code:  http.StatusInternalServerError,
+			Error: "Internal Server Error (models error)" + err.Error(),
+			Place: "controllers.GetTasksByKeywordAndStatus",
+		}
+		ctx.JSON(http.StatusInternalServerError, httpError)
 		return
 	}
 
 	ctx.JSON(http.StatusOK, tasks)
 }
 
-// GET /v1/task/:task_id
+// GetTask
 //
-// @Param task_id [uint64]
-//
-// @Success 200 { "task": database.Task }
-// @Failure 400 { "error": "invalid task ID" }
-// @Failure 401 { "error": "unauthorized" }
+//	@Summary	Get task
+//	@Tags		task
+//	@Accept		json
+//	@Produce	json
+//	@Param		task_id	path		uint64	true	"task ID"
+//	@Success	200		{object}	db.Task
+//	@Failure	401		{object}	models.HTTPError
+//	@Failure	400		{object}	models.HTTPError
+//	@Failure	500		{object}	models.HTTPError
+//	@Router		/v1/tasks/{task_id} [get]
 func GetTask(ctx *gin.Context) {
 	// Get user ID from sessions
 	session := sessions.Default(ctx)
 	userID := session.Get("user_id")
 	if userID == nil {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
+		httpError := models.HTTPError{
+			Code:  http.StatusUnauthorized,
+			Error: "Unauthorized",
+			Place: "controllers.GetTask",
+		}
+		ctx.JSON(http.StatusUnauthorized, httpError)
 		return
 	}
 
@@ -86,33 +127,52 @@ func GetTask(ctx *gin.Context) {
 	taskID := ctx.Param("task_id")
 	taskIDUint64, err := strconv.ParseUint(taskID, 10, 64)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid task ID"})
+		httpError := models.HTTPError{
+			Code:  http.StatusBadRequest,
+			Error: "Invalid task ID",
+			Place: "controllers.GetTask",
+		}
+		ctx.JSON(http.StatusBadRequest, httpError)
 		return
 	}
 
 	// Get task from database
 	task, err := models.GetTaskByUserIDAndTaskID(userID.(uint64), taskIDUint64)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		httpError := models.HTTPError{
+			Code:  http.StatusInternalServerError,
+			Error: "Internal Server Error (models error)" + err.Error(),
+			Place: "controllers.GetTask",
+		}
+		ctx.JSON(http.StatusInternalServerError, httpError)
 		return
 	}
 
 	ctx.JSON(http.StatusOK, task)
 }
 
-// POST /v1/task/new
+// CreateTask
 //
-// @Param task [database.Task]
-//
-// @Success 200 { "task_id": uint64 }
-// @Failure 400 { "error": "invalid task" }
-// @Failure 401 { "error": "unauthorized" }
+//	@Summary	Create task
+//	@Tags		task
+//	@Accept		json
+//	@Produce	json
+//	@Success	200	integer		task	ID
+//	@Failure	400	{object}	models.HTTPError
+//	@Failure	401	{object}	models.HTTPError
+//	@Failure	500	{object}	models.HTTPError
+//	@Router		/v1/tasks [post]
 func CreateTask(ctx *gin.Context) {
 	// Get user ID from sessions
 	session := sessions.Default(ctx)
 	userID := session.Get("user_id")
 	if userID == nil {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
+		httpError := models.HTTPError{
+			Code:  http.StatusUnauthorized,
+			Error: "Unauthorized",
+			Place: "controllers.CreateTask",
+		}
+		ctx.JSON(http.StatusUnauthorized, httpError)
 		return
 	}
 
@@ -120,34 +180,53 @@ func CreateTask(ctx *gin.Context) {
 	var task models.TaskForm
 	err := ctx.BindJSON(&task)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "taskForm is invalid"})
+		httpError := models.HTTPError{
+			Code:  http.StatusBadRequest,
+			Error: "Invalid task form",
+			Place: "controllers.CreateTask",
+		}
+		ctx.JSON(http.StatusBadRequest, httpError)
 		return
 	}
 
 	// Create task in database
 	taskID, err := models.CreateTask(task, userID.(uint64))
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		httpError := models.HTTPError{
+			Code:  http.StatusInternalServerError,
+			Error: "Internal Server Error (models error)" + err.Error(),
+			Place: "controllers.CreateTask",
+		}
+		ctx.JSON(http.StatusInternalServerError, httpError)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"task_id": taskID})
+	ctx.JSON(http.StatusOK, taskID)
 }
 
-// PUT /v1/task/:task_id
+// UpdateTask
 //
-// @Param task_id [uint64]
-// @Param task [database.Task]
-//
-// @Success 200 { "task_id": uint64 }
-// @Failure 400 { "error": "invalid task ID" }
-// @Failure 401 { "error": "unauthorized" }
+//	@Summary	Update task
+//	@Tags		task
+//	@Accept		json
+//	@Produce	json
+//	@Param		task_id	path		uint64	true	"task ID"
+//	@Success	200		integer		task	ID
+//	@Failure	400		{object}	models.HTTPError
+//	@Failure	401		{object}	models.HTTPError
+//	@Failure	500		{object}	models.HTTPError
+//	@Router		/v1/tasks/{task_id} [put]
 func UpdateTask(ctx *gin.Context) {
 	// Get user ID from sessions
 	session := sessions.Default(ctx)
 	userID := session.Get("user_id")
 	if userID == nil {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
+		httpError := models.HTTPError{
+			Code:  http.StatusUnauthorized,
+			Error: "Unauthorized",
+			Place: "controllers.UpdateTask",
+		}
+		ctx.JSON(http.StatusUnauthorized, httpError)
 		return
 	}
 
@@ -155,7 +234,12 @@ func UpdateTask(ctx *gin.Context) {
 	taskID := ctx.Param("task_id")
 	taskIDUint64, err := strconv.ParseUint(taskID, 10, 64)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid task ID"})
+		httpError := models.HTTPError{
+			Code:  http.StatusBadRequest,
+			Error: "Invalid task ID",
+			Place: "controllers.UpdateTask",
+		}
+		ctx.JSON(http.StatusBadRequest, httpError)
 		return
 	}
 
@@ -163,33 +247,53 @@ func UpdateTask(ctx *gin.Context) {
 	var task models.TaskForm
 	err = ctx.BindJSON(&task)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "taskForm is invalid"})
+		httpError := models.HTTPError{
+			Code:  http.StatusBadRequest,
+			Error: "Invalid task form",
+			Place: "controllers.UpdateTask",
+		}
+		ctx.JSON(http.StatusBadRequest, httpError)
 		return
 	}
 
 	// Update task in database
 	err = models.UpdateTaskByUserIDAndTaskID(task, userID.(uint64), taskIDUint64)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		httpError := models.HTTPError{
+			Code:  http.StatusInternalServerError,
+			Error: "Internal Server Error (models error)" + err.Error(),
+			Place: "controllers.UpdateTask",
+		}
+		ctx.JSON(http.StatusInternalServerError, httpError)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"task_id": taskID})
+	ctx.JSON(http.StatusOK, taskID)
 }
 
-// DELETE /v1/task/:task_id
+// DeleteTask
 //
-// @Param task_id [uint64]
-//
-// @Success 200 { "task_id": uint64 }
-// @Failure 400 { "error": "invalid task ID" }
-// @Failure 401 { "error": "unauthorized" }
+//	@Summary	Delete task
+//	@Tags		task
+//	@Accept		json
+//	@Produce	json
+//	@Param		task_id	path		uint64	true	"task ID"
+//	@Success	200		integer		task	ID
+//	@Failure	400		{object}	models.HTTPError
+//	@Failure	401		{object}	models.HTTPError
+//	@Failure	500		{object}	models.HTTPError
+//	@Router		/v1/tasks/{task_id} [delete]
 func DeleteTask(ctx *gin.Context) {
 	// Get user ID from sessions
 	session := sessions.Default(ctx)
 	userID := session.Get("user_id")
 	if userID == nil {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
+		httpError := models.HTTPError{
+			Code:  http.StatusUnauthorized,
+			Error: "Unauthorized",
+			Place: "controllers.DeleteTask",
+		}
+		ctx.JSON(http.StatusUnauthorized, httpError)
 		return
 	}
 
@@ -197,16 +301,26 @@ func DeleteTask(ctx *gin.Context) {
 	taskID := ctx.Param("task_id")
 	taskIDUint64, err := strconv.ParseUint(taskID, 10, 64)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid task ID"})
+		httpError := models.HTTPError{
+			Code:  http.StatusBadRequest,
+			Error: "Invalid task ID",
+			Place: "controllers.DeleteTask",
+		}
+		ctx.JSON(http.StatusBadRequest, httpError)
 		return
 	}
 
 	// Delete task from database
 	err = models.DeleteTaskByUserIDAndTaskID(userID.(uint64), taskIDUint64)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		httpError := models.HTTPError{
+			Code:  http.StatusInternalServerError,
+			Error: "Internal Server Error (models error)" + err.Error(),
+			Place: "controllers.DeleteTask",
+		}
+		ctx.JSON(http.StatusInternalServerError, httpError)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"task_id": taskID})
+	ctx.JSON(http.StatusOK, taskID)
 }
