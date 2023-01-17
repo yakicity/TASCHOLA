@@ -221,3 +221,17 @@ SHA256: https://pkg.go.dev/crypto/sha256
 - [Go 製マイグレーションツール sql-migrate](https://qiita.com/k-kurikuri/items/946e2bf8c79176ef3ff0)
 - [Go の migration ツールのデファクトってなくないですか？](https://onemuri.space/note/is3ev1-d1/)
 - [sql-migrate の使い方](https://k2ss.info/archives/3342/)
+
+### その他
+
+- Docker Compose UP 後に発生する `db       | 2023-01-17T15:11:15.808061Z 1106 [Note] Access denied for user 'mysql'@'localhost' (using password: YES)` エラーについて
+
+  結論: そもそも問題はなかった。go-gin -> mysql への接続は成功していた。
+
+  教訓: DB Access Check 用のエンドポイントを作成して、そこから接続確認を行う方法にもっと早く気づけばよかった。
+
+  以下、調査の経緯
+
+  1. db/data のせいかと思い削除したりしてみたが、変わらずエラーが発生した
+  2. [volume 関連の修正方法 1](https://qiita.com/akifumii/items/06e79428b09613235aa8), [volume 関連の修正方法 2](https://zenn.dev/tojima/articles/32bbfe85dd0022)を試すも、変わらずエラーが発生した
+  3. Gin -> MySQL への接続が失敗しているのかと思い、docker-compose.yml の environment 周りや、backend/db/conn.go などを見直したが、おかしな点は発見できず。 -> そもそもエンドポイントのエラーメッセージが出力機構が貧弱すぎた。もっとちゃんと出力させていたら、ここではないことに気づけたかもしれない。
