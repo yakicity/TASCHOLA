@@ -1,14 +1,115 @@
 {
+  // vscode settings
+  "files.autoSave": "afterDelay",
+  "window.zoomLevel": -1,
   // editor settings
   "editor.formatOnSave": true,
-  "editor.tabSize": 2,
-  "editor.bracketPairColorization.enabled": true,
   "editor.wordWrap": "on",
   "editor.formatOnPaste": false,
-  "editor.detectIndentation": false,
+  "editor.tabSize": 2,
+  "editor.suggestSelection": "first",
+  "editor.minimap.enabled": false,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.inlineSuggest.enabled": true,
+  "editor.accessibilitySupport": "off",
+  "editor.guides.bracketPairs": true,
+  "editor.suggest.showStatusBar": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "diffEditor.wordWrap": "on",
   "files.insertFinalNewline": true,
-
-  // go settins
+  // explorer settings
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false,
+  // security settings
+  "security.workspace.trust.untrustedFiles": "open",
+  "workbench.startupEditor": "newUntitledFile",
+  // window settings
+  "window.commandCenter": true,
+  // vscode intelligence settings
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  // terminal settings
+  "terminal.integrated.fontFamily": "MesloLGS NF",
+  "terminal.external.osxExec": "iTerm.app",
+  "terminal.integrated.env.osx": {
+    "FIG_NEW_SESSION": "1"
+  },
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  // debug settings
+  "debug.inlineValues": "auto",
+  // code runner settings
+  "code-runner.executorMap": {
+    "python": "cd $dir && python3 $fileName",
+    "cpp": "cd $dir && g++ -std=c++17 -Wall -pedantic-errors $fileName -o a.out && ./a.out",
+    "c": "cd $dir && gcc -std=c17 -Wall $fileName && ./a.out",
+    "java": "cd $dir && javac $fileName && java $fileNameWithoutExt"
+  },
+  "code-runner.clearPreviousOutput": true,
+  "code-runner.runInTerminal": true,
+  // git settings
+  "git.ignoreRebaseWarning": true,
+  "git.fetchOnPull": true,
+  "git.confirmSync": false,
+  "git.mergeEditor": false,
+  "git.autofetch": true,
+  // python settings
+  "python.defaultInterpreterPath": "${config:python.defaultInterpreterPath}",
+  "python.envFile": "${workspaceFolder}/.venv",
+  "python.analysis.completeFunctionParens": true,
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.extraPaths": ["./sources", "lib/python"],
+  "[python]": {
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true
+  },
+  // python linting settings
+  "python.linting.enabled": true,
+  "python.linting.lintOnSave": true,
+  // mypy settings
+  "python.linting.mypyEnabled": true,
+  "python.linting.mypyCategorySeverity.note": "Warning",
+  "python.linting.mypyArgs": ["--disallow-untyped-defs"],
+  "python.linting.mypyCategorySeverity.error": "Warning",
+  // flake8 settings
+  "python.linting.flake8Enabled": true,
+  "python.linting.flake8Args": [
+    "--max-line-length=180",
+    "--ignore=E402,F841,F401,E302,E305,E203,W503"
+  ],
+  "python.linting.flake8CategorySeverity.W": "Error",
+  // python formatting settings
+  // black settings
+  "python.formatting.provider": "black",
+  "python.formatting.blackArgs": ["--line-length", "180"],
+  // c cpp settings
+  "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 0 }",
+  "[cpp]": {
+    "editor.suggest.insertMode": "replace",
+    "editor.semanticHighlighting.enabled": true,
+    "editor.tabSize": 4,
+    "editor.wordBasedSuggestions": true
+  },
+  "[c]": {
+    "editor.tabSize": 4,
+    "editor.suggest.insertMode": "replace",
+    "editor.semanticHighlighting.enabled": true,
+    "editor.wordBasedSuggestions": true
+  },
+  // rust settings
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4
+  },
+  "rust-analyzer.cargo.autoreload": true,
+  "rust-analyzer.checkOnSave.command": "clippy",
+  "rust-analyzer.checkOnSave.extraArgs": [
+    "--",
+    "-A",
+    "clippy::needless_return"
+  ],
+  // go settings
   "go.useLanguageServer": true,
   "go.toolsManagement.autoUpdate": true,
   "go.autocompleteUnimportedPackages": true,
@@ -19,19 +120,21 @@
   "[go]": {
     "editor.defaultFormatter": "golang.go"
   },
-  "go.installDependenciesWhenBuilding": true,
-  "go.useCodeSnippetsOnFunctionSuggest": true,
-  "[yaml]": {
-    "editor.defaultFormatter": "redhat.vscode-yaml"
+  "go.enableCodeLens": {},
+  // docker settings
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
   },
-
-  // sql settings
-  "[sql]": {
-    "editor.defaultFormatter": "adpyke.vscode-sql-formatter"
+  "[dockercompose]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
   },
-
-  // frontend settings
-
+  // kubernetes settings
+  // java settings
+  "java.format.settings.profile": "GoogleStyle",
+  "redhat.telemetry.enabled": true,
+  // ruby settings
+  "ruby.intellisense": "rubyLocate",
+  "ruby.codeCompletion": "rcodetools",
   // css and scss settings
   "[scss]": {
     "editor.defaultFormatter": "vscode.css-language-features"
@@ -39,24 +142,126 @@
   "[css]": {
     "editor.defaultFormatter": "vscode.css-language-features"
   },
-  "css.lint.importStatement": "warning",
-  "scss.lint.importStatement": "warning",
-  // typescript settings
+  // other settings
+  "verilog.linting.linter": "iverilog",
+  "eslint.format.enable": true,
+  "yaml.customTags": [
+    "!And",
+    "!And sequence",
+    "!If",
+    "!If sequence",
+    "!Not",
+    "!Not sequence",
+    "!Equals",
+    "!Equals sequence",
+    "!Or",
+    "!Or sequence",
+    "!FindInMap",
+    "!FindInMap sequence",
+    "!Base64",
+    "!Join",
+    "!Join sequence",
+    "!Cidr",
+    "!Ref",
+    "!Sub",
+    "!Sub sequence",
+    "!GetAtt",
+    "!GetAZs",
+    "!ImportValue",
+    "!ImportValue sequence",
+    "!Select",
+    "!Select sequence",
+    "!Split",
+    "!Split sequence"
+  ],
+  "githubPullRequests.pullBranch": "never",
   "[typescriptreact]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
   },
-  "typescript.format.semicolons": "remove",
-  // eslint settings
-  "eslint.format.enable": true,
   "eslint.lintTask.enable": true,
   "eslint.packageManager": "yarn",
-  // spell checker settings
-  "cSpell.userWords": ["Idempotence"],
-  // json settings
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": true,
+    "plaintext": true,
+    "markdown": true
+  },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
-  }
+  },
+  "go.installDependenciesWhenBuilding": true,
+  "go.useCodeSnippetsOnFunctionSuggest": true,
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "workbench.editor.enablePreview": false,
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "java.help.collectErrorLog": true,
+  "typescript.format.semicolons": "remove",
+  "css.lint.importStatement": "warning",
+  "scss.lint.importStatement": "warning",
+  "[sql]": {
+    "editor.defaultFormatter": "adpyke.vscode-sql-formatter"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "cSpell.userWords": ["Idempotence"],
+  // markdown settings
+  "markdown-pdf.footerTemplate": "<div style=\"font-size: 8px; margin: 0 auto;\"> <span class='pageNumber'></span> / <span class='totalPages'></span></div>",
+  "markdown-pdf.headerTemplate": "<div style=\"font-size: 8px; margin-left: 1cm;\"> <span class='title'></span></div> <div style=\"font-size: 9px; margin-left: auto; margin-right: 1cm; \"> <span class='date'></span></div>",
+  // vscode icon setting
+  "workbench.iconTheme": "material-icon-theme",
+  // latex settings
+  //viewerをタブで開く
+  "latex-workshop.view.pdf.viewer": "tab",
+  //intellisenseを有効にする
+  "latex-workshop.intellisense.package.enabled": true,
+  //生成ファイルを格納するディレクトリ名
+  "latex-workshop.latex.outDir": "latex_out",
+  //生成ファイルで削除するファイル
+  "latex-workshop.latex.autoClean.run": "onBuilt",
+  "latex-workshop.latex.clean.fileTypes": [
+    "*.aux",
+    "*.bbl",
+    "*.blg",
+    "*.dvi",
+    "*.fdb_latexmk",
+    "*.fls",
+    "*.synctex.gz",
+    "*.toc"
+  ],
+  //ビルドの動作
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "latexmk",
+      "tools": ["latexmk"]
+    }
+  ],
+  //ビルドのコマンド
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk",
+      "command": "latexmk",
+      "args": ["-outdir=%OUTDIR%", "%DOC%.tex"]
+    }
+  ],
+  "latex-workshop.bibtex-format.sort.enabled": true,
+  "workbench.editorAssociations": {
+    "*.pdf": "latex-workshop-pdf-hook"
+  },
+  // vscode settings
+  "editor.tabCompletion": "on",
+  "editor.snippetSuggestions": "top",
+  "latex-workshop.latex.autoBuild.run": "never",
+  "latex-workshop.intellisense.unimathsymbols.enabled": true,
+  "go.coverOnSingleTest": true,
+  "go.coverOnSingleTestFile": true,
+  "editor.detectIndentation": false,
+
 }
