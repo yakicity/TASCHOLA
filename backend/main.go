@@ -7,8 +7,15 @@ import (
 
 	"taschola/db"
 	"taschola/router"
+
 )
 
+//	@title			TASCHOLA API
+//	@version		1.0
+//	@description	TASCHOLA API Server
+//	@license		MIT
+//	@host			localhost:8000
+//	@BasePath		/
 func main() {
 	// initialize DB connection
 	dsn := db.DefaultDSN(
@@ -19,6 +26,7 @@ func main() {
 		os.Getenv("DB_NAME"))
 	if err := db.Connect(dsn); err != nil {
 		log.Fatal(err)
+		log.Fatal("Failed to connect to DB")
 	}
 
 	// initialize engine

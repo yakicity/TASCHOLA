@@ -5,6 +5,11 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 
+	_ "taschola/docs"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
 	"taschola/controllers"
 )
 
@@ -22,22 +27,22 @@ func Init() *gin.Engine {
 		MaxAge:           12 * 60 * 60,
 	}))
 
+	// swagger
+	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	// health check
 	engine.GET("/health", controllers.HealthCheck)
+	engine.GET("/healthz", controllers.CheckDBConnection)
 
 	// endpoints version 1
 	v1 := engine.Group("v1")
 	{
 		// tasks
-		tasks := v1.Group("/tasks")
-		tasks.Use(controllers.LoginCheck)
-		{
-			tasks.GET("/", controllers.GetTasks)
-			tasks.GET("/t2schola_sync", controllers.NotImplemented)
-		}
+		v1.GET("/tasks", controllers.GetTasks)
+		v1.GET("/t2schola_sync", controllers.NotImplemented)
 
 		task := v1.Group("/task")
-		task.Use(controllers.LoginCheck)
+		// task.Use(controllers.LoginCheck)
 		{
 			task.GET("/:id", controllers.GetTask)
 			task.PUT("/:id", controllers.UpdateTask)
@@ -53,11 +58,11 @@ func Init() *gin.Engine {
 		v1.POST("/user/new", controllers.CreateUser)
 
 		user := v1.Group("/user")
-		user.Use(controllers.LoginCheck)
+		// user.Use(controllers.LoginCheck)
 		{
-			v1.GET("/:id", controllers.GetUser)
-			v1.PUT("/:id", controllers.UpdateUser)    // edit
-			v1.DELETE("/:id", controllers.DeleteUser) // delete
+			user.GET("/:id", controllers.GetUser)
+			user.PUT("/:id", controllers.UpdateUser)    // edit
+			user.DELETE("/:id", controllers.DeleteUser) // delete
 		}
 	}
 

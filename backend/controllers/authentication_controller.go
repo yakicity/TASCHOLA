@@ -9,30 +9,48 @@ import (
 	"taschola/models"
 )
 
-// POST /v1/login
+// Login
 //
-// @Param userForm [UserForm]
-//
-// @Success 200 { "message": "login success" }
-// @Failure 400 { "error": "Bad Request (userForm is invalid)" }
-// @Failure 404 { "error": "Not Found (such a user name does not exist)" }
-// @Failure 401 { "error": "Unauthorized (invalid password)" }
+//	@Summary	Login
+//	@Tags		authentication
+//	@Accept		json
+//	@Produce	json
+//	@Success	200
+//	@Failure	400	{object}	models.HTTPError
+//	@Failure	401	{object}	models.HTTPError
+//	@Failure	404	{object}	models.HTTPError
+//	@Router		/v1/login [post]
 func Login(ctx *gin.Context) {
 	var userForm UserForm
 	err := ctx.BindJSON(&userForm)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request (userForm is invalid)"})
+		httpError := models.HTTPError{
+			Code:  http.StatusBadRequest,
+			Error: "Bad Request (userForm is invalid)",
+			Place: "controllers.Login",
+		}
+		ctx.JSON(http.StatusBadRequest, httpError)
 		return
 	}
 
 	user, err := models.GetUserByName(userForm.Name)
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"error": "Not Found (such a user name does not exist)"})
+		httpError := models.HTTPError{
+			Code:  http.StatusNotFound,
+			Error: "Not Found (such a user name does not exist)",
+			Place: "controllers.Login",
+		}
+		ctx.JSON(http.StatusNotFound, httpError)
 		return
 	}
 	// check password is correct
 	if string(user.Password) != userForm.Password {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized (invalid password)"})
+		httpError := models.HTTPError{
+			Code:  http.StatusUnauthorized,
+			Error: "Unauthorized (invalid password)",
+			Place: "controllers.Login",
+		}
+		ctx.JSON(http.StatusUnauthorized, httpError)
 		return
 	}
 
@@ -43,11 +61,14 @@ func Login(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"message": "login success"})
 }
 
-// POST /v1/logout
+// Logout
 //
-// # No parameters
-//
-// @Success 200 { "message": "logout success" }
+//	@Summary	Logout
+//	@Tags		authentication
+//	@Accept		json
+//	@Produce	json
+//	@Success	200
+//	@Router		/v1/logout [post]
 func Logout(ctx *gin.Context) {
 	session := sessions.Default(ctx)
 	session.Clear()
