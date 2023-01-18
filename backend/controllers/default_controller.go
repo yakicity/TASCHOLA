@@ -94,3 +94,24 @@ func CheckDBConnection(ctx *gin.Context) {
 	ctx.Header("Cache-Control", "no-cache")
 	ctx.JSON(http.StatusOK, tableNames)
 }
+
+// NotFound
+//
+//	@Summary		Not found
+//	@Description	for not found methods
+//	@Tags			default
+//	@Accept			json
+//	@Produce		json
+//	@Success		404	{object}	models.HTTPError
+//	@Router			/v1 [get]
+func NotFound(ctx *gin.Context) {
+	msg := fmt.Sprintf("Not found: %s", ctx.Request.URL)
+	err := models.HTTPError{
+		Code:  http.StatusNotFound,
+		Error: msg,
+		Place: "NotFound",
+	}
+
+	ctx.Header("Cache-Control", "no-cache")
+	ctx.JSON(http.StatusNotFound, err)
+}
