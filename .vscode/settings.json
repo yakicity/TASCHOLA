@@ -262,5 +262,14 @@
   "go.coverOnSingleTest": true,
   "go.coverOnSingleTestFile": true,
   "editor.detectIndentation": false,
-
+  "cSpell.words": [
+    "gonic",
+    "healthcheck",
+    "healthz",
+    "mysqladmin",
+    "schola",
+    "swaggo",
+    "taschola",
+    "TSSCHOLA"
+  ]
 }
