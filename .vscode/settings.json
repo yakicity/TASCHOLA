@@ -267,6 +267,7 @@
     "healthcheck",
     "healthz",
     "mysqladmin",
+    "rubenv",
     "schola",
     "swaggo",
     "taschola",
