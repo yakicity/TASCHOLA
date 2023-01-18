@@ -18,7 +18,7 @@ const docTemplate = `{
     "paths": {
         "/": {
             "get": {
-                "description": "for not found methods",
+                "description": "for not implemented methods",
                 "consumes": [
                     "application/json"
                 ],
@@ -28,10 +28,10 @@ const docTemplate = `{
                 "tags": [
                     "default"
                 ],
-                "summary": "Not found",
+                "summary": "Not implemented",
                 "responses": {
-                    "404": {
-                        "description": "Not Found",
+                    "501": {
+                        "description": "Not Implemented",
                         "schema": {
                             "$ref": "#/definitions/models.HTTPError"
                         }
@@ -87,6 +87,29 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.HTTPError"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1": {
+            "get": {
+                "description": "for not found methods",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "default"
+                ],
+                "summary": "Not found",
+                "responses": {
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/models.HTTPError"
                         }
