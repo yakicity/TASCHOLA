@@ -18,7 +18,7 @@ const docTemplate = `{
     "paths": {
         "/": {
             "get": {
-                "description": "for not implemented methods",
+                "description": "for not found methods",
                 "consumes": [
                     "application/json"
                 ],
@@ -28,10 +28,10 @@ const docTemplate = `{
                 "tags": [
                     "default"
                 ],
-                "summary": "Not implemented",
+                "summary": "Not found",
                 "responses": {
-                    "501": {
-                        "description": "Not Implemented",
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/models.HTTPError"
                         }
@@ -90,73 +90,6 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/models.HTTPError"
                         }
-                    }
-                }
-            }
-        },
-        "/v1/login": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "authentication"
-                ],
-                "summary": "Login",
-                "parameters": [
-                    {
-                        "description": "user",
-                        "name": "userForm",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controllers.UserForm"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.HTTPError"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/models.HTTPError"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/models.HTTPError"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/logout": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "authentication"
-                ],
-                "summary": "Logout",
-                "responses": {
-                    "200": {
-                        "description": "OK"
                     }
                 }
             }
@@ -416,7 +349,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/user": {
+        "/v1/user/new": {
             "post": {
                 "consumes": [
                     "application/json"
