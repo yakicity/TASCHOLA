@@ -68,7 +68,7 @@ func GetUser(ctx *gin.Context) {
 //	@Failure	400	{object}	models.HTTPError
 //	@Failure	409	{object}	models.HTTPError
 //	@Failure	500	{object}	models.HTTPError
-//	@Router		/v1/user [post]
+//	@Router		/v1/user/new [post]
 func CreateUser(ctx *gin.Context) {
 	// get user
 	var userInfo UserForm
