@@ -62,6 +62,21 @@ definitions:
       place:
         type: string
     type: object
+  models.TaskForm:
+    properties:
+      description:
+        type: string
+      dueDate:
+        type: string
+      priority:
+        description: '[1, 2, 3, 4, 5] (1: highest, 5: lowest)'
+        type: integer
+      status:
+        description: '[TODO, DOING, DONE]'
+        type: string
+      title:
+        type: string
+    type: object
 host: localhost:8000
 info:
   contact: {}
@@ -124,6 +139,13 @@ paths:
     post:
       consumes:
       - application/json
+      parameters:
+      - description: user
+        in: body
+        name: userForm
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UserForm'
       produces:
       - application/json
       responses:
@@ -194,6 +216,13 @@ paths:
     post:
       consumes:
       - application/json
+      parameters:
+      - description: task
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/models.TaskForm'
       produces:
       - application/json
       responses:
@@ -288,6 +317,12 @@ paths:
         name: task_id
         required: true
         type: integer
+      - description: task
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/models.TaskForm'
       produces:
       - application/json
       responses:
@@ -314,6 +349,13 @@ paths:
     post:
       consumes:
       - application/json
+      parameters:
+      - description: user
+        in: body
+        name: userForm
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UserForm'
       produces:
       - application/json
       responses:

@@ -106,6 +106,17 @@ const docTemplate = `{
                     "authentication"
                 ],
                 "summary": "Login",
+                "parameters": [
+                    {
+                        "description": "user",
+                        "name": "userForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.UserForm"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -214,6 +225,17 @@ const docTemplate = `{
                     "task"
                 ],
                 "summary": "Create task",
+                "parameters": [
+                    {
+                        "description": "task",
+                        "name": "task",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.TaskForm"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -308,6 +330,15 @@ const docTemplate = `{
                         "name": "task_id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "task",
+                        "name": "task",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.TaskForm"
+                        }
                     }
                 ],
                 "responses": {
@@ -397,6 +428,17 @@ const docTemplate = `{
                     "user"
                 ],
                 "summary": "Create User",
+                "parameters": [
+                    {
+                        "description": "user",
+                        "name": "userForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.UserForm"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -656,6 +698,28 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "place": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TaskForm": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "dueDate": {
+                    "type": "string"
+                },
+                "priority": {
+                    "description": "[1, 2, 3, 4, 5] (1: highest, 5: lowest)",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "[TODO, DOING, DONE]",
+                    "type": "string"
+                },
+                "title": {
                     "type": "string"
                 }
             }
