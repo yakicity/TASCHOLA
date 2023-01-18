@@ -63,6 +63,7 @@ func GetUser(ctx *gin.Context) {
 //	@Tags		user
 //	@Accept		json
 //	@Produce	json
+// 	@Param		userForm	body	UserForm	true	"user"
 //	@Success	200
 //	@Failure	400	{object}	models.HTTPError
 //	@Failure	409	{object}	models.HTTPError

@@ -15,6 +15,7 @@ import (
 //	@Tags		authentication
 //	@Accept		json
 //	@Produce	json
+// 	@Param		userForm	body	controllers.UserForm	true	"user"
 //	@Success	200
 //	@Failure	400	{object}	models.HTTPError
 //	@Failure	401	{object}	models.HTTPError
