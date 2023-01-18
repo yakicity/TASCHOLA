@@ -263,6 +263,8 @@
   "go.coverOnSingleTestFile": true,
   "editor.detectIndentation": false,
   "cSpell.words": [
+    "appleboy",
+    "Authorizator",
     "gonic",
     "healthcheck",
     "healthz",
