@@ -1,6 +1,6 @@
 # TASCHOLA
 
-TSSCHOLA is a simple todo list manager which can sync with Tokyo Tech T2SCHOLA.
+TASCHOLA is a simple todo list manager which can sync with Tokyo Tech T2SCHOLA.
 
 ## Set Up
 
@@ -163,7 +163,7 @@ sql-migrate: https://github.com/rubenv/sql-migrate
 1. Installation
 
    ```bash
-   go get -u github.com/rubenv/sql-migrate/...
+   go install github.com/rubenv/sql-migrate/...@latest
    ```
 
 2. Check Status
