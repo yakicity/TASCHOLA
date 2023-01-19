@@ -169,7 +169,9 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
+            }
+        },
+        "/v1/tasks/new": {
             "post": {
                 "consumes": [
                     "application/json"

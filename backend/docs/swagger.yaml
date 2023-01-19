@@ -185,38 +185,6 @@ paths:
       summary: Get tasks by keyword and status
       tags:
       - task
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: task
-        in: body
-        name: task
-        required: true
-        schema:
-          $ref: '#/definitions/models.TaskForm'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: integer
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.HTTPError'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.HTTPError'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.HTTPError'
-      summary: Create task
-      tags:
-      - task
   /v1/tasks/{task_id}:
     delete:
       consumes:
@@ -315,6 +283,39 @@ paths:
           schema:
             $ref: '#/definitions/models.HTTPError'
       summary: Update task
+      tags:
+      - task
+  /v1/tasks/new:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: task
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/models.TaskForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+      summary: Create task
       tags:
       - task
   /v1/user/{id}:
