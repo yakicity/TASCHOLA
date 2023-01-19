@@ -2,6 +2,7 @@ import { User } from '@/interfaces/user'
 import styles from '@/styles/Home.module.scss'
 import { url } from '@/utils/constants'
 import axios, { AxiosResponse } from 'axios'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 const UserInfo = () => {
@@ -41,6 +42,11 @@ const UserInfo = () => {
             <div>
               <span>Username: </span>
               <span>{user.name}</span>
+            </div>
+            <div>
+              <Link href={`/user/edit/`} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                Edit User
+              </Link>
             </div>
           </div>
         )}
