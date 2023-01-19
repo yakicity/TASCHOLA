@@ -223,7 +223,7 @@ SHA256: https://pkg.go.dev/crypto/sha256
 #### DB
 
 - [Go 製マイグレーションツール sql-migrate](https://qiita.com/k-kurikuri/items/946e2bf8c79176ef3ff0)
-- [Go の migration ツールのデファクトってなくないsですか？](https://onemuri.space/note/is3ev1-d1/)
+- [Go の migration ツールのデファクトってなくないですか？](https://onemuri.space/note/is3ev1-d1/)
 - [sql-migrate の使い方](https://k2ss.info/archives/3342/)
 
 ### その他
@@ -280,3 +280,9 @@ What is nodenv? (Ref: [nodenv/nodenv:](https://github.com/nodenv/nodenv#how-it-w
 
 > /usr/local/bin:/usr/bin:/bin
 > Directories in PATH are searched from left to right, so a matching executable in a directory at the beginning of the list takes precedence over another one at the end. In this example, the /usr/local/bin directory will be searched first, then /usr/bin, then /bin.
+
+### Next Auth
+
+[Next Auth](https://next-auth.js.org/getting-started/upgrade-v4)
+
+[Next Auth: jwt-helper](https://next-auth.js.org/configuration/options#jwt-helper)
