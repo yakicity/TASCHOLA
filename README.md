@@ -1,6 +1,6 @@
 # TASCHOLA
 
-TSSCHOLA is a simple todo list manager which can sync with Tokyo Tech T2SCHOLA.
+TASCHOLA is a simple todo list manager which can sync with Tokyo Tech T2SCHOLA.
 
 ## Set Up
 
@@ -163,7 +163,7 @@ sql-migrate: https://github.com/rubenv/sql-migrate
 1. Installation
 
    ```bash
-   go get -u github.com/rubenv/sql-migrate/...
+   go install github.com/rubenv/sql-migrate/...@latest
    ```
 
 2. Check Status
@@ -239,6 +239,7 @@ SHA256: https://pkg.go.dev/crypto/sha256
   1. db/data のせいかと思い削除したりしてみたが、変わらずエラーが発生した
   2. [volume 関連の修正方法 1](https://qiita.com/akifumii/items/06e79428b09613235aa8), [volume 関連の修正方法 2](https://zenn.dev/tojima/articles/32bbfe85dd0022)を試すも、変わらずエラーが発生した
   3. Gin -> MySQL への接続が失敗しているのかと思い、docker-compose.yml の environment 周りや、backend/db/conn.go などを見直したが、おかしな点は発見できず。 -> そもそもエンドポイントのエラーメッセージが出力機構が貧弱すぎた。もっとちゃんと出力させていたら、ここではないことに気づけたかもしれない。
+
 
 ### nodenv
 
