@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 const UserInfo = () => {
   useEffect(() => {
     try {
-      axios.get(`${url}/v1/users/1`) // TODO: get user id from session
+      axios.get(`${url}/v1/user/1`) // TODO: get user id from session
         .then((res: AxiosResponse<User>) => {
           const { data, status } = res
           switch (status) {
@@ -16,10 +16,10 @@ const UserInfo = () => {
               setUser(data)
               break
             case 404:
-              alert('User not found')
+              alert('User not found' + res.statusText)
               break
             default:
-              alert('Something went wrong')
+              alert('Something went wrong' + res.statusText)
           }
         })
     } catch (error) {

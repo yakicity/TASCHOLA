@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 const UserEditPage = () => {
   useEffect(() => {
     try {
-      axios.get(`${url}/v1/users/1`) // TODO: get user id from session
+      axios.get(`${url}/v1/user/1`) // TODO: get user id from session
         .then((res: AxiosResponse<User>) => {
           const { data, status } = res
           switch (status) {
@@ -39,7 +39,7 @@ const UserEditPage = () => {
       password: password
     }
 
-    axios.put(`${url}/v1/users/1`, userForm)
+    axios.put(`${url}/v1/user/1`, userForm)
       .then((res => {
         const { status } = res
         switch (status) {
