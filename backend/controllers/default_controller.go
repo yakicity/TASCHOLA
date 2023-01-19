@@ -115,3 +115,17 @@ func NotFound(ctx *gin.Context) {
 	ctx.Header("Cache-Control", "no-cache")
 	ctx.JSON(http.StatusNotFound, err)
 }
+
+// Hello
+//
+//	@Summary		Hello
+//	@Description	Hello
+//	@Tags			default
+//	@Accept			json
+//	@Produce		json
+//	@Success		200
+//	@Router			/v1/auth/hello [get]
+func HelloHandler(ctx *gin.Context) {
+	ctx.Header("Cache-Control", "no-cache")
+	ctx.String(http.StatusOK, "Hello")
+}
