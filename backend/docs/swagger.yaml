@@ -150,6 +150,19 @@ paths:
       summary: Not found
       tags:
       - default
+  /v1/auth/hello:
+    get:
+      consumes:
+      - application/json
+      description: Hello
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Hello
+      tags:
+      - default
   /v1/tasks:
     get:
       consumes:

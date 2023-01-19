@@ -117,6 +117,26 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/auth/hello": {
+            "get": {
+                "description": "Hello",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "default"
+                ],
+                "summary": "Hello",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/v1/tasks": {
             "get": {
                 "consumes": [
