@@ -1,4 +1,7 @@
-import axios from 'axios'
+import { AuthRequest, AuthResponse } from '@/interfaces/auth'
+import { url } from '@/utils/constants'
+import axios, { AxiosResponse } from 'axios'
+import router from 'next/router'
 import { useState } from 'react'
 
 const UserRegisterForm = () => {
@@ -7,9 +10,9 @@ const UserRegisterForm = () => {
   const [password2, setPassword2] = useState<string>('')
 
   const handleSubmit = () => {
-    const data = {
-      user_name: userName,
-      password: password1,
+    const data: AuthRequest = {
+      name: userName,
+      password: password1
     }
 
     if (password1 !== password2) {
@@ -23,12 +26,21 @@ const UserRegisterForm = () => {
       return
     }
 
-    axios.post('http://localhost:8000/v1/user/new', data)
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((err) => {
-        console.log(err)
+    axios.post(`${url}/v1/user/new`, data)
+      .then((res: AxiosResponse<AuthResponse>) => {
+        const { data, status } = res
+        console.log(data, status) // for debug
+        switch (status) {
+          case 200:
+            // TODO: redirect to login page
+            if (!confirm('User created successfully')) {
+              router.push('/login') // doesn't work
+            }
+
+            break
+          default:
+            alert('Something went wrong' + res.statusText)
+        }
       })
   }
 
