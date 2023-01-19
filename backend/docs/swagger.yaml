@@ -62,6 +62,21 @@ definitions:
       place:
         type: string
     type: object
+  models.TaskForm:
+    properties:
+      description:
+        type: string
+      dueDate:
+        type: string
+      priority:
+        description: '[1, 2, 3, 4, 5] (1: highest, 5: lowest)'
+        type: integer
+      status:
+        description: '[TODO, DOING, DONE]'
+        type: string
+      title:
+        type: string
+    type: object
 host: localhost:8000
 info:
   contact: {}
@@ -120,42 +135,34 @@ paths:
       summary: Check DB connection
       tags:
       - default
-  /v1/login:
-    post:
+  /v1:
+    get:
       consumes:
       - application/json
+      description: for not found methods
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.HTTPError'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.HTTPError'
         "404":
           description: Not Found
           schema:
             $ref: '#/definitions/models.HTTPError'
-      summary: Login
+      summary: Not found
       tags:
-      - authentication
-  /v1/logout:
-    post:
+      - default
+  /v1/auth/hello:
+    get:
       consumes:
       - application/json
+      description: Hello
       produces:
       - application/json
       responses:
         "200":
           description: OK
-      summary: Logout
+      summary: Hello
       tags:
-      - authentication
+      - default
   /v1/tasks:
     get:
       consumes:
@@ -189,31 +196,6 @@ paths:
           schema:
             $ref: '#/definitions/models.HTTPError'
       summary: Get tasks by keyword and status
-      tags:
-      - task
-    post:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: integer
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.HTTPError'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.HTTPError'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.HTTPError'
-      summary: Create task
       tags:
       - task
   /v1/tasks/{task_id}:
@@ -288,6 +270,12 @@ paths:
         name: task_id
         required: true
         type: integer
+      - description: task
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/models.TaskForm'
       produces:
       - application/json
       responses:
@@ -310,30 +298,39 @@ paths:
       summary: Update task
       tags:
       - task
-  /v1/user:
+  /v1/tasks/new:
     post:
       consumes:
       - application/json
+      parameters:
+      - description: task
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/models.TaskForm'
       produces:
       - application/json
       responses:
         "200":
           description: OK
+          schema:
+            type: integer
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/models.HTTPError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           schema:
             $ref: '#/definitions/models.HTTPError'
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.HTTPError'
-      summary: Create User
+      summary: Create task
       tags:
-      - user
+      - task
   /v1/user/{id}:
     delete:
       consumes:
@@ -428,6 +425,37 @@ paths:
           schema:
             $ref: '#/definitions/models.HTTPError'
       summary: Update User
+      tags:
+      - user
+  /v1/user/new:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: user
+        in: body
+        name: userForm
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UserForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+      summary: Create User
       tags:
       - user
 swagger: "2.0"

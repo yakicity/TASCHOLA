@@ -1,6 +1,7 @@
 package models
 
 import (
+	"log"
 	database "taschola/db"
 )
 
@@ -96,16 +97,18 @@ func CheckDuplicateUserName(userName string) bool {
 	// connect to database
 	db, err := database.GetConnection()
 	if err != nil {
+		log.Println("Check Duplicate User Name: DB connection error: " + err.Error())
 		return true // return true if error occurs
 	}
 
 	var count int64
 	// count number of users with the same user name
-	err = db.Get(&count, "SELECT count(*) FROM users WHERE user_name = ?", userName)
+	err = db.Get(&count, "SELECT count(*) FROM users WHERE name = ?", userName)
 	if err != nil {
+		log.Println("Check Duplicate User Name: DB query error: " + err.Error())
 		return true // return true if error occurs
 	}
-	// SELECT count(*) FROM users WHERE user_name = 'userName';
+	// SELECT count(*) FROM users WHERE name = 'userName';
 	return count > 0
 	// return true if user name is already taken
 }

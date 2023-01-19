@@ -157,11 +157,12 @@ func GetTask(ctx *gin.Context) {
 //	@Tags		task
 //	@Accept		json
 //	@Produce	json
+//	@Param		task	body		models.TaskForm	true	"task"
 //	@Success	200	integer		task	ID
 //	@Failure	400	{object}	models.HTTPError
 //	@Failure	401	{object}	models.HTTPError
 //	@Failure	500	{object}	models.HTTPError
-//	@Router		/v1/tasks [post]
+//	@Router		/v1/tasks/new [post]
 func CreateTask(ctx *gin.Context) {
 	// Get user ID from sessions
 	session := sessions.Default(ctx)
@@ -211,6 +212,7 @@ func CreateTask(ctx *gin.Context) {
 //	@Accept		json
 //	@Produce	json
 //	@Param		task_id	path		uint64	true	"task ID"
+//	@Param		task	body		models.TaskForm	true	"task"
 //	@Success	200		integer		task	ID
 //	@Failure	400		{object}	models.HTTPError
 //	@Failure	401		{object}	models.HTTPError

@@ -1,5 +1,8 @@
+import { TaskForm } from '@/interfaces/task'
+import { url } from '@/utils/constants'
 import axios from 'axios'
 import { useState } from 'react'
+
 
 const NewTaskForm = () => {
   const [title, setTitle] = useState<string>("")
@@ -9,7 +12,7 @@ const NewTaskForm = () => {
   const [dueDate, setDueDate] = useState<string>("")
 
   const handleSubmit = () => {
-    const data = {
+    const taskForm: TaskForm = {
       title: title,
       description: description,
       status: status,
@@ -17,9 +20,22 @@ const NewTaskForm = () => {
       due_date: dueDate,
     }
 
-    axios.post(`localhost:8000/v1/task/new`, data)
+    axios.post(`${url}/v1/tasks/new`, taskForm)
       .then((res) => {
-        console.log(res)
+        const { data, status } = res
+        switch (status) {
+          case 200:
+            alert("Task Created Successfully")
+            break
+          case 400:
+            alert("Bad Request" + res.statusText)
+            break
+          case 500:
+            alert("Internal Server Error" + res.statusText)
+            break
+          default:
+            alert("Something went wrong" + res.statusText)
+        }
       }
       )
   }

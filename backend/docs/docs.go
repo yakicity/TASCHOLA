@@ -94,8 +94,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/login": {
-            "post": {
+        "/v1": {
+            "get": {
+                "description": "for not found methods",
                 "consumes": [
                     "application/json"
                 ],
@@ -103,25 +104,10 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "authentication"
+                    "default"
                 ],
-                "summary": "Login",
+                "summary": "Not found",
                 "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.HTTPError"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/models.HTTPError"
-                        }
-                    },
                     "404": {
                         "description": "Not Found",
                         "schema": {
@@ -131,8 +117,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/logout": {
-            "post": {
+        "/v1/auth/hello": {
+            "get": {
+                "description": "Hello",
                 "consumes": [
                     "application/json"
                 ],
@@ -140,9 +127,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "authentication"
+                    "default"
                 ],
-                "summary": "Logout",
+                "summary": "Hello",
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -202,7 +189,9 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
+            }
+        },
+        "/v1/tasks/new": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -214,6 +203,17 @@ const docTemplate = `{
                     "task"
                 ],
                 "summary": "Create task",
+                "parameters": [
+                    {
+                        "description": "task",
+                        "name": "task",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.TaskForm"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -308,6 +308,15 @@ const docTemplate = `{
                         "name": "task_id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "task",
+                        "name": "task",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.TaskForm"
+                        }
                     }
                 ],
                 "responses": {
@@ -385,7 +394,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/user": {
+        "/v1/user/new": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -397,6 +406,17 @@ const docTemplate = `{
                     "user"
                 ],
                 "summary": "Create User",
+                "parameters": [
+                    {
+                        "description": "user",
+                        "name": "userForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.UserForm"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -656,6 +676,28 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "place": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TaskForm": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "dueDate": {
+                    "type": "string"
+                },
+                "priority": {
+                    "description": "[1, 2, 3, 4, 5] (1: highest, 5: lowest)",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "[TODO, DOING, DONE]",
+                    "type": "string"
+                },
+                "title": {
                     "type": "string"
                 }
             }

@@ -27,6 +27,9 @@ func Init() *gin.Engine {
 		MaxAge:           12 * 60 * 60,
 	}))
 
+	// jwt
+	authMiddleware, _ := controllers.JWTInit()
+
 	// swagger
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
@@ -42,7 +45,6 @@ func Init() *gin.Engine {
 		v1.GET("/t2schola_sync", controllers.NotImplemented)
 
 		task := v1.Group("/task")
-		// task.Use(controllers.LoginCheck)
 		{
 			task.GET("/:id", controllers.GetTask)
 			task.PUT("/:id", controllers.UpdateTask)
@@ -51,8 +53,8 @@ func Init() *gin.Engine {
 		}
 
 		// auth
-		v1.POST("/login", controllers.Login)
-		v1.POST("/logout", controllers.Logout)
+		v1.POST("/login", authMiddleware.LoginHandler)
+		v1.POST("/logout", authMiddleware.LogoutHandler)
 
 		// user
 		v1.POST("/user/new", controllers.CreateUser)
@@ -65,6 +67,8 @@ func Init() *gin.Engine {
 			user.DELETE("/:id", controllers.DeleteUser) // delete
 		}
 	}
+
+	engine.NoRoute(controllers.NotFound)
 
 	return engine
 }

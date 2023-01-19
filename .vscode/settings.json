@@ -262,5 +262,17 @@
   "go.coverOnSingleTest": true,
   "go.coverOnSingleTestFile": true,
   "editor.detectIndentation": false,
-
+  "cSpell.words": [
+    "appleboy",
+    "Authorizator",
+    "gonic",
+    "healthcheck",
+    "healthz",
+    "mysqladmin",
+    "rubenv",
+    "schola",
+    "swaggo",
+    "taschola",
+    "TSSCHOLA"
+  ]
 }
