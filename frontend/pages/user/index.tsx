@@ -1,12 +1,49 @@
+import { User } from '@/interfaces/user'
 import styles from '@/styles/Home.module.scss'
+import { url } from '@/utils/constants'
+import axios, { AxiosResponse } from 'axios'
+import { useEffect, useState } from 'react'
 
 const UserInfo = () => {
+  useEffect(() => {
+    try {
+      axios.get(`${url}/v1/users/1`) // TODO: get user id from session
+        .then((res: AxiosResponse<User>) => {
+          const { data, status } = res
+          switch (status) {
+            case 200:
+              setUser(data)
+              break
+            case 404:
+              alert('User not found')
+              break
+            default:
+              alert('Something went wrong')
+          }
+        })
+    } catch (error) {
+      alert(console.error())
+    }
+  }, [])
+
+  const [user, setUser] = useState<User>()
 
   return (
     <>
       <main className={styles.main}>
         <h1>User Info</h1>
-        <p>id: </p>
+        {user && (
+          <div>
+            <div>
+              <span>Id: </span>
+              <span>{user.id}</span>
+            </div>
+            <div>
+              <span>Username: </span>
+              <span>{user.name}</span>
+            </div>
+          </div>
+        )}
       </main>
     </>
   )
