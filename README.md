@@ -207,6 +207,8 @@ SHA256: https://pkg.go.dev/crypto/sha256
 - [axios 公式ドキュメント](https://axios-http.com/docs/api_intro)
 - [axios に型をつける](https://zenn.dev/mkt_engr/articles/axios-req-res-typescript)
 
+- [Safe Data Fetching in Modern JavaScript](https://www.builder.io/blog/safe-data-fetching)
+
 #### Backend
 
 - [Go Gin CORS + 認証](https://qiita.com/bty__/items/f8c4393bd7701a1d703c)
@@ -215,6 +217,7 @@ SHA256: https://pkg.go.dev/crypto/sha256
 - [Github: swag](https://github.com/swaggo/swag)
 - [Swaggo Swag: Go の Swagger 生成ツール](https://qiita.com/pei0804/items/3a0b481d1e47e5a72078a)
 - [Go + Gin Swagger 自動生成ツール](https://qiita.com/takehanKosuke/items/bbeb7581330910e72bb2)
+- [GoのFoDocからSwaggerを書き出そう](https://tikasan.hatenablog.com/entry/2018/03/28/175337)
 - [JWT 入門](https://qiita.com/knaot0/items/8427918564400968bd2b)
 
 #### DB
