@@ -47,7 +47,7 @@ const UserEditPage = () => {
             alert('User updated successfully')
             break
           default:
-            alert('Something went wrong')
+            alert('Something went wrong' + res.statusText)
         }
       }))
   }

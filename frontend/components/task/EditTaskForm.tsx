@@ -1,4 +1,5 @@
-import { Task } from '@/interfaces/task'
+import { Task, TaskForm } from '@/interfaces/task'
+import { url } from '@/utils/constants'
 import axios from 'axios'
 import { useState } from 'react'
 
@@ -16,7 +17,7 @@ const EditTaskForm = (props: EditTaskFormProps) => {
   const [dueDate, setDueDate] = useState<string>(task.due_date)
 
   const handleSubmit = () => {
-    const data = {
+    const data: TaskForm = {
       title: title,
       description: description,
       status: status,
@@ -24,9 +25,22 @@ const EditTaskForm = (props: EditTaskFormProps) => {
       due_date: dueDate,
     }
 
-    axios.put(`localhost:8000/v1/task/${task.id}`, data)
+    axios.put(`${url}/v1/task/${task.id}`, data)
       .then((res) => {
-        console.log(res)
+        const { data, status } = res
+        switch (status) {
+          case 200:
+            alert("Task Updated Successfully")
+            break
+          case 400:
+            alert("Bad Request" + res.statusText)
+            break
+          case 500:
+            alert("Internal Server Error" + res.statusText)
+            break
+          default:
+            alert("Something went wrong" + res.statusText)
+        }
       }
       )
   }
