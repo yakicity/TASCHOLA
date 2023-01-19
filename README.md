@@ -217,13 +217,13 @@ SHA256: https://pkg.go.dev/crypto/sha256
 - [Github: swag](https://github.com/swaggo/swag)
 - [Swaggo Swag: Go の Swagger 生成ツール](https://qiita.com/pei0804/items/3a0b481d1e47e5a72078a)
 - [Go + Gin Swagger 自動生成ツール](https://qiita.com/takehanKosuke/items/bbeb7581330910e72bb2)
-- [GoのFoDocからSwaggerを書き出そう](https://tikasan.hatenablog.com/entry/2018/03/28/175337)
+- [Go の FoDoc から Swagger を書き出そう](https://tikasan.hatenablog.com/entry/2018/03/28/175337)
 - [JWT 入門](https://qiita.com/knaot0/items/8427918564400968bd2b)
 
 #### DB
 
 - [Go 製マイグレーションツール sql-migrate](https://qiita.com/k-kurikuri/items/946e2bf8c79176ef3ff0)
-- [Go の migration ツールのデファクトってなくないですか？](https://onemuri.space/note/is3ev1-d1/)
+- [Go の migration ツールのデファクトってなくないsですか？](https://onemuri.space/note/is3ev1-d1/)
 - [sql-migrate の使い方](https://k2ss.info/archives/3342/)
 
 ### その他
@@ -239,3 +239,44 @@ SHA256: https://pkg.go.dev/crypto/sha256
   1. db/data のせいかと思い削除したりしてみたが、変わらずエラーが発生した
   2. [volume 関連の修正方法 1](https://qiita.com/akifumii/items/06e79428b09613235aa8), [volume 関連の修正方法 2](https://zenn.dev/tojima/articles/32bbfe85dd0022)を試すも、変わらずエラーが発生した
   3. Gin -> MySQL への接続が失敗しているのかと思い、docker-compose.yml の environment 周りや、backend/db/conn.go などを見直したが、おかしな点は発見できず。 -> そもそもエンドポイントのエラーメッセージが出力機構が貧弱すぎた。もっとちゃんと出力させていたら、ここではないことに気づけたかもしれない。
+
+### nodenv
+
+[Github: nodenv](https://github.com/nodenv/nodenv)
+
+next-auth をいれる債に local の node のバージョンが問題で、うまくいかなかったので、nodenv を入れることにした。
+
+Error Message:
+
+```bash
+❯ yarn add next-auth
+yarn add v1.22.19
+[1/4] 🔍  Resolving packages...
+[2/4] 🚚  Fetching packages...
+error next-auth@4.18.8: The engine "node" is incompatible with this module. Expected version "^12.19.0 || ^14.15.0 || ^16.13.0 || ^18.12.0". Got "18.4.0"
+error Found incompatible module.
+info Visit https://yarnpkg.com/en/docs/cli/add for documentation about this command.
+```
+
+nodenv のインストール, 設定
+
+```bash
+❯ nodenv install 18.12.0
+Downloading node-v18.12.0-darwin-arm64.tar.gz...
+-> https://nodejs.org/dist/v18.12.0/node-v18.12.0-darwin-arm64.tar.gz
+Installing node-v18.12.0-darwin-arm64...
+Installed node-v18.12.0-darwin-arm64 to /Users/kazuki/.nodenv/versions/18.12.0
+
+❯ nodenv global 18.12.0
+```
+
+What is nodenv? (Ref: [nodenv/nodenv:](https://github.com/nodenv/nodenv#how-it-works))
+
+> How It Works
+> At a high level, nodenv intercepts Node commands using shim executables injected into your PATH, determines which Node version has been specified by your application, and passes your commands along to the correct Node installation.
+
+> Understanding PATH
+> When you run a command like node or npm, your operating system searches through a list of directories to find an executable file with that name. This list of directories lives in an environment variable called PATH, with each directory in the list separated by a colon:
+
+> /usr/local/bin:/usr/bin:/bin
+> Directories in PATH are searched from left to right, so a matching executable in a directory at the beginning of the list takes precedence over another one at the end. In this example, the /usr/local/bin directory will be searched first, then /usr/bin, then /bin.
