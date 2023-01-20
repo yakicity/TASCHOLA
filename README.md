@@ -328,3 +328,9 @@ Ruby on Rails の ActiveRecord のようなものに慣れている人は、data
 - gorp: https://github.com/go-gorp/gorp
 
   上記の中間のようなライブラリ。
+
+### Go Code Review
+
+https://gist.github.com/knsh14/0507b98c6b62959011ba9e4c310cd15d
+
+え、変数名とか長くないですかって？はい、そうです。私は Gopher ではありません...
