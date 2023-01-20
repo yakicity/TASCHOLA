@@ -1,4 +1,6 @@
 import { Task } from '@/interfaces/task'
+import { url } from '@/utils/constants'
+import axios from 'axios'
 import Link from 'next/link'
 
 type TaskRowProps = {
@@ -7,6 +9,21 @@ type TaskRowProps = {
 
 const TaskRow = (props: TaskRowProps) => {
   const { task } = props
+
+  const handleSubmit = () => {
+    try {
+      axios.delete(`${url}/v1/tasks/${task.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        }
+      }).then((res) => {
+        alert('Task deleted successfully' + res.statusText)
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <tr className="hover:bg-gray-50">
       <th className="flex gap-3 px-6 py-4 font-normal text-gray-900">
