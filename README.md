@@ -240,7 +240,6 @@ SHA256: https://pkg.go.dev/crypto/sha256
   2. [volume 関連の修正方法 1](https://qiita.com/akifumii/items/06e79428b09613235aa8), [volume 関連の修正方法 2](https://zenn.dev/tojima/articles/32bbfe85dd0022)を試すも、変わらずエラーが発生した
   3. Gin -> MySQL への接続が失敗しているのかと思い、docker-compose.yml の environment 周りや、backend/db/conn.go などを見直したが、おかしな点は発見できず。 -> そもそもエンドポイントのエラーメッセージが出力機構が貧弱すぎた。もっとちゃんと出力させていたら、ここではないことに気づけたかもしれない。
 
-
 ### nodenv
 
 [Github: nodenv](https://github.com/nodenv/nodenv)
@@ -284,6 +283,48 @@ What is nodenv? (Ref: [nodenv/nodenv:](https://github.com/nodenv/nodenv#how-it-w
 
 ### Next Auth
 
+結局、実装時間の都合上、Local Storage に JWT を保存することにした。
+そのため、Next Auth の JWT の機能は使わないことにした。
+
 [Next Auth](https://next-auth.js.org/getting-started/upgrade-v4)
 
 [Next Auth: jwt-helper](https://next-auth.js.org/configuration/options#jwt-helper)
+
+### CORS でハマった点
+
+frontend 側で、axios の default 設定を色々と設定していたが、それのせいで CORS の backend 側の設定は問題なかったが、CORS のエラーが発生していた。
+
+特に参考にしたわけではないが、網羅的であったので
+
+[Gin Echo CORS](https://shikatech.hatenablog.com/entry/2021/10/17/104810)
+
+### Next.js router.query が undefined の場合の対処法
+
+[参考](https://deecode.net/?p=1930)
+
+結論からいうと、useEffect で `()[router.query]`とすることで、router.query の変化を監視し、undefined からきちんと値が入ったら、処理を実行するようにする。
+
+### Go SQL Library について
+
+[参考: 「Go でデータベースにアクセスするにはどんなライブラリがベストか考える」](https://blog.p1ass.com/posts/go-database-sql-wrapper/)
+
+> ここでは基本的な CRUD の SQL を database/ sql にならって Query と Exec に分けて考えます。 Query は副作用のない SELECT、Exec は副作用のある INSERT や、UPDATE、DELETE に当たります。
+
+Ruby on Rails の ActiveRecord のようなものに慣れている人は、database/sql のように直 SQL を書くのが苦痛になるかもしれない。
+（ただ、このブログでも指摘されているように、結局 .to-sql のように発行されるクエリを確認にしているのだから同じでは？という指摘はある）
+
+- sqlx: https://github.com/jmoiron/sqlx
+
+  ほぼ素の SQL を書くことができる。
+
+- gorm: https://github.com/go-gorm/gorm
+
+  Docs: https://gorm.io/docs/
+
+  Document が充実していること、ORM なので SQL 文を意識しなくても良いことがメリット。
+
+  簡単なクエリの場合はミスなく書けるので、良いが、メソッドチェーンが深くなると最適化されているか怪しいクエリが発行されることになる。
+
+- gorp: https://github.com/go-gorp/gorp
+
+  上記の中間のようなライブラリ。
