@@ -26,15 +26,19 @@ const UserRegisterForm = () => {
       return
     }
 
-    axios.post(`${url}/v1/user/new`, data)
+    axios.post(`${url}/v1/user/new`, data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
       .then((res: AxiosResponse<AuthResponse>) => {
         const { data, status } = res
         console.log(data, status) // for debug
         switch (status) {
           case 200:
-            // TODO: redirect to login page
             if (!confirm('User created successfully')) {
-              router.push('/login') // doesn't work
+              // redirect to login page
+              window.location.href = '/'
             }
 
             break
