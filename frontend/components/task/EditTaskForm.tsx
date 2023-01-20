@@ -25,7 +25,11 @@ const EditTaskForm = (props: EditTaskFormProps) => {
       due_date: dueDate,
     }
 
-    axios.put(`${url}/v1/task/${task.id}`, data)
+    axios.put(`${url}/v1/tasks/${task.id}`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
       .then((res) => {
         const { data, status } = res
         switch (status) {

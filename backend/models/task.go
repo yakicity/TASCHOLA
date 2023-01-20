@@ -1,6 +1,7 @@
 package models
 
 import (
+	"strings"
 	database "taschola/db"
 	"time"
 )
@@ -13,14 +14,15 @@ type TaskForm struct {
 	DueDate     time.Time
 }
 
-func GetTasksByUserID(userID uint64) ([]database.Task, error) {
+func GetTasksByUserID(userID int64) ([]database.Task, error) {
 	db, err := database.GetConnection()
 	if err != nil {
 		return nil, err
 	}
 
 	var tasks []database.Task
-	err = db.Select(&tasks, "SELECT * FROM tasks INNER JOIN ownerships ON task.id = ownerships.task_id WHERE ownerships.user_id = ?ORDER BY tasks.due_date ASC, tasks.priority ASC", userID) // 締切が近く、優先度の高い順に並べる
+	err = db.Select(&tasks,
+		"SELECT tasks.id, tasks.title, tasks.description, tasks.status, tasks.priority, tasks.created_at, tasks.due_date FROM tasks INNER JOIN ownerships ON tasks.id = ownerships.task_id WHERE ownerships.user_id = ? ORDER BY tasks.due_date ASC, tasks.priority ASC", userID) // 締切が近く、優先度の高い順に並べる
 	if err != nil {
 		return nil, err
 	}
@@ -28,14 +30,18 @@ func GetTasksByUserID(userID uint64) ([]database.Task, error) {
 	return tasks, nil
 }
 
-func GetTasksByUserIDAndKeywordAndStatus(userID uint64, keyword string, status []string) ([]database.Task, error) {
+func GetTasksByUserIDAndKeywordAndStatus(userID int64, keyword string, status []string) ([]database.Task, error) {
 	db, err := database.GetConnection()
 	if err != nil {
 		return nil, err
 	}
+	if len(status) == 0 {
+		status = []string{"TODO", "DOING", "DONE"}
+	}
+	s := strings.Join(status, ",")
 
 	var tasks []database.Task
-	err = db.Select(&tasks, "SELECT * FROM tasks INNER JOIN ownerships ON task.id = ownerships.task_id WHERE ownerships.user_id = ? AND (tasks.title LIKE ? OR tasks.description LIKE ?) AND tasks.status IN (?) ORDER BY tasks.due_date ASC, tasks.priority ASC", userID, "%"+keyword+"%", "%"+keyword+"%", status) // 締切が近く、優先度の高い順に並べる
+	err = db.Select(&tasks, "SELECT tasks.id, tasks.title, tasks.description, tasks.status, tasks.priority, tasks.created_at, tasks.due_date FROM tasks INNER JOIN ownerships ON tasks.id = ownerships.task_id WHERE ownerships.user_id = ? AND (tasks.title LIKE ? OR tasks.description LIKE ?) AND tasks.status IN (?) ORDER BY tasks.due_date ASC, tasks.priority ASC", userID, "%"+keyword+"%", "%"+keyword+"%", s) // 締切が近く、優先度の高い順に並べる
 	if err != nil {
 		return nil, err
 	}
@@ -43,14 +49,14 @@ func GetTasksByUserIDAndKeywordAndStatus(userID uint64, keyword string, status [
 	return tasks, nil
 }
 
-func GetTaskByUserIDAndTaskID(userID uint64, taskID uint64) (database.Task, error) {
+func GetTaskByUserIDAndTaskID(userID int64, taskID int64) (database.Task, error) {
 	db, err := database.GetConnection()
 	if err != nil {
 		return database.Task{}, err
 	}
 
 	var task database.Task
-	err = db.Get(&task, "SELECT * FROM tasks INNER JOIN ownerships ON task.id = ownerships.task_id WHERE ownerships.user_id = ? AND tasks.id = ?", userID, taskID)
+	err = db.Get(&task, "SELECT tasks.id, tasks.title, tasks.description, tasks.status, tasks.priority, tasks.created_at, tasks.due_date FROM tasks INNER JOIN ownerships ON tasks.id = ownerships.task_id WHERE ownerships.user_id = ? AND tasks.id = ?", userID, taskID)
 	if err != nil {
 		return database.Task{}, err
 	}
@@ -58,7 +64,7 @@ func GetTaskByUserIDAndTaskID(userID uint64, taskID uint64) (database.Task, erro
 	return task, nil
 }
 
-func CreateTask(task TaskForm, userID uint64) (int, error) {
+func CreateTask(task TaskForm, userID int64) (int, error) {
 	db, err := database.GetConnection()
 	if err != nil {
 		return 0, err
@@ -96,7 +102,7 @@ func CreateTask(task TaskForm, userID uint64) (int, error) {
 	return taskID, nil
 }
 
-func UpdateTaskByUserIDAndTaskID(task TaskForm, userID uint64, taskID uint64) error {
+func UpdateTaskByUserIDAndTaskID(task TaskForm, userID int64, taskID int64) error {
 	db, err := database.GetConnection()
 	if err != nil {
 		return err
@@ -110,7 +116,7 @@ func UpdateTaskByUserIDAndTaskID(task TaskForm, userID uint64, taskID uint64) er
 	return nil
 }
 
-func DeleteTaskByUserIDAndTaskID(userID uint64, taskID uint64) error {
+func DeleteTaskByUserIDAndTaskID(userID int64, taskID int64) error {
 	db, err := database.GetConnection()
 	if err != nil {
 		return err

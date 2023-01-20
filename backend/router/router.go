@@ -1,6 +1,8 @@
 package router
 
 import (
+	"time"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
@@ -21,10 +23,9 @@ func Init() *gin.Engine {
 	engine.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
-		ExposeHeaders:    []string{"Content-Length"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
 		AllowCredentials: true,
-		MaxAge:           12 * 60 * 60,
+		MaxAge:           12 * time.Hour,
 	}))
 
 	// jwt
@@ -41,11 +42,11 @@ func Init() *gin.Engine {
 	v1 := engine.Group("v1")
 	{
 		// tasks
-		v1.GET("/tasks", controllers.GetTasks)
 		v1.GET("/t2schola_sync", controllers.NotImplemented)
 
-		task := v1.Group("/task")
+		task := v1.Group("/tasks")
 		{
+			task.GET("/", controllers.GetTasks)
 			task.GET("/:id", controllers.GetTask)
 			task.PUT("/:id", controllers.UpdateTask)
 			task.DELETE("/:id", controllers.DeleteTask)
@@ -55,6 +56,13 @@ func Init() *gin.Engine {
 		// auth
 		v1.POST("/login", authMiddleware.LoginHandler)
 		v1.POST("/logout", authMiddleware.LogoutHandler)
+
+		auth := v1.Group("/auth")
+		auth.GET("/refresh_token", authMiddleware.RefreshHandler)
+		auth.Use(authMiddleware.MiddlewareFunc())
+		{
+			auth.GET("/hello", controllers.HelloHandler)
+		}
 
 		// user
 		v1.POST("/user/new", controllers.CreateUser)

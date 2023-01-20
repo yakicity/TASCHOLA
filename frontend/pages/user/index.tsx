@@ -8,7 +8,11 @@ import { useEffect, useState } from 'react'
 const UserInfo = () => {
   useEffect(() => {
     try {
-      axios.get(`${url}/v1/user/1`) // TODO: get user id from session
+      axios.get(`${url}/v1/user/2`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        }
+      }) // TODO: get user id from session
         .then((res: AxiosResponse<User>) => {
           const { data, status } = res
           switch (status) {

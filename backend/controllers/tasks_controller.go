@@ -22,21 +22,19 @@ import (
 //	@Failure	500		{object}	models.HTTPError
 //	@Router		/v1/tasks [get]
 func GetTasks(ctx *gin.Context) {
-	// Get user ID from sessions
-	session := sessions.Default(ctx)
-	userID := session.Get("user_id")
-	if userID == nil {
-		httpError := models.HTTPError{
-			Code:  http.StatusUnauthorized,
-			Error: "Unauthorized",
-			Place: "controllers.GetTasks",
-		}
-		ctx.JSON(http.StatusUnauthorized, httpError)
-		return
-	}
+	var userID = int64(14)
+	// if userID == nil {
+	// 	httpError := models.HTTPError{
+	// 		Code:  http.StatusUnauthorized,
+	// 		Error: "Unauthorized",
+	// 		Place: "controllers.GetTasks",
+	// 	}
+	// 	ctx.JSON(http.StatusUnauthorized, httpError)
+	// 	return
+	// }
 
 	// Get tasks from database
-	tasks, err := models.GetTasksByUserID(userID.(uint64))
+	tasks, err := models.GetTasksByUserID(userID)
 	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusInternalServerError,
@@ -63,18 +61,16 @@ func GetTasks(ctx *gin.Context) {
 //	@Failure	500		{object}	models.HTTPError
 //	@Router		/v1/tasks [get]
 func GetTasksByKeywordAndStatus(ctx *gin.Context) {
-	// Get user ID from sessions
-	session := sessions.Default(ctx)
-	userID := session.Get("user_id")
-	if userID == nil {
-		httpError := models.HTTPError{
-			Code:  http.StatusUnauthorized,
-			Error: "Unauthorized",
-			Place: "controllers.GetTasksByKeywordAndStatus",
-		}
-		ctx.JSON(http.StatusUnauthorized, httpError)
-		return
-	}
+	var userID = int64(14)
+	// if userID == nil {
+	// 	httpError := models.HTTPError{
+	// 		Code:  http.StatusUnauthorized,
+	// 		Error: "Unauthorized",
+	// 		Place: "controllers.GetTasksByKeywordAndStatus",
+	// 	}
+	// 	ctx.JSON(http.StatusUnauthorized, httpError)
+	// 	return
+	// }
 
 	keyword := ctx.Query("keyword")
 	status := ctx.QueryArray("status")
@@ -83,7 +79,7 @@ func GetTasksByKeywordAndStatus(ctx *gin.Context) {
 	}
 
 	// Get tasks from database
-	tasks, err := models.GetTasksByUserIDAndKeywordAndStatus(userID.(uint64), keyword, status)
+	tasks, err := models.GetTasksByUserIDAndKeywordAndStatus(userID, keyword, status)
 	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusInternalServerError,
@@ -111,25 +107,24 @@ func GetTasksByKeywordAndStatus(ctx *gin.Context) {
 //	@Router		/v1/tasks/{task_id} [get]
 func GetTask(ctx *gin.Context) {
 	// Get user ID from sessions
-	session := sessions.Default(ctx)
-	userID := session.Get("user_id")
-	if userID == nil {
-		httpError := models.HTTPError{
-			Code:  http.StatusUnauthorized,
-			Error: "Unauthorized",
-			Place: "controllers.GetTask",
-		}
-		ctx.JSON(http.StatusUnauthorized, httpError)
-		return
-	}
+	userID := int64(14)
+	// if userID == nil {
+	// 	httpError := models.HTTPError{
+	// 		Code:  http.StatusUnauthorized,
+	// 		Error: "Unauthorized",
+	// 		Place: "controllers.GetTask",
+	// 	}
+	// 	ctx.JSON(http.StatusUnauthorized, httpError)
+	// 	return
+	// }
 
 	// Get task ID from request
-	taskID := ctx.Param("task_id")
-	taskIDUint64, err := strconv.ParseUint(taskID, 10, 64)
+	taskID := ctx.Param("id")
+	taskIDInt64, err := strconv.ParseInt(taskID, 10, 64)
 	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusBadRequest,
-			Error: "Invalid task ID",
+			Error: "Invalid task ID" + taskID,
 			Place: "controllers.GetTask",
 		}
 		ctx.JSON(http.StatusBadRequest, httpError)
@@ -137,7 +132,7 @@ func GetTask(ctx *gin.Context) {
 	}
 
 	// Get task from database
-	task, err := models.GetTaskByUserIDAndTaskID(userID.(uint64), taskIDUint64)
+	task, err := models.GetTaskByUserIDAndTaskID(userID, taskIDInt64)
 	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusInternalServerError,
@@ -191,7 +186,7 @@ func CreateTask(ctx *gin.Context) {
 	}
 
 	// Create task in database
-	taskID, err := models.CreateTask(task, userID.(uint64))
+	taskID, err := models.CreateTask(task, userID.(int64))
 	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusInternalServerError,
@@ -234,7 +229,7 @@ func UpdateTask(ctx *gin.Context) {
 
 	// Get task ID from request
 	taskID := ctx.Param("task_id")
-	taskIDUint64, err := strconv.ParseUint(taskID, 10, 64)
+	taskIDInt64, err := strconv.ParseInt(taskID, 10, 64)
 	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusBadRequest,
@@ -259,7 +254,7 @@ func UpdateTask(ctx *gin.Context) {
 	}
 
 	// Update task in database
-	err = models.UpdateTaskByUserIDAndTaskID(task, userID.(uint64), taskIDUint64)
+	err = models.UpdateTaskByUserIDAndTaskID(task, userID.(int64), taskIDInt64)
 	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusInternalServerError,
@@ -301,7 +296,7 @@ func DeleteTask(ctx *gin.Context) {
 
 	// Get task ID from request
 	taskID := ctx.Param("task_id")
-	taskIDUint64, err := strconv.ParseUint(taskID, 10, 64)
+	taskIDInt64, err := strconv.ParseInt(taskID, 10, 64)
 	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusBadRequest,
@@ -313,7 +308,7 @@ func DeleteTask(ctx *gin.Context) {
 	}
 
 	// Delete task from database
-	err = models.DeleteTaskByUserIDAndTaskID(userID.(uint64), taskIDUint64)
+	err = models.DeleteTaskByUserIDAndTaskID(userID.(int64), taskIDInt64)
 	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusInternalServerError,

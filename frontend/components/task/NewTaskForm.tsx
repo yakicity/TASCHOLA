@@ -1,6 +1,6 @@
 import { TaskForm } from '@/interfaces/task'
 import { url } from '@/utils/constants'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { useState } from 'react'
 
 
@@ -20,12 +20,16 @@ const NewTaskForm = () => {
       due_date: dueDate,
     }
 
-    axios.post(`${url}/v1/tasks/new`, taskForm)
-      .then((res) => {
+    axios.post(`${url}/v1/tasks/new`, taskForm, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+      .then((res: AxiosResponse<number>) => {
         const { data, status } = res
         switch (status) {
           case 200:
-            alert("Task Created Successfully")
+            alert("Task Created Successfully, Task ID: " + data)
             break
           case 400:
             alert("Bad Request" + res.statusText)

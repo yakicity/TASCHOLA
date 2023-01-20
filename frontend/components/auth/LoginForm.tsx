@@ -1,4 +1,6 @@
-import axios from "axios"
+import { AuthRequest, AuthResponse } from '@/interfaces/auth'
+import { url } from '@/utils/constants'
+import axios, { AxiosResponse } from 'axios'
 import { useState } from "react"
 
 const LoginForm = () => {
@@ -6,8 +8,8 @@ const LoginForm = () => {
   const [password, setPassword] = useState<string>('')
 
   const handleSubmit = () => {
-    const data = {
-      user_name: userName,
+    const data: AuthRequest = {
+      name: userName,
       password: password,
     }
 
@@ -16,13 +18,25 @@ const LoginForm = () => {
       return
     }
 
-    axios.post('http://localhost:8000/v1/login', data)
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    try {
+      console.log("login post:" + data.name + " " + data.password)
+      axios.post(`${url}/v1/login`, data)
+        .then((res: AxiosResponse<AuthResponse>) => {
+          const { data, status } = res
+          switch (status) {
+            case 200:
+              // set token to local storage
+              localStorage.setItem('token', data.token)
+              // redirect to home page
+              window.location.href = '/'
+              break
+            default:
+              alert('Something went wrong' + res.statusText)
+          }
+        })
+    } catch (error) {
+      alert(console.error())
+    }
   }
 
   return (
