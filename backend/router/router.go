@@ -41,11 +41,11 @@ func Init() *gin.Engine {
 	v1 := engine.Group("v1")
 	{
 		// tasks
-		v1.GET("/tasks", controllers.GetTasks)
 		v1.GET("/t2schola_sync", controllers.NotImplemented)
 
-		task := v1.Group("/task")
+		task := v1.Group("/tasks")
 		{
+			task.GET("/", controllers.GetTasks)
 			task.GET("/:id", controllers.GetTask)
 			task.PUT("/:id", controllers.UpdateTask)
 			task.DELETE("/:id", controllers.DeleteTask)
@@ -55,6 +55,13 @@ func Init() *gin.Engine {
 		// auth
 		v1.POST("/login", authMiddleware.LoginHandler)
 		v1.POST("/logout", authMiddleware.LogoutHandler)
+
+		auth := v1.Group("/auth")
+		auth.GET("/refresh_token", authMiddleware.RefreshHandler)
+		auth.Use(authMiddleware.MiddlewareFunc())
+		{
+			auth.GET("/hello", controllers.HelloHandler)
+		}
 
 		// user
 		v1.POST("/user/new", controllers.CreateUser)
