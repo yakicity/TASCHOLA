@@ -15,25 +15,30 @@ const TaskEditPage = () => {
   const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
-    (async () => {
-      setLoading(true)
-      await axios.get(`${url}/v1/tasks/${id}`)
-        .then((res: AxiosResponse<Task>) => {
-          const { data, status } = res
-          switch (status) {
-            case 200:
-              setTask(data)
-              setLoading(false)
-              break
-            case 404:
-              alert('Task not found' + res.statusText)
-              break
-            default:
-              alert('Something went wrong' + res.statusText)
-          }
-        })
-    })()
-  }, [])
+    if (!router.isReady) {
+      return
+    }
+    setLoading(true)
+    axios.get(`${url}/v1/tasks/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      }
+    })
+      .then((res: AxiosResponse<Task>) => {
+        const { data, status } = res
+        switch (status) {
+          case 200:
+            setTask(data)
+            setLoading(false)
+            break
+          case 404:
+            alert('Task not found' + res.statusText)
+            break
+          default:
+            alert('Something went wrong' + res.statusText)
+        }
+      })
+  }, [router.query])
 
   return (
     <>
