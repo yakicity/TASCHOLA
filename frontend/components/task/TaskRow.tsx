@@ -30,7 +30,8 @@ const TaskRow = (props: TaskRowProps) => {
       <th className="flex gap-3 px-6 py-4 font-normal text-gray-900">
         <Link href={`/tasks/${task.id}`}>
           <div className="text-sm">
-            <div className="font-medium text-gray-700">{task.title}</div>
+            <div className="font-medium text-gray-700">{task.title}
+            </div>
             <div className="text-gray-400">{task.description}</div>
           </div>
         </Link>
