@@ -39,7 +39,6 @@ const getPriorityClass = (priority: number, taskPriority: any): string => {
 
 const DetailTask = (props: TaskProps) => {
   const { task } = props
-  // const priorityClass = getPriorityClass()
   const priority: number = task.priority
 
   return (
@@ -119,10 +118,10 @@ const DetailTask = (props: TaskProps) => {
 
           <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pt-6 lg:pb-16 lg:pr-8">
             <div>
-              <h3 className="text-sm font-medium text-gray-900">Description</h3>
+              <h3 className="text-sm font-medium text-gray-900 py-4">Description</h3>
 
               <div className="space-y-6">
-                <p className="break-words text-base text-gray-900">{task.description}</p>
+                <p className="break-words text-base rounded-md border-transparent  bg-gray-100 px-4 py-2 text-gray-900">{task.description}</p>
               </div>
             </div>
 
