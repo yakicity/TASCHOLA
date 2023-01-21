@@ -6,36 +6,62 @@ type TaskProps = {
 }
 
 const getPriorityClass = (priority: number, taskPriority: any): string => {
-  switch (priority) {
-    case 1: {
-      if (taskPriority == 1) {
-        return 'bg-indigo-700 text-white'
-      }
-      else {
-        return 'bg-gray-200'
-      }
-    }
-    case 2: {
-      if (taskPriority == 2) {
-        return 'bg-indigo-700 text-white'
-      }
-      else {
-        return 'bg-gray-200'
-      }
-    }
-    case 3: {
-      if (taskPriority == 3) {
-        return 'bg-indigo-700 text-white'
-      }
-      else {
-        return 'bg-gray-200'
-      }
-    }
-    default: {
-      return 'bg-gray-200'
-    }
+
+  if (priority == taskPriority) {
+    return 'bg-indigo-700 text-white'
   }
+  else {
+    return 'bg-gray-200 text-indigo-700'
+  }
+
+
+
+  // switch (priority) {
+  //   case 1: {
+  //     if (taskPriority == 1) {
+  //       return 'bg-indigo-700 text-white'
+  //     }
+  //     else {
+  //       return 'bg-gray-200'
+  //     }
+  //   }
+  //   case 2: {
+  //     if (taskPriority == 2) {
+  //       return 'bg-indigo-700 text-white'
+  //     }
+  //     else {
+  //       return 'bg-gray-200'
+  //     }
+  //   }
+  //   case 3: {
+  //     if (taskPriority == 3) {
+  //       return 'bg-indigo-700 text-white'
+  //     }
+  //     else {
+  //       return 'bg-gray-200'
+  //     }
+  //   }
+  //   case 4: {
+  //     if (taskPriority == 3) {
+  //       return 'bg-indigo-700 text-white'
+  //     }
+  //     else {
+  //       return 'bg-gray-200'
+  //     }
+  //   }
+  //   case 5: {
+  //     if (taskPriority == 3) {
+  //       return 'bg-indigo-700 text-white'
+  //     }
+  //     else {
+  //       return 'bg-gray-200'
+  //     }
+  //   }
+  //   default: {
+  //     return 'bg-gray-200'
+  //   }
 }
+
 
 const DetailTask = (props: TaskProps) => {
   const { task } = props
@@ -89,21 +115,31 @@ const DetailTask = (props: TaskProps) => {
                 <h3 className="text-sm font-medium text-gray-900">Priority</h3>
                 <fieldset className="mt-4">
                   <legend className="sr-only">Priority</legend>
-                  <div className="flex gap-2 grid w-[20rem] grid-cols-3 rounded-xl bg-gray-200 p-1">
+                  <div className="flex gap-2 grid w-[20rem] grid-cols-5 rounded-xl bg-gray-200 p-1">
                     <span
                       className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(1, priority)} px-2 py-1 text-s font-bold`}
                     >
                       1
                     </span>
                     <span
-                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(2, priority)} px-2 py-1 text-s font-bold text-indigo-700`}
+                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(2, priority)} px-2 py-1 text-s font-bold`}
                     >
                       2
                     </span>
                     <span
-                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(3, priority)} px-2 py-1 text-s font-bold text-indigo-700`}
+                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(3, priority)} px-2 py-1 text-s font-bold`}
                     >
                       3
+                    </span>
+                    <span
+                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(4, priority)} px-2 py-1 text-s font-bold`}
+                    >
+                      4
+                    </span>
+                    <span
+                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(5, priority)} px-2 py-1 text-s font-bold`}
+                    >
+                      5
                     </span>
                   </div>
                 </fieldset>
