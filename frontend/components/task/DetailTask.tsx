@@ -5,7 +5,7 @@ type TaskProps = {
   task: Task
 }
 
-const getPriorityClass = (priority: number, taskPriority: any): string => {
+const getPriorityClass = (priority: number, taskPriority: number): string => {
 
   if (priority == taskPriority) {
     return 'bg-indigo-700 text-white'
@@ -13,60 +13,26 @@ const getPriorityClass = (priority: number, taskPriority: any): string => {
   else {
     return 'bg-gray-200 text-indigo-700'
   }
-
-
-
-  // switch (priority) {
-  //   case 1: {
-  //     if (taskPriority == 1) {
-  //       return 'bg-indigo-700 text-white'
-  //     }
-  //     else {
-  //       return 'bg-gray-200'
-  //     }
-  //   }
-  //   case 2: {
-  //     if (taskPriority == 2) {
-  //       return 'bg-indigo-700 text-white'
-  //     }
-  //     else {
-  //       return 'bg-gray-200'
-  //     }
-  //   }
-  //   case 3: {
-  //     if (taskPriority == 3) {
-  //       return 'bg-indigo-700 text-white'
-  //     }
-  //     else {
-  //       return 'bg-gray-200'
-  //     }
-  //   }
-  //   case 4: {
-  //     if (taskPriority == 3) {
-  //       return 'bg-indigo-700 text-white'
-  //     }
-  //     else {
-  //       return 'bg-gray-200'
-  //     }
-  //   }
-  //   case 5: {
-  //     if (taskPriority == 3) {
-  //       return 'bg-indigo-700 text-white'
-  //     }
-  //     else {
-  //       return 'bg-gray-200'
-  //     }
-  //   }
-  //   default: {
-  //     return 'bg-gray-200'
-  //   }
 }
 
+const getStatusClass = (taskStatus: string): string => {
+
+  if (taskStatus == 'TODO') {
+    return 'green'
+  }
+  else if (taskStatus == 'DOING') {
+    return 'blue'
+  }
+  else if (taskStatus == 'DONE') {
+    return 'gray'
+  }
+  else {
+    return 'gray'
+  }
+}
 
 const DetailTask = (props: TaskProps) => {
   const { task } = props
-  const priority: number = task.priority
-
   return (
     <div className="bg-white">
       <div className="pt-6">
@@ -103,9 +69,9 @@ const DetailTask = (props: TaskProps) => {
                 <fieldset className="mt-4">
                   <legend className="sr-only">Status</legend>
                   <span
-                    className="inline-flex items-center gap-1 rounded-full bg-green-50 px-10 py-1 text-s font-semibold text-green-600"
+                    className={`inline-flex items-center gap-1 rounded-full bg-${getStatusClass(task.status)}-50 px-10 py-1 text-s font-semibold text-${getStatusClass(task.status)}-600`}
                   >
-                    <span className="h-2 w-2 rounded-full bg-green-600"></span>
+                    <span className={`h-2 w-2 rounded-full bg-${getStatusClass(task.status)}-600`}></span>
                     {task.status}
                   </span>
                 </fieldset>
@@ -117,27 +83,27 @@ const DetailTask = (props: TaskProps) => {
                   <legend className="sr-only">Priority</legend>
                   <div className="flex gap-2 grid w-[20rem] grid-cols-5 rounded-xl bg-gray-200 p-1">
                     <span
-                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(1, priority)} px-2 py-1 text-s font-bold`}
+                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(1, task.priority)} px-2 py-1 text-s font-bold`}
                     >
                       1
                     </span>
                     <span
-                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(2, priority)} px-2 py-1 text-s font-bold`}
+                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(2, task.priority)} px-2 py-1 text-s font-bold`}
                     >
                       2
                     </span>
                     <span
-                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(3, priority)} px-2 py-1 text-s font-bold`}
+                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(3, task.priority)} px-2 py-1 text-s font-bold`}
                     >
                       3
                     </span>
                     <span
-                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(4, priority)} px-2 py-1 text-s font-bold`}
+                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(4, task.priority)} px-2 py-1 text-s font-bold`}
                     >
                       4
                     </span>
                     <span
-                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(5, priority)} px-2 py-1 text-s font-bold`}
+                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(5, task.priority)} px-2 py-1 text-s font-bold`}
                     >
                       5
                     </span>
