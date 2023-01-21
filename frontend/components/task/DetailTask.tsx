@@ -43,7 +43,13 @@ const DetailTask = (props: TaskProps) => {
                 <h3 className="text-sm font-medium text-gray-900">Status</h3>
                 <fieldset className="mt-4">
                   <legend className="sr-only">Status</legend>
-                  <div className="flex items-center space-x-3">
+                  <span
+                    className="inline-flex items-center gap-1 rounded-full bg-green-50 px-10 py-1 text-s font-semibold text-green-600"
+                  >
+                    <span className="h-2 w-2 rounded-full bg-green-600"></span>
+                    {task.status}
+                  </span>
+                  {/* <div className="flex items-center space-x-3">
                     <label className="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-400">
                       <input type="radio" name="color-choice" value="White" className="sr-only" aria-labelledby="color-choice-0-label" />
                       <span id="color-choice-0-label" className="sr-only"> White </span>
@@ -61,7 +67,7 @@ const DetailTask = (props: TaskProps) => {
                       <span id="color-choice-2-label" className="sr-only"> Black </span>
                       <span aria-hidden="true" className="h-8 w-8 bg-gray-900 border border-black border-opacity-10 rounded-full"></span>
                     </label>
-                  </div>
+                  </div> */}
                 </fieldset>
               </div>
 
