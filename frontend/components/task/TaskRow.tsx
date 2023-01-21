@@ -2,6 +2,7 @@ import { Task } from '@/interfaces/task'
 import { url } from '@/utils/constants'
 import axios from 'axios'
 import Link from 'next/link'
+import { getStatusClass } from './taskFunctions'
 
 type TaskRowProps = {
   task: Task
@@ -36,9 +37,9 @@ const TaskRow = (props: TaskRowProps) => {
       </th>
       <td className="px-6 py-4">
         <span
-          className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600"
+          className={`inline-flex items-center gap-1 rounded-full bg-${getStatusClass(task.status)}-50 px-2 py-1 text-xs font-semibold text-${getStatusClass(task.status)}-600`}
         >
-          <span className="h-1.5 w-1.5 rounded-full bg-green-600"></span>
+          <span className={`h-1.5 w-1.5 rounded-full bg-${getStatusClass(task.status)}-600`}></span>
           {task.status}
         </span>
       </td>
