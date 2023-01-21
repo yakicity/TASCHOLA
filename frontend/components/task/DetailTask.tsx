@@ -103,7 +103,7 @@ const DetailTask = (props: TaskProps) => {
               <h3 className="sr-only">Description</h3>
 
               <div className="space-y-6">
-                <p className="text-base text-gray-900">{task.description}</p>
+                <p className="break-words text-base text-gray-900">{task.description}</p>
               </div>
             </div>
 
