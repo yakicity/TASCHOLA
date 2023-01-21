@@ -5,8 +5,42 @@ type TaskProps = {
   task: Task
 }
 
+const getPriorityClass = (priority: number, taskPriority: any): string => {
+  switch (priority) {
+    case 1: {
+      if (taskPriority == 1) {
+        return 'bg-indigo-700 text-white'
+      }
+      else {
+        return 'bg-gray-200'
+      }
+    }
+    case 2: {
+      if (taskPriority == 2) {
+        return 'bg-indigo-700 text-white'
+      }
+      else {
+        return 'bg-gray-200'
+      }
+    }
+    case 3: {
+      if (taskPriority == 3) {
+        return 'bg-indigo-700 text-white'
+      }
+      else {
+        return 'bg-gray-200'
+      }
+    }
+    default: {
+      return 'bg-gray-200'
+    }
+  }
+}
+
 const DetailTask = (props: TaskProps) => {
   const { task } = props
+  // const priorityClass = getPriorityClass()
+  const priority: number = task.priority
 
   return (
     <div className="bg-white">
@@ -49,25 +83,6 @@ const DetailTask = (props: TaskProps) => {
                     <span className="h-2 w-2 rounded-full bg-green-600"></span>
                     {task.status}
                   </span>
-                  {/* <div className="flex items-center space-x-3">
-                    <label className="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-400">
-                      <input type="radio" name="color-choice" value="White" className="sr-only" aria-labelledby="color-choice-0-label" />
-                      <span id="color-choice-0-label" className="sr-only"> White </span>
-                      <span aria-hidden="true" className="h-8 w-8 bg-white border border-black border-opacity-10 rounded-full"></span>
-                    </label>
-
-                    <label className="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-400">
-                      <input type="radio" name="color-choice" value="Gray" className="sr-only" aria-labelledby="color-choice-1-label" />
-                      <span id="color-choice-1-label" className="sr-only"> Gray </span>
-                      <span aria-hidden="true" className="h-8 w-8 bg-gray-200 border border-black border-opacity-10 rounded-full"></span>
-                    </label>
-
-                    <label className="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-900">
-                      <input type="radio" name="color-choice" value="Black" className="sr-only" aria-labelledby="color-choice-2-label" />
-                      <span id="color-choice-2-label" className="sr-only"> Black </span>
-                      <span aria-hidden="true" className="h-8 w-8 bg-gray-900 border border-black border-opacity-10 rounded-full"></span>
-                    </label>
-                  </div> */}
                 </fieldset>
               </div>
 
@@ -75,24 +90,22 @@ const DetailTask = (props: TaskProps) => {
                 <h3 className="text-sm font-medium text-gray-900">Priority</h3>
                 <fieldset className="mt-4">
                   <legend className="sr-only">Priority</legend>
-                  <div className="flex items-center space-x-3">
-                    <label className="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-400">
-                      <input type="radio" name="color-choice" value="White" className="sr-only" aria-labelledby="color-choice-0-label" />
-                      <span id="color-choice-0-label" className="sr-only"> White </span>
-                      <span aria-hidden="true" className="h-8 w-8 bg-white border border-black border-opacity-10 rounded-full"></span>
-                    </label>
-
-                    <label className="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-400">
-                      <input type="radio" name="color-choice" value="Gray" className="sr-only" aria-labelledby="color-choice-1-label" />
-                      <span id="color-choice-1-label" className="sr-only"> Gray </span>
-                      <span aria-hidden="true" className="h-8 w-8 bg-gray-200 border border-black border-opacity-10 rounded-full"></span>
-                    </label>
-
-                    <label className="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-900">
-                      <input type="radio" name="color-choice" value="Black" className="sr-only" aria-labelledby="color-choice-2-label" />
-                      <span id="color-choice-2-label" className="sr-only"> Black </span>
-                      <span aria-hidden="true" className="h-8 w-8 bg-gray-900 border border-black border-opacity-10 rounded-full"></span>
-                    </label>
+                  <div className="flex gap-2 grid w-[20rem] grid-cols-3 rounded-xl bg-gray-200 p-1">
+                    <span
+                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(1, priority)} px-2 py-1 text-s font-bold`}
+                    >
+                      1
+                    </span>
+                    <span
+                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(2, priority)} px-2 py-1 text-s font-bold text-indigo-700`}
+                    >
+                      2
+                    </span>
+                    <span
+                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(3, priority)} px-2 py-1 text-s font-bold text-indigo-700`}
+                    >
+                      3
+                    </span>
                   </div>
                 </fieldset>
               </div>
@@ -106,7 +119,8 @@ const DetailTask = (props: TaskProps) => {
 
           <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pt-6 lg:pb-16 lg:pr-8">
             <div>
-              <h3 className="sr-only">Description</h3>
+              {/* <h3 className="sr-only">Description</h3> */}
+              <h3 className="text-sm font-medium text-gray-900">Description</h3>
 
               <div className="space-y-6">
                 <p className="break-words text-base text-gray-900">{task.description}</p>
