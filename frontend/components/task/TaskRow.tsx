@@ -2,7 +2,7 @@ import { Task } from '@/interfaces/task'
 import { url } from '@/utils/constants'
 import axios from 'axios'
 import Link from 'next/link'
-import { getStatusClass } from './taskFunctions'
+import { getPriorityClass, getStatusClass } from './taskFunctions'
 
 type TaskRowProps = {
   task: Task
@@ -45,7 +45,34 @@ const TaskRow = (props: TaskRowProps) => {
       </td>
       <td className="px-6 py-4">{task.due_date}</td>
       <td className="px-6 py-4">
-        <div className="flex gap-2">
+        <div className="flex gap-2 grid w-[10rem] grid-cols-5 rounded-xl bg-gray-200 p-1">
+          <span
+            className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(1, task.priority)} px-2 py-1 text-xs font-semibold`}
+          >
+            1
+          </span>
+          <span
+            className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(2, task.priority)} px-2 py-1 text-xs font-semibold`}
+          >
+            2
+          </span>
+          <span
+            className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(3, task.priority)} px-2 py-1 text-xs font-semibold`}
+          >
+            3
+          </span>
+          <span
+            className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(4, task.priority)} px-2 py-1 text-xs font-semibold`}
+          >
+            4
+          </span>
+          <span
+            className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClass(5, task.priority)} px-2 py-1 text-xs font-semibold`}
+          >
+            5
+          </span>
+        </div>
+        {/* <div className="flex gap-2">
           <span
             className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600"
           >
@@ -61,7 +88,7 @@ const TaskRow = (props: TaskRowProps) => {
           >
             {task.priority}
           </span>
-        </div>
+        </div> */}
       </td>
       <td className="px-6 py-4">
         <div className="flex justify-end gap-4">
