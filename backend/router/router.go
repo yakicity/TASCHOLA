@@ -28,9 +28,6 @@ func Init() *gin.Engine {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	// jwt
-	authMiddleware, _ := controllers.JWTInit()
-
 	// swagger
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
@@ -54,15 +51,8 @@ func Init() *gin.Engine {
 		}
 
 		// auth
-		v1.POST("/login", authMiddleware.LoginHandler)
-		v1.POST("/logout", authMiddleware.LogoutHandler)
-
-		auth := v1.Group("/auth")
-		auth.GET("/refresh_token", authMiddleware.RefreshHandler)
-		auth.Use(authMiddleware.MiddlewareFunc())
-		{
-			auth.GET("/hello", controllers.HelloHandler)
-		}
+		v1.POST("/login", controllers.Login)
+		v1.POST("/logout", controllers.Logout)
 
 		// user
 		v1.POST("/user/new", controllers.CreateUser)

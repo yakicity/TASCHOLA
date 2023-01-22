@@ -1,136 +1,86 @@
 package controllers
 
 import (
-	"log"
 	"net/http"
-	"time"
+	"strconv"
 
-	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 
 	"taschola/models"
 )
 
-type LoginForm struct {
-	Name     string `json:"name" binding:"required"`
-	Password string `json:"password" binding:"required"`
+// Login
+//
+//	@Summary		Login
+//	@Description	Set cookie "user_id" if login success
+//	@Tags			authentication
+//	@Accept			json
+//	@Produce		json
+//	@Param			userForm	body	controllers.UserForm	true	"user"
+//	@Success		200
+//	@Failure		400	{object}	models.HTTPError
+//	@Failure		401	{object}	models.HTTPError
+//	@Failure		404	{object}	models.HTTPError
+//	@Router			/v1/login [post]
+func Login(ctx *gin.Context) {
+	var userForm UserForm
+	err := ctx.BindJSON(&userForm)
+	if err != nil {
+		httpError := models.HTTPError{
+			Code:  http.StatusBadRequest,
+			Error: "Bad Request (userForm is invalid)",
+			Place: "controllers.Login",
+		}
+		ctx.JSON(http.StatusBadRequest, httpError)
+		return
+	}
+
+	user, err := models.GetUserByName(userForm.Name)
+	if err != nil {
+		httpError := models.HTTPError{
+			Code:  http.StatusNotFound,
+			Error: "Not Found (such a user name does not exist)",
+			Place: "controllers.Login",
+		}
+		ctx.JSON(http.StatusNotFound, httpError)
+		return
+	}
+	// check password is correct
+	if string(user.Password) != string(hash(userForm.Password)) {
+		httpError := models.HTTPError{
+			Code:  http.StatusUnauthorized,
+			Error: "Unauthorized (invalid password)",
+			Place: "controllers.Login",
+		}
+		ctx.JSON(http.StatusUnauthorized, httpError)
+		return
+	}
+
+	cookie, err := ctx.Cookie("user_id")
+	if err != nil {
+		ctx.SetCookie("user_id", strconv.FormatUint(user.ID, 10), 3600, "/", "localhost", false, true)
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "login success" + cookie})
 }
 
-const IdentityKey = "id"
-
-func JWTInit() (*jwt.GinJWTMiddleware, error) {
-	authMiddleware, err := jwt.New(&jwt.GinJWTMiddleware{
-		Realm:       "taschola",
-		Key:         []byte("taschola"),
-		Timeout:     time.Hour,
-		MaxRefresh:  time.Hour,
-		IdentityKey: IdentityKey,
-
-		PayloadFunc: func(data interface{}) jwt.MapClaims {
-			if v, ok := data.(*LoginForm); ok {
-				return jwt.MapClaims{
-					IdentityKey: v.Name,
-				}
-			}
-			return jwt.MapClaims{}
-		},
-		IdentityHandler: func(ctx *gin.Context) interface{} {
-			claims := jwt.ExtractClaims(ctx)
-
-			return &LoginForm{
-				Name: claims[IdentityKey].(string),
-			}
-		},
-		// Authenticator: for Login function
-		Authenticator: func(ctx *gin.Context) (interface{}, error) {
-			var loginValues LoginForm
-			if err := ctx.BindJSON(&loginValues); err != nil {
-				log.Println("authenticator: BindJSON Error: " + err.Error())
-				return "", jwt.ErrMissingLoginValues
-			}
-			name := loginValues.Name
-			password := loginValues.Password
-
-			user, err := models.GetUserByName(name)
-			if err != nil {
-				log.Println("authenticator: GetUserByName Error: " + err.Error())
-				return nil, jwt.ErrFailedAuthentication
-			}
-			// check password is correct
-			if string(hash(password)) != string(user.Password) {
-				log.Println("authenticator: password is incorrect")
-				log.Println("post password: " + password)
-				log.Println("db password: " + string(user.Password))
-				log.Println("hash password: " + string(hash(password)))
-
-				return nil, jwt.ErrFailedAuthentication
-			}
-
-			return &LoginForm{
-				Name:     name,
-				Password: password,
-			}, nil
-		},
-		Authorizator: func(data interface{}, c *gin.Context) bool {
-			if v, ok := data.(*LoginForm); ok && v.Name == "admin" {
-				return true
-			}
-
-			return false
-		},
-		Unauthorized: func(c *gin.Context, code int, message string) {
-			c.JSON(code, gin.H{
-				"code":    code,
-				"message": message + " " + c.Request.URL.Path + " " + c.Request.Method,
-			})
-		},
-		// Login
-		//
-		// @Summary Login
-		// @Description Login
-		// @Tags Authentication
-		// @Accept  json
-		// @Produce  json
-		// @Param login body LoginForm true "Login"
-		// @Success 200 {object} LoginResponse
-		// @Failure 401 {object} ErrorResponse
-		// @Failure 500 {object} ErrorResponse
-		// @Router /v1/login [post]
-		LoginResponse: func(c *gin.Context, code int, token string, expire time.Time) {
-			c.JSON(http.StatusOK, gin.H{
-				"code":    code,
-				"token":   token,
-				"expire":  expire.Format(time.RFC3339),
-				"message": "login success",
-			})
-		},
-		LogoutResponse: func(c *gin.Context, code int) {
-			c.JSON(http.StatusOK, gin.H{
-				"code":    code,
-				"message": "logout success",
-			})
-		},
-		RefreshResponse: func(c *gin.Context, code int, token string, expire time.Time) {
-			c.JSON(http.StatusOK, gin.H{
-				"code":    code,
-				"token":   token,
-				"expire":  expire.Format(time.RFC3339),
-				"message": "refresh success",
-			})
-		},
-		TokenLookup:   "header: Authorization, query: token, cookie: jwt",
-		TokenHeadName: "Bearer",
-		TimeFunc:      time.Now,
-	})
-
-	if err != nil {
-		log.Fatal("JWT Error:" + err.Error())
+// Logout
+//
+//	@Summary		Logout
+//	@Description	Delete cookie "user_id" if logout success
+//	@Tags			authentication
+//	@Accept			json
+//	@Produce		json
+//	@Cookie			user_id	string	true	"user id"
+//	@Success		200
+//	@Router			/v1/logout [post]
+func Logout(ctx *gin.Context) {
+	if _, err := ctx.Cookie("user_id"); err == nil {
+		ctx.SetCookie("user_id", "", -1, "/", "localhost", false, true)
+	} else {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "logout failed (cookie does not exist)"})
+		return
 	}
 
-	errInit := authMiddleware.MiddlewareInit()
-	if errInit != nil {
-		log.Fatal("authMiddleware.MiddlewareInit() Error:" + errInit.Error())
-	}
-
-	return authMiddleware, nil
+	ctx.JSON(http.StatusOK, gin.H{"message": "logout success"})
 }

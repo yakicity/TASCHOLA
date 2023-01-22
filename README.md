@@ -334,3 +334,14 @@ Ruby on Rails の ActiveRecord のようなものに慣れている人は、data
 https://gist.github.com/knsh14/0507b98c6b62959011ba9e4c310cd15d
 
 え、変数名とか長くないですかって？はい、そうです。私は Gopher ではありません...
+
+### moodle API
+
+https://docs.moodle.org/dev/Web_service_API_functions
+
+mod_assign_get_assignments これを使うと良さそう。
+
+### Cookieの取り扱いについて
+
+Set-Cookie: 参考: https://qiita.com/mogulla3/items/189c99c87a0fc827520e
+
