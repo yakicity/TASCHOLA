@@ -11,17 +11,17 @@ import (
 
 // Login
 //
-//	@Summary	Login
+//	@Summary		Login
 //	@Description	Set cookie "user_id" if login success
-//	@Tags		authentication
-//	@Accept		json
-//	@Produce	json
-//	@Param		userForm	body	controllers.UserForm	true	"user"
-//	@Success	200
-//	@Failure	400	{object}	models.HTTPError
-//	@Failure	401	{object}	models.HTTPError
-//	@Failure	404	{object}	models.HTTPError
-//	@Router		/v1/login [post]
+//	@Tags			authentication
+//	@Accept			json
+//	@Produce		json
+//	@Param			userForm	body	controllers.UserForm	true	"user"
+//	@Success		200
+//	@Failure		400	{object}	models.HTTPError
+//	@Failure		401	{object}	models.HTTPError
+//	@Failure		404	{object}	models.HTTPError
+//	@Router			/v1/login [post]
 func Login(ctx *gin.Context) {
 	var userForm UserForm
 	err := ctx.BindJSON(&userForm)
@@ -66,13 +66,14 @@ func Login(ctx *gin.Context) {
 
 // Logout
 //
-//	@Summary	Logout
+//	@Summary		Logout
 //	@Description	Delete cookie "user_id" if logout success
-//	@Tags		authentication
-//	@Accept		json
-//	@Produce	json
-//	@Success	200
-//	@Router		/v1/logout [post]
+//	@Tags			authentication
+//	@Accept			json
+//	@Produce		json
+//	@Cookie			user_id	string	true	"user id"
+//	@Success		200
+//	@Router			/v1/logout [post]
 func Logout(ctx *gin.Context) {
 	if _, err := ctx.Cookie("user_id"); err == nil {
 		ctx.SetCookie("user_id", "", -1, "/", "localhost", false, true)
