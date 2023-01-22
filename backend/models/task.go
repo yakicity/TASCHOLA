@@ -1,17 +1,18 @@
 package models
 
 import (
+	"log"
 	"strings"
 	database "taschola/db"
 	"time"
 )
 
 type TaskForm struct {
-	Title       string
-	Description string
-	Status      string // [TODO, DOING, DONE]
-	Priority    int    // [1, 2, 3, 4, 5] (1: highest, 5: lowest)
-	DueDate     time.Time
+	Title       string    `json:"title" binding:"required" example:"task-title"`
+	Description string    `json:"description" binding:"required" example:"task-description"`
+	Status      string    `json:"status" binding:"required" example:"TODO"`
+	Priority    int       `json:"priority" binding:"required" example:"1"`
+	DueDate     time.Time `json:"due_date" binding:"required" example:"2023-02-01T00:00:00+09:00"`
 }
 
 func GetTasksByUserID(userID int64) ([]database.Task, error) {
@@ -75,8 +76,9 @@ func CreateTask(task TaskForm, userID int64) (int, error) {
 		return 0, err
 	}
 
-	err = tx.Get(&task, "INSERT INTO tasks (title, description, status, priority, due_date) VALUES (?, ?, ?, ?, ?)", task.Title, task.Description, task.Status, task.Priority, task.DueDate)
+	_, err = tx.Exec("INSERT INTO tasks (title, description, status, priority, due_date) VALUES (?, ?, ?, ?, ?)", task.Title, task.Description, task.Status, task.Priority, task.DueDate)
 	if err != nil {
+		log.Println("CreateTask: INSERT task ", err)
 		tx.Rollback()
 		return 0, err
 	}
@@ -84,12 +86,14 @@ func CreateTask(task TaskForm, userID int64) (int, error) {
 	var taskID int
 	err = tx.Get(&taskID, "SELECT LAST_INSERT_ID()")
 	if err != nil {
+		log.Println("CreateTask: get LAST INSERT ID ", err)
 		tx.Rollback()
 		return 0, err
 	}
 
 	_, err = tx.Exec("INSERT INTO ownerships (user_id, task_id) VALUES (?, ?)", userID, taskID)
 	if err != nil {
+		log.Println("CreateTask: INSERT ownership ", err)
 		tx.Rollback()
 		return 0, err
 	}
