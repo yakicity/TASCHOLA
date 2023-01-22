@@ -2,6 +2,7 @@ import { Task } from '@/interfaces/task'
 import { url } from '@/utils/constants'
 import axios from 'axios'
 import Link from 'next/link'
+import { getPriorityClassName, getStatusClassName } from './taskFunctions'
 
 type TaskRowProps = {
   task: Task
@@ -29,36 +30,47 @@ const TaskRow = (props: TaskRowProps) => {
       <th className="flex gap-3 px-6 py-4 font-normal text-gray-900">
         <Link href={`/tasks/${task.id}`}>
           <div className="text-sm">
-            <div className="font-medium text-gray-700">{task.title}</div>
+            <div className="font-medium text-gray-700">{task.title}
+            </div>
             <div className="text-gray-400">{task.description}</div>
           </div>
         </Link>
       </th>
       <td className="px-6 py-4">
         <span
-          className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600"
+          className={`inline-flex items-center gap-1 rounded-full bg-${getStatusClassName(task.status)}-50 px-2 py-1 text-xs font-semibold text-${getStatusClassName(task.status)}-600`}
         >
-          <span className="h-1.5 w-1.5 rounded-full bg-green-600"></span>
+          <span className={`h-1.5 w-1.5 rounded-full bg-${getStatusClassName(task.status)}-600`}></span>
           {task.status}
         </span>
       </td>
       <td className="px-6 py-4">{task.due_date}</td>
       <td className="px-6 py-4">
-        <div className="flex gap-2">
+        <div className="flex gap-2 grid w-[10rem] grid-cols-5 rounded-xl bg-gray-200 p-1">
           <span
-            className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600"
+            className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClassName(1, task.priority)} px-2 py-1 text-xs font-semibold`}
           >
-            {task.priority}
+            1
           </span>
           <span
-            className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-1 text-xs font-semibold text-indigo-600"
+            className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClassName(2, task.priority)} px-2 py-1 text-xs font-semibold`}
           >
-            {task.priority}
+            2
           </span>
           <span
-            className="inline-flex items-center gap-1 rounded-full bg-violet-50 px-2 py-1 text-xs font-semibold text-violet-600"
+            className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClassName(3, task.priority)} px-2 py-1 text-xs font-semibold`}
           >
-            {task.priority}
+            3
+          </span>
+          <span
+            className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClassName(4, task.priority)} px-2 py-1 text-xs font-semibold`}
+          >
+            4
+          </span>
+          <span
+            className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClassName(5, task.priority)} px-2 py-1 text-xs font-semibold`}
+          >
+            5
           </span>
         </div>
       </td>

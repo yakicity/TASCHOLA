@@ -1,5 +1,6 @@
 import { Task } from '@/interfaces/task'
 import Link from 'next/link'
+import { getPriorityClassName, getStatusClassName } from './taskFunctions'
 
 type TaskProps = {
   task: Task
@@ -7,7 +8,6 @@ type TaskProps = {
 
 const DetailTask = (props: TaskProps) => {
   const { task } = props
-
   return (
     <div className="bg-white">
       <div className="pt-6">
@@ -43,25 +43,12 @@ const DetailTask = (props: TaskProps) => {
                 <h3 className="text-sm font-medium text-gray-900">Status</h3>
                 <fieldset className="mt-4">
                   <legend className="sr-only">Status</legend>
-                  <div className="flex items-center space-x-3">
-                    <label className="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-400">
-                      <input type="radio" name="color-choice" value="White" className="sr-only" aria-labelledby="color-choice-0-label" />
-                      <span id="color-choice-0-label" className="sr-only"> White </span>
-                      <span aria-hidden="true" className="h-8 w-8 bg-white border border-black border-opacity-10 rounded-full"></span>
-                    </label>
-
-                    <label className="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-400">
-                      <input type="radio" name="color-choice" value="Gray" className="sr-only" aria-labelledby="color-choice-1-label" />
-                      <span id="color-choice-1-label" className="sr-only"> Gray </span>
-                      <span aria-hidden="true" className="h-8 w-8 bg-gray-200 border border-black border-opacity-10 rounded-full"></span>
-                    </label>
-
-                    <label className="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-900">
-                      <input type="radio" name="color-choice" value="Black" className="sr-only" aria-labelledby="color-choice-2-label" />
-                      <span id="color-choice-2-label" className="sr-only"> Black </span>
-                      <span aria-hidden="true" className="h-8 w-8 bg-gray-900 border border-black border-opacity-10 rounded-full"></span>
-                    </label>
-                  </div>
+                  <span
+                    className={`inline-flex items-center gap-1 rounded-full bg-${getStatusClassName(task.status)}-50 px-10 py-1 text-s font-semibold text-${getStatusClassName(task.status)}-600`}
+                  >
+                    <span className={`h-2 w-2 rounded-full bg-${getStatusClassName(task.status)}-600`}></span>
+                    {task.status}
+                  </span>
                 </fieldset>
               </div>
 
@@ -69,41 +56,49 @@ const DetailTask = (props: TaskProps) => {
                 <h3 className="text-sm font-medium text-gray-900">Priority</h3>
                 <fieldset className="mt-4">
                   <legend className="sr-only">Priority</legend>
-                  <div className="flex items-center space-x-3">
-                    <label className="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-400">
-                      <input type="radio" name="color-choice" value="White" className="sr-only" aria-labelledby="color-choice-0-label" />
-                      <span id="color-choice-0-label" className="sr-only"> White </span>
-                      <span aria-hidden="true" className="h-8 w-8 bg-white border border-black border-opacity-10 rounded-full"></span>
-                    </label>
-
-                    <label className="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-400">
-                      <input type="radio" name="color-choice" value="Gray" className="sr-only" aria-labelledby="color-choice-1-label" />
-                      <span id="color-choice-1-label" className="sr-only"> Gray </span>
-                      <span aria-hidden="true" className="h-8 w-8 bg-gray-200 border border-black border-opacity-10 rounded-full"></span>
-                    </label>
-
-                    <label className="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-900">
-                      <input type="radio" name="color-choice" value="Black" className="sr-only" aria-labelledby="color-choice-2-label" />
-                      <span id="color-choice-2-label" className="sr-only"> Black </span>
-                      <span aria-hidden="true" className="h-8 w-8 bg-gray-900 border border-black border-opacity-10 rounded-full"></span>
-                    </label>
+                  <div className="flex gap-2 grid w-[20rem] grid-cols-5 rounded-xl bg-gray-200 p-1">
+                    <span
+                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClassName(1, task.priority)} px-2 py-1 text-s font-bold`}
+                    >
+                      1
+                    </span>
+                    <span
+                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClassName(2, task.priority)} px-2 py-1 text-s font-bold`}
+                    >
+                      2
+                    </span>
+                    <span
+                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClassName(3, task.priority)} px-2 py-1 text-s font-bold`}
+                    >
+                      3
+                    </span>
+                    <span
+                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClassName(4, task.priority)} px-2 py-1 text-s font-bold`}
+                    >
+                      4
+                    </span>
+                    <span
+                      className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClassName(5, task.priority)} px-2 py-1 text-s font-bold`}
+                    >
+                      5
+                    </span>
                   </div>
                 </fieldset>
               </div>
               <Link href={`/tasks/${task.id}/edit`}>
-                <button type="submit" className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Edit</button>
+                <button type="submit" className="mt-10 flex w-1/4 items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Edit</button>
               </Link>
 
-              <button type="submit" className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Delete</button>
+              <button type="submit" className="mt-10 flex w-1/4 items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Delete</button>
             </form>
           </div>
 
           <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pt-6 lg:pb-16 lg:pr-8">
             <div>
-              <h3 className="sr-only">Description</h3>
+              <h3 className="text-sm font-medium text-gray-900 py-4">Description</h3>
 
               <div className="space-y-6">
-                <p className="text-base text-gray-900">{task.description}</p>
+                <p className="break-words text-base rounded-md border-transparent  bg-gray-100 px-4 py-2 text-gray-900">{task.description}</p>
               </div>
             </div>
 
