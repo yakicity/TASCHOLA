@@ -163,6 +163,51 @@ paths:
       summary: Hello
       tags:
       - default
+  /v1/login:
+    post:
+      consumes:
+      - application/json
+      description: Set cookie "user_id" if login success
+      parameters:
+      - description: user
+        in: body
+        name: userForm
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UserForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.HTTPError'
+      summary: Login
+      tags:
+      - authentication
+  /v1/logout:
+    post:
+      consumes:
+      - application/json
+      description: Delete cookie "user_id" if logout success
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Logout
+      tags:
+      - authentication
   /v1/tasks:
     get:
       consumes:
