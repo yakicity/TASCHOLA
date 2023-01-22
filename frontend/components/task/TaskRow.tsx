@@ -2,7 +2,7 @@ import { Task } from '@/interfaces/task'
 import { url } from '@/utils/constants'
 import axios from 'axios'
 import Link from 'next/link'
-import { getPriorityClassName, getStatusClassName } from './taskFunctions'
+import { getPriorityClassName, getStatusClassName, formatDateTime } from '@/functions/task'
 
 type TaskRowProps = {
   task: Task
@@ -14,9 +14,6 @@ const TaskRow = (props: TaskRowProps) => {
   const handleSubmit = () => {
     try {
       axios.delete(`${url}/v1/tasks/${task.id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        }
       }).then((res) => {
         alert('Task deleted successfully' + res.statusText)
       })
@@ -44,9 +41,9 @@ const TaskRow = (props: TaskRowProps) => {
           {task.status}
         </span>
       </td>
-      <td className="px-6 py-4">{task.due_date}</td>
+      <td className="px-6 py-4">{formatDateTime(task.due_date)}</td>
       <td className="px-6 py-4">
-        <div className="flex gap-2 grid w-[10rem] grid-cols-5 rounded-xl bg-gray-200 p-1">
+        <div className="gap-2 grid w-[10rem] grid-cols-5 rounded-xl bg-gray-200 p-1">
           <span
             className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClassName(1, task.priority)} px-2 py-1 text-xs font-semibold`}
           >

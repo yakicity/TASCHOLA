@@ -8,8 +8,8 @@ import (
 // user information whose password is plaintext
 // HTTP Request Body From Frontend
 type EncryptedUserForm struct {
-	Name     string
-	Password []byte
+	Name     string `json:"name" binding:"required"`
+	Password []byte `json:"password" binding:"required"`
 }
 
 func GetUserByID(userID uint64) (database.User, error) {

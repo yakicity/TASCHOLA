@@ -1,6 +1,6 @@
+import { formatDateTime, getPriorityClassName, getStatusClassName } from '@/functions/task'
 import { Task } from '@/interfaces/task'
 import Link from 'next/link'
-import { getPriorityClassName, getStatusClassName } from './taskFunctions'
 
 type TaskProps = {
   task: Task
@@ -36,7 +36,7 @@ const DetailTask = (props: TaskProps) => {
           <div className="mt-4 lg:row-span-3 lg:mt-0">
             <h2 className="sr-only">Due Date</h2>
             <h3 className="text-sm font-medium text-gray-900">Due Date</h3>
-            <p className="text-3xl tracking-tight text-gray-900">{task.due_date}</p>
+            <p className="text-3xl tracking-tight text-gray-900">{formatDateTime(task.due_date)}</p>
 
             <form className="mt-10">
               <div>
@@ -56,7 +56,7 @@ const DetailTask = (props: TaskProps) => {
                 <h3 className="text-sm font-medium text-gray-900">Priority</h3>
                 <fieldset className="mt-4">
                   <legend className="sr-only">Priority</legend>
-                  <div className="flex gap-2 grid w-[20rem] grid-cols-5 rounded-xl bg-gray-200 p-1">
+                  <div className="gap-2 grid w-[20rem] grid-cols-5 rounded-xl bg-gray-200 p-1">
                     <span
                       className={`inline-flex text-center items-center justify-center gap-1 rounded-full ${getPriorityClassName(1, task.priority)} px-2 py-1 text-s font-bold`}
                     >
@@ -107,7 +107,7 @@ const DetailTask = (props: TaskProps) => {
 
               <div className="mt-4">
                 <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
-                  <li className="text-gray-400"><span className="text-gray-600">{task.created_at}</span></li>
+                  <li className="text-gray-400"><span className="text-gray-600">{formatDateTime(task.created_at)}</span></li>
                 </ul>
               </div>
             </div>

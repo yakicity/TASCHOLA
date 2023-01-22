@@ -1,3 +1,5 @@
+import dayjs from "dayjs"
+
 export const getPriorityClassName = (
   priority: number,
   taskPriority: number
@@ -20,3 +22,7 @@ export const getStatusClassName = (taskStatus: string): string => {
     return "gray";
   }
 };
+
+export const formatDateTime = (date: string): string => {
+  return dayjs(date).format("YYYY-MM-DD");
+}

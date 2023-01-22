@@ -65,17 +65,26 @@ definitions:
   models.TaskForm:
     properties:
       description:
+        example: task-description
         type: string
-      dueDate:
+      due_date:
+        example: "2023-02-01T00:00:00+09:00"
         type: string
       priority:
-        description: '[1, 2, 3, 4, 5] (1: highest, 5: lowest)'
+        example: 1
         type: integer
       status:
-        description: '[TODO, DOING, DONE]'
+        example: TODO
         type: string
       title:
+        example: task-title
         type: string
+    required:
+    - description
+    - due_date
+    - priority
+    - status
+    - title
     type: object
 host: localhost:8000
 info:

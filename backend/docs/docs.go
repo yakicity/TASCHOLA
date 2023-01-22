@@ -751,23 +751,33 @@ const docTemplate = `{
         },
         "models.TaskForm": {
             "type": "object",
+            "required": [
+                "description",
+                "due_date",
+                "priority",
+                "status",
+                "title"
+            ],
             "properties": {
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "task-description"
                 },
-                "dueDate": {
-                    "type": "string"
+                "due_date": {
+                    "type": "string",
+                    "example": "2023-02-01T00:00:00+09:00"
                 },
                 "priority": {
-                    "description": "[1, 2, 3, 4, 5] (1: highest, 5: lowest)",
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "status": {
-                    "description": "[TODO, DOING, DONE]",
-                    "type": "string"
+                    "type": "string",
+                    "example": "TODO"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "task-title"
                 }
             }
         }
