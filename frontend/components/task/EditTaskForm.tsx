@@ -28,7 +28,7 @@ const EditTaskForm = (props: EditTaskFormProps) => {
 
     axios.put(`${url}/v1/tasks/${task.id}`, data, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        withCredentials: true,
       },
     })
       .then((res) => {
