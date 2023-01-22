@@ -1,4 +1,4 @@
-export const getPriorityClass = (
+export const getPriorityClassName = (
   priority: number,
   taskPriority: number
 ): string => {
@@ -9,7 +9,7 @@ export const getPriorityClass = (
   }
 };
 
-export const getStatusClass = (taskStatus: string): string => {
+export const getStatusClassName = (taskStatus: string): string => {
   if (taskStatus == "TODO") {
     return "green";
   } else if (taskStatus == "DOING") {
