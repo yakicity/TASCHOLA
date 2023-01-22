@@ -263,7 +263,7 @@ func UpdateTask(ctx *gin.Context) {
 	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusUnauthorized,
-			Error: "Unauthorized (cookie error)" + err.Error(),
+			Error: "Unauthorized (cookie error): " + err.Error(),
 			Place: "controllers.UpdateTask",
 		}
 		ctx.JSON(http.StatusUnauthorized, httpError)
@@ -273,7 +273,7 @@ func UpdateTask(ctx *gin.Context) {
 	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusUnauthorized,
-			Error: "Unauthorized (cookie Parse error)" + err.Error(),
+			Error: "Unauthorized (cookie Parse error): " + err.Error(),
 			Place: "controllers.UpdateTask",
 		}
 		ctx.JSON(http.StatusUnauthorized, httpError)
@@ -281,12 +281,12 @@ func UpdateTask(ctx *gin.Context) {
 	}
 
 	// Get task ID from request
-	taskID := ctx.Param("task_id")
+	taskID := ctx.Param("id")
 	taskIDInt64, err := strconv.ParseInt(taskID, 10, 64)
 	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusBadRequest,
-			Error: "Invalid task ID",
+			Error: "Invalid task ID: " + err.Error() + " taskID: " + taskID,
 			Place: "controllers.UpdateTask",
 		}
 		ctx.JSON(http.StatusBadRequest, httpError)
@@ -299,7 +299,7 @@ func UpdateTask(ctx *gin.Context) {
 	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusBadRequest,
-			Error: "Invalid task form" + err.Error(),
+			Error: "Invalid task form: BindJSON Error: " + err.Error(),
 			Place: "controllers.UpdateTask",
 		}
 		ctx.JSON(http.StatusBadRequest, httpError)
@@ -311,7 +311,7 @@ func UpdateTask(ctx *gin.Context) {
 	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusInternalServerError,
-			Error: "Internal Server Error (models error)" + err.Error(),
+			Error: "Internal Server Error (models error: )" + err.Error(),
 			Place: "controllers.UpdateTask",
 		}
 		ctx.JSON(http.StatusInternalServerError, httpError)
@@ -358,7 +358,7 @@ func DeleteTask(ctx *gin.Context) {
 	}
 
 	// Get task ID from request
-	taskID := ctx.Param("task_id")
+	taskID := ctx.Param("id")
 	taskIDInt64, err := strconv.ParseInt(taskID, 10, 64)
 	if err != nil {
 		httpError := models.HTTPError{
