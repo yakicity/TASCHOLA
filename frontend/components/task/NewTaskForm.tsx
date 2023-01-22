@@ -22,7 +22,7 @@ const NewTaskForm = () => {
 
     axios.post(`${url}/v1/tasks/new`, taskForm, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        withCredentials: true,
       },
     })
       .then((res: AxiosResponse<number>) => {
