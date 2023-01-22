@@ -2,16 +2,22 @@ import { User, UserForm } from '@/interfaces/user'
 import styles from '@/styles/Home.module.scss'
 import { url } from '@/utils/constants'
 import axios, { AxiosResponse } from 'axios'
+import Router from 'next/router'
 import { useEffect, useState } from 'react'
+import Cookies from 'universal-cookie'
 
 const UserEditPage = () => {
   useEffect(() => {
     try {
-      axios.get(`${url}/v1/user/1`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        }
-      }) // TODO: get user id from session
+      // get user_id from cookie
+      const cookies = new Cookies()
+      const userID = cookies.get('user_id')
+      if (!userID) {
+        Router.push('/login')
+        return
+      }
+
+      axios.get(`${url}/v1/user/${userID}`, {})
         .then((res: AxiosResponse<User>) => {
           const { data, status } = res
           switch (status) {
