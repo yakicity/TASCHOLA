@@ -2,6 +2,7 @@ import { AuthRequest, AuthResponse } from '@/interfaces/auth'
 import { url } from '@/utils/constants'
 import axios, { AxiosResponse } from 'axios'
 import { useState } from "react"
+import Cookies from 'universal-cookie'
 
 const LoginForm = () => {
   const [userName, setUserName] = useState<string>('')
@@ -20,14 +21,17 @@ const LoginForm = () => {
 
     try {
       console.log("login post:" + data.name + " " + data.password)
-      axios.post(`${url}/v1/login`, data)
+      axios.post(`${url}/v1/login`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
         .then((res: AxiosResponse<AuthResponse>) => {
           const { data, status } = res
           switch (status) {
             case 200:
-              // set token to local storage
-              localStorage.setItem('token', data.token)
-              // redirect to home page
+              const cookies = new Cookies()
+              cookies.set('user_id', data.user_id, { path: '/' })
               window.location.href = '/'
               break
             default:

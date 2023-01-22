@@ -1,17 +1,28 @@
-import { User, UserForm } from '@/interfaces/user'
+import { UpdateUserForm, User, UserForm } from '@/interfaces/user'
 import styles from '@/styles/Home.module.scss'
 import { url } from '@/utils/constants'
 import axios, { AxiosResponse } from 'axios'
+import Router from 'next/router'
 import { useEffect, useState } from 'react'
+import Cookies from 'universal-cookie'
 
 const UserEditPage = () => {
   useEffect(() => {
     try {
-      axios.get(`${url}/v1/user/1`, {
+      // get user_id from cookie
+      const cookies = new Cookies()
+      const userID = cookies.get('user_id')
+      setRequestUserID(userID)
+      if (!userID) {
+        Router.push('/login')
+        return
+      }
+
+      axios.get(`${url}/v1/user/${userID}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
         }
-      }) // TODO: get user id from session
+      })
         .then((res: AxiosResponse<User>) => {
           const { data, status } = res
           switch (status) {
@@ -35,25 +46,33 @@ const UserEditPage = () => {
   const [loaded, setLoaded] = useState<boolean>(false)
 
   const [name, setName] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
+  const [oldPassword, setOldPassword] = useState<string>('')
+  const [newPassword, setNewPassword] = useState<string>('')
+  const [requestUserID, setRequestUserID] = useState<string>('')
 
   const handleSubmit = () => {
-    const userForm: UserForm = {
-      name: name,
-      password: password
+    const updateUserForm: UpdateUserForm = {
+      old_password: oldPassword,
+      user: {
+        name: name,
+        password: newPassword
+      } as UserForm
     }
 
-    axios.put(`${url}/v1/user/1`, userForm)
-      .then((res => {
-        const { status } = res
-        switch (status) {
-          case 200:
-            alert('User updated successfully')
-            break
-          default:
-            alert('Something went wrong' + res.statusText)
-        }
-      }))
+    axios.put(`${url}/v1/user/${requestUserID}`, updateUserForm, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((res => {
+      const { status } = res
+      switch (status) {
+        case 200:
+          alert('User updated successfully')
+          break
+        default:
+          alert('Something went wrong' + res.statusText)
+      }
+    }))
   }
 
   return (
@@ -66,7 +85,7 @@ const UserEditPage = () => {
             <div className="md:grid md:grid-cols-3 md:gap-6">
               <div className="md:col-span-1">
                 <div className="px-4 sm:px-0">
-                  <h3 className="text-lg font-medium leading-6 text-gray-900">Edit Your task Task</h3>
+                  <h3 className="text-lg font-medium leading-6 text-gray-900">Change Your User Info </h3>
                 </div>
               </div>
               <div className="mt-5 md:col-span-2 md:mt-0">
@@ -75,12 +94,16 @@ const UserEditPage = () => {
                     <div className="bg-white px-4 py-5 sm:p-6">
                       <div className="grid grid-cols-6 gap-6">
                         <div className="col-span-6 sm:col-span-4">
-                          <label htmlFor="user_name" className="block text-sm font-medium text-gray-700">User Name</label>
+                          <label htmlFor="user_name" className="block text-sm font-medium text-gray-700">New User Name(Don't duplicate)</label>
                           <input type="text" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={name} onChange={(event) => setName(event?.target.value)} />
                         </div>
                         <div className="col-span-6 sm:col-span-4">
-                          <label htmlFor="user_password" className="block text-sm font-medium text-gray-700">User Password</label>
-                          <input type="text" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={""} onChange={(event) => setPassword(event?.target.value)} />
+                          <label className="block text-sm font-medium text-gray-700">Old Password</label>
+                          <input type="text" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={oldPassword} onChange={(event) => setOldPassword(event?.target.value)} />
+                        </div>
+                        <div className="col-span-6 sm:col-span-4">
+                          <label className="block text-sm font-medium text-gray-700">New Password</label>
+                          <input type="text" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={newPassword} onChange={(event) => setNewPassword(event?.target.value)} />
                         </div>
                       </div>
                     </div>

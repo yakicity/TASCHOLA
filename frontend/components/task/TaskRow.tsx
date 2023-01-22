@@ -1,8 +1,8 @@
+import { formatDateTime, getPriorityClassName, getStatusClassName } from '@/functions/task'
 import { Task } from '@/interfaces/task'
 import { url } from '@/utils/constants'
 import axios from 'axios'
 import Link from 'next/link'
-import { getPriorityClassName, getStatusClassName, formatDateTime } from '@/functions/task'
 
 type TaskRowProps = {
   task: Task
@@ -13,9 +13,15 @@ const TaskRow = (props: TaskRowProps) => {
 
   const handleSubmit = () => {
     try {
-      axios.delete(`${url}/v1/tasks/${task.id}`, {
-      }).then((res) => {
-        alert('Task deleted successfully' + res.statusText)
+      axios.delete(`${url}/v1/tasks/${task.id}`).then((res) => {
+        const { status } = res
+        switch (status) {
+          case 200:
+            alert('Task deleted successfully')
+            break
+          default:
+            alert(res.status + " " + res.statusText + " " + res.headers)
+        }
       })
     } catch (error) {
       console.log(error)

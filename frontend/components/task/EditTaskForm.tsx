@@ -3,6 +3,7 @@ import { Task, TaskForm } from '@/interfaces/task'
 import { url } from '@/utils/constants'
 import axios from 'axios'
 import { useState } from 'react'
+import dayjs from 'dayjs'
 
 type EditTaskFormProps = {
   task: Task
@@ -23,12 +24,12 @@ const EditTaskForm = (props: EditTaskFormProps) => {
       description: description,
       status: status,
       priority: priority,
-      due_date: dueDate,
+      due_date: dayjs(dueDate).format("YYYY-MM-DDTHH:mm:ssZ"),
     }
 
     axios.put(`${url}/v1/tasks/${task.id}`, data, {
       headers: {
-        withCredentials: true,
+        'Content-Type': 'application/json',
       },
     })
       .then((res) => {

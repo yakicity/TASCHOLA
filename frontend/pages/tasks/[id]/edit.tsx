@@ -3,9 +3,9 @@ import { Task } from '@/interfaces/task'
 import styles from '@/styles/Home.module.scss'
 import { url } from '@/utils/constants'
 import axios, { AxiosResponse } from 'axios'
-import { useRouter } from 'next/router'
+import Router, { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-
+import Cookies from 'universal-cookie'
 
 const TaskEditPage = () => {
   const router = useRouter()
@@ -18,7 +18,18 @@ const TaskEditPage = () => {
     if (!router.isReady) {
       return
     }
+
+    // Check if user is logged in
+    const cookies = new Cookies()
+    const userID = cookies.get('user_id')
+    if (!userID) {
+      Router.push('/login')
+      return
+    }
+
     setLoading(true)
+
+    // API Request
     axios.get(`${url}/v1/tasks/${id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,

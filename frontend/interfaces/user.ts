@@ -8,3 +8,8 @@ export interface User {
   name: string;
   password: number // byte[]
 }
+
+export interface UpdateUserForm {
+  old_password: string;
+  user: UserForm;
+}

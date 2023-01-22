@@ -4,20 +4,26 @@ import styles from '@/styles/Home.module.scss'
 import { url } from '@/utils/constants'
 import axios, { AxiosResponse } from 'axios'
 import Link from 'next/link'
+import Router from 'next/router'
 import { useEffect, useState } from 'react'
+import Cookies from 'universal-cookie'
 
 const TasksPage = () => {
   const [tasks, setTasks] = useState<Task[]>([])
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
+    // Check if user is logged in
+    const cookies = new Cookies()
+    const userID = cookies.get('user_id')
+    if (!userID) {
+      Router.push('/login')
+      return
+    }
+
+    // API Request
     try {
-      setLoading(true)
-      axios.get(`${url}/v1/tasks/`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        }
-      },)
+      axios.get(`${url}/v1/tasks/`)
         .then((res: AxiosResponse<Task[]>) => {
           const { data, status } = res
           switch (status) {
@@ -29,11 +35,12 @@ const TasksPage = () => {
               alert('Tasks not found' + res.statusText)
               break
             default:
-              alert('Something went wrong' + res.statusText)
+              alert('Something went wrong')
           }
         })
     } catch (error) {
-      console.log(error)
+      // redirect to login page
+      Router.push('/user/login')
     }
   }, [])
 
