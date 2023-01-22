@@ -16,7 +16,6 @@ import (
 //	@Produce	json
 //	@Param		keyword	query		string		false	"keyword"
 //	@Param		status	query		[]string	false	"status"
-//	@Cookie		user_id	string																	true	"user id"
 //	@Success	200		{object}	[]db.Task
 //	@Failure	401		{object}	models.HTTPError
 //	@Failure	500		{object}	models.HTTPError
@@ -67,7 +66,6 @@ func GetTasks(ctx *gin.Context) {
 //	@Produce	json
 //	@Param		keyword	query		string		false	"keyword"
 //	@Param		status	query		[]string	false	"status"
-//	@Cookie		user_id	string																	true	"user id"
 //	@Success	200		{object}	[]db.Task
 //	@Failure	401		{object}	models.HTTPError
 //	@Failure	500		{object}	models.HTTPError
@@ -186,7 +184,6 @@ func GetTask(ctx *gin.Context) {
 //	@Accept		json
 //	@Produce	json
 //	@Param		task	body		models.TaskForm	true	"task"
-//	@Cookie		user_id																						string			true	"User ID"
 //	@Success	200		integer		task			ID
 //	@Failure	400		{object}	models.HTTPError
 //	@Failure	401		{object}	models.HTTPError
@@ -251,7 +248,6 @@ func CreateTask(ctx *gin.Context) {
 //	@Produce	json
 //	@Param		task_id	path		uint64			true	"task ID"
 //	@Param		task	body		models.TaskForm	true	"task"
-//	@Cookie		user_id																						string			true	"User ID"
 //	@Success	200		integer		task			ID
 //	@Failure	400		{object}	models.HTTPError
 //	@Failure	401		{object}	models.HTTPError
@@ -328,7 +324,6 @@ func UpdateTask(ctx *gin.Context) {
 //	@Accept		json
 //	@Produce	json
 //	@Param		task_id	path		uint64	true	"task ID"
-//	@Cookie		user_id																string	true	"User ID"
 //	@Success	200		integer		task	ID
 //	@Failure	400		{object}	models.HTTPError
 //	@Failure	401		{object}	models.HTTPError
