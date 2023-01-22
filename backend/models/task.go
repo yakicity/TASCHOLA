@@ -126,6 +126,10 @@ func DeleteTaskByUserIDAndTaskID(userID int64, taskID int64) error {
 		return err
 	}
 
+	_, err = db.Exec("DELETE FROM ownerships WHERE user_id = ? AND task_id = ?", userID, taskID)
+	if err != nil {
+		return err
+	}
 	_, err = db.Exec("DELETE FROM tasks WHERE id = ? AND id IN (SELECT task_id FROM ownerships WHERE user_id = ?)", taskID, userID)
 	if err != nil {
 		return err
