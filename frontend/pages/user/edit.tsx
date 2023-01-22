@@ -18,7 +18,11 @@ const UserEditPage = () => {
         return
       }
 
-      axios.get(`${url}/v1/user/${userID}`, {})
+      axios.get(`${url}/v1/user/${userID}`, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
         .then((res: AxiosResponse<User>) => {
           const { data, status } = res
           switch (status) {
@@ -91,12 +95,12 @@ const UserEditPage = () => {
                           <input type="text" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={name} onChange={(event) => setName(event?.target.value)} />
                         </div>
                         <div className="col-span-6 sm:col-span-4">
-                          <label htmlFor="user_password" className="block text-sm font-medium text-gray-700">Old Password</label>
-                          <input type="text" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={""} onChange={(event) => setOldPassword(event?.target.value)} />
+                          <label className="block text-sm font-medium text-gray-700">Old Password</label>
+                          <input type="text" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={oldPassword} onChange={(event) => setOldPassword(event?.target.value)} />
                         </div>
                         <div className="col-span-6 sm:col-span-4">
-                          <label htmlFor="user_password" className="block text-sm font-medium text-gray-700">New Password</label>
-                          <input type="text" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={""} onChange={(event) => setNewPassword(event?.target.value)} />
+                          <label className="block text-sm font-medium text-gray-700">New Password</label>
+                          <input type="text" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={newPassword} onChange={(event) => setNewPassword(event?.target.value)} />
                         </div>
                       </div>
                     </div>
