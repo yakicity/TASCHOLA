@@ -9,6 +9,10 @@ import (
 	"taschola/models"
 )
 
+type LoginResponse struct {
+	UserID uint64 `json:"user_id"`
+}
+
 // Login
 //
 //	@Summary		Login
@@ -16,11 +20,11 @@ import (
 //	@Tags			authentication
 //	@Accept			json
 //	@Produce		json
-//	@Param			userForm	body	controllers.UserForm	true	"user"
-//	@Success		200
-//	@Failure		400	{object}	models.HTTPError
-//	@Failure		401	{object}	models.HTTPError
-//	@Failure		404	{object}	models.HTTPError
+//	@Param			userForm	body		controllers.UserForm	true	"user"
+//	@Success		200			{integer}	uint64					"user id"
+//	@Failure		400			{object}	models.HTTPError
+//	@Failure		401			{object}	models.HTTPError
+//	@Failure		404			{object}	models.HTTPError
 //	@Router			/v1/login [post]
 func Login(ctx *gin.Context) {
 	var userForm UserForm
@@ -56,12 +60,12 @@ func Login(ctx *gin.Context) {
 		return
 	}
 
-	cookie, err := ctx.Cookie("user_id")
+	_, err = ctx.Cookie("user_id")
 	if err != nil {
-		ctx.SetCookie("user_id", strconv.FormatUint(user.ID, 10), 3600, "/", "localhost", false, true)
+		ctx.SetCookie("user_id", strconv.FormatUint(user.ID, 10), 3600, "/", "localhost", false, false)
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "login success" + cookie})
+	ctx.JSON(http.StatusOK, LoginResponse{UserID: user.ID})
 }
 
 // Logout
