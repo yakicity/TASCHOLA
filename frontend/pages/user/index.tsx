@@ -3,16 +3,24 @@ import styles from '@/styles/Home.module.scss'
 import { url } from '@/utils/constants'
 import axios, { AxiosResponse } from 'axios'
 import Link from 'next/link'
+import Router from 'next/router'
 import { useEffect, useState } from 'react'
+import { AiOutlineUser } from 'react-icons/ai'
+import Cookies from 'universal-cookie'
 
 const UserInfo = () => {
   useEffect(() => {
+    // get user_id from cookie
+    const cookies = new Cookies()
+    const userID = cookies.get('user_id')
+    if (!userID) {
+      Router.push('/login')
+      return
+    }
+
+    // API Request
     try {
-      axios.get(`${url}/v1/user/2`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        }
-      }) // TODO: get user id from session
+      axios.get(`${url}/v1/user/${userID}`, {})
         .then((res: AxiosResponse<User>) => {
           const { data, status } = res
           switch (status) {
