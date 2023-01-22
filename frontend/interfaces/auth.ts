@@ -1,8 +1,5 @@
 export interface AuthResponse {
-  "code": number,
-  "expires": string,
-  "message": string,
-  "token": string, // JWT: JSON Web Token
+  "user_id": number,
 }
 
 export interface AuthRequest {
