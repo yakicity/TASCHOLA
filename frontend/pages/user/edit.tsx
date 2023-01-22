@@ -1,4 +1,4 @@
-import { User, UserForm } from '@/interfaces/user'
+import { UpdateUserForm, User, UserForm } from '@/interfaces/user'
 import styles from '@/styles/Home.module.scss'
 import { url } from '@/utils/constants'
 import axios, { AxiosResponse } from 'axios'
@@ -12,6 +12,7 @@ const UserEditPage = () => {
       // get user_id from cookie
       const cookies = new Cookies()
       const userID = cookies.get('user_id')
+      setRequestUserID(userID)
       if (!userID) {
         Router.push('/login')
         return
@@ -41,15 +42,20 @@ const UserEditPage = () => {
   const [loaded, setLoaded] = useState<boolean>(false)
 
   const [name, setName] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
+  const [oldPassword, setOldPassword] = useState<string>('')
+  const [newPassword, setNewPassword] = useState<string>('')
+  const [requestUserID, setRequestUserID] = useState<string>('')
 
   const handleSubmit = () => {
-    const userForm: UserForm = {
-      name: name,
-      password: password
+    const updateUserForm: UpdateUserForm = {
+      old_password: oldPassword,
+      user: {
+        name: name,
+        password: newPassword
+      } as UserForm
     }
 
-    axios.put(`${url}/v1/user/1`, userForm)
+    axios.put(`${url}/v1/user/${requestUserID}`, updateUserForm)
       .then((res => {
         const { status } = res
         switch (status) {
@@ -85,8 +91,12 @@ const UserEditPage = () => {
                           <input type="text" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={name} onChange={(event) => setName(event?.target.value)} />
                         </div>
                         <div className="col-span-6 sm:col-span-4">
-                          <label htmlFor="user_password" className="block text-sm font-medium text-gray-700">User Password</label>
-                          <input type="text" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={""} onChange={(event) => setPassword(event?.target.value)} />
+                          <label htmlFor="user_password" className="block text-sm font-medium text-gray-700">Old Password</label>
+                          <input type="text" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={""} onChange={(event) => setOldPassword(event?.target.value)} />
+                        </div>
+                        <div className="col-span-6 sm:col-span-4">
+                          <label htmlFor="user_password" className="block text-sm font-medium text-gray-700">New Password</label>
+                          <input type="text" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={""} onChange={(event) => setNewPassword(event?.target.value)} />
                         </div>
                       </div>
                     </div>
