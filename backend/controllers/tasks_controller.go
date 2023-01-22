@@ -5,7 +5,6 @@ import (
 	"strconv"
 	"taschola/models"
 
-	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,21 +16,33 @@ import (
 //	@Produce	json
 //	@Param		keyword	query		string		false	"keyword"
 //	@Param		status	query		[]string	false	"status"
+//	@Cookie		user_id	string									true	"user id"
 //	@Success	200		{object}	[]db.Task
 //	@Failure	401		{object}	models.HTTPError
 //	@Failure	500		{object}	models.HTTPError
 //	@Router		/v1/tasks [get]
 func GetTasks(ctx *gin.Context) {
-	var userID = int64(14)
-	// if userID == nil {
-	// 	httpError := models.HTTPError{
-	// 		Code:  http.StatusUnauthorized,
-	// 		Error: "Unauthorized",
-	// 		Place: "controllers.GetTasks",
-	// 	}
-	// 	ctx.JSON(http.StatusUnauthorized, httpError)
-	// 	return
-	// }
+	// get userID from cookie
+	cookie, err := ctx.Cookie("user_id")
+	if err != nil {
+		httpError := models.HTTPError{
+			Code:  http.StatusUnauthorized,
+			Error: "Unauthorized (cookie error)" + err.Error(),
+			Place: "controllers.GetTasks",
+		}
+		ctx.JSON(http.StatusUnauthorized, httpError)
+		return
+	}
+	userID, err := strconv.ParseInt(cookie, 10, 64)
+	if err != nil {
+		httpError := models.HTTPError{
+			Code:  http.StatusUnauthorized,
+			Error: "Unauthorized (cookie Parse error)" + err.Error(),
+			Place: "controllers.GetTasks",
+		}
+		ctx.JSON(http.StatusUnauthorized, httpError)
+		return
+	}
 
 	// Get tasks from database
 	tasks, err := models.GetTasksByUserID(userID)
@@ -56,21 +67,33 @@ func GetTasks(ctx *gin.Context) {
 //	@Produce	json
 //	@Param		keyword	query		string		false	"keyword"
 //	@Param		status	query		[]string	false	"status"
+//	@Cookie		user_id	string									true	"user id"
 //	@Success	200		{object}	[]db.Task
 //	@Failure	401		{object}	models.HTTPError
 //	@Failure	500		{object}	models.HTTPError
 //	@Router		/v1/tasks [get]
 func GetTasksByKeywordAndStatus(ctx *gin.Context) {
-	var userID = int64(14)
-	// if userID == nil {
-	// 	httpError := models.HTTPError{
-	// 		Code:  http.StatusUnauthorized,
-	// 		Error: "Unauthorized",
-	// 		Place: "controllers.GetTasksByKeywordAndStatus",
-	// 	}
-	// 	ctx.JSON(http.StatusUnauthorized, httpError)
-	// 	return
-	// }
+	// get userID from cookie
+	cookie, err := ctx.Cookie("user_id")
+	if err != nil {
+		httpError := models.HTTPError{
+			Code:  http.StatusUnauthorized,
+			Error: "Unauthorized (cookie error)" + err.Error(),
+			Place: "controllers.GetTasksByKeywordAndStatus",
+		}
+		ctx.JSON(http.StatusUnauthorized, httpError)
+		return
+	}
+	userID, err := strconv.ParseInt(cookie, 10, 64)
+	if err != nil {
+		httpError := models.HTTPError{
+			Code:  http.StatusUnauthorized,
+			Error: "Unauthorized (cookie Parse error)" + err.Error(),
+			Place: "controllers.GetTasksByKeywordAndStatus",
+		}
+		ctx.JSON(http.StatusUnauthorized, httpError)
+		return
+	}
 
 	keyword := ctx.Query("keyword")
 	status := ctx.QueryArray("status")
@@ -106,17 +129,27 @@ func GetTasksByKeywordAndStatus(ctx *gin.Context) {
 //	@Failure	500		{object}	models.HTTPError
 //	@Router		/v1/tasks/{task_id} [get]
 func GetTask(ctx *gin.Context) {
-	// Get user ID from sessions
-	userID := int64(14)
-	// if userID == nil {
-	// 	httpError := models.HTTPError{
-	// 		Code:  http.StatusUnauthorized,
-	// 		Error: "Unauthorized",
-	// 		Place: "controllers.GetTask",
-	// 	}
-	// 	ctx.JSON(http.StatusUnauthorized, httpError)
-	// 	return
-	// }
+	// get userID from cookie
+	cookie, err := ctx.Cookie("user_id")
+	if err != nil {
+		httpError := models.HTTPError{
+			Code:  http.StatusUnauthorized,
+			Error: "Unauthorized (cookie error)" + err.Error(),
+			Place: "controllers.GetTask",
+		}
+		ctx.JSON(http.StatusUnauthorized, httpError)
+		return
+	}
+	userID, err := strconv.ParseInt(cookie, 10, 64)
+	if err != nil {
+		httpError := models.HTTPError{
+			Code:  http.StatusUnauthorized,
+			Error: "Unauthorized (cookie Parse error)" + err.Error(),
+			Place: "controllers.GetTask",
+		}
+		ctx.JSON(http.StatusUnauthorized, httpError)
+		return
+	}
 
 	// Get task ID from request
 	taskID := ctx.Param("id")
@@ -153,19 +186,29 @@ func GetTask(ctx *gin.Context) {
 //	@Accept		json
 //	@Produce	json
 //	@Param		task	body		models.TaskForm	true	"task"
-//	@Success	200	integer		task	ID
-//	@Failure	400	{object}	models.HTTPError
-//	@Failure	401	{object}	models.HTTPError
-//	@Failure	500	{object}	models.HTTPError
+//	@Cookie		user_id										string			true	"User ID"
+//	@Success	200		integer		task			ID
+//	@Failure	400		{object}	models.HTTPError
+//	@Failure	401		{object}	models.HTTPError
+//	@Failure	500		{object}	models.HTTPError
 //	@Router		/v1/tasks/new [post]
 func CreateTask(ctx *gin.Context) {
-	// Get user ID from sessions
-	session := sessions.Default(ctx)
-	userID := session.Get("user_id")
-	if userID == nil {
+	// get userID from cookie
+	cookie, err := ctx.Cookie("user_id")
+	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusUnauthorized,
-			Error: "Unauthorized",
+			Error: "Unauthorized (cookie error)" + err.Error(),
+			Place: "controllers.CreateTask",
+		}
+		ctx.JSON(http.StatusUnauthorized, httpError)
+		return
+	}
+	userID, err := strconv.ParseInt(cookie, 10, 64)
+	if err != nil {
+		httpError := models.HTTPError{
+			Code:  http.StatusUnauthorized,
+			Error: "Unauthorized (cookie Parse error)" + err.Error(),
 			Place: "controllers.CreateTask",
 		}
 		ctx.JSON(http.StatusUnauthorized, httpError)
@@ -174,7 +217,7 @@ func CreateTask(ctx *gin.Context) {
 
 	// Get task from request
 	var task models.TaskForm
-	err := ctx.BindJSON(&task)
+	err = ctx.BindJSON(&task)
 	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusBadRequest,
@@ -186,7 +229,7 @@ func CreateTask(ctx *gin.Context) {
 	}
 
 	// Create task in database
-	taskID, err := models.CreateTask(task, userID.(int64))
+	taskID, err := models.CreateTask(task, userID)
 	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusInternalServerError,
@@ -206,21 +249,31 @@ func CreateTask(ctx *gin.Context) {
 //	@Tags		task
 //	@Accept		json
 //	@Produce	json
-//	@Param		task_id	path		uint64	true	"task ID"
+//	@Param		task_id	path		uint64			true	"task ID"
 //	@Param		task	body		models.TaskForm	true	"task"
-//	@Success	200		integer		task	ID
+//	@Cookie		user_id										string			true	"User ID"
+//	@Success	200		integer		task			ID
 //	@Failure	400		{object}	models.HTTPError
 //	@Failure	401		{object}	models.HTTPError
 //	@Failure	500		{object}	models.HTTPError
 //	@Router		/v1/tasks/{task_id} [put]
 func UpdateTask(ctx *gin.Context) {
-	// Get user ID from sessions
-	session := sessions.Default(ctx)
-	userID := session.Get("user_id")
-	if userID == nil {
+	// get userID from cookie
+	cookie, err := ctx.Cookie("user_id")
+	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusUnauthorized,
-			Error: "Unauthorized",
+			Error: "Unauthorized (cookie error)" + err.Error(),
+			Place: "controllers.UpdateTask",
+		}
+		ctx.JSON(http.StatusUnauthorized, httpError)
+		return
+	}
+	userID, err := strconv.ParseInt(cookie, 10, 64)
+	if err != nil {
+		httpError := models.HTTPError{
+			Code:  http.StatusUnauthorized,
+			Error: "Unauthorized (cookie Parse error)" + err.Error(),
 			Place: "controllers.UpdateTask",
 		}
 		ctx.JSON(http.StatusUnauthorized, httpError)
@@ -254,7 +307,7 @@ func UpdateTask(ctx *gin.Context) {
 	}
 
 	// Update task in database
-	err = models.UpdateTaskByUserIDAndTaskID(task, userID.(int64), taskIDInt64)
+	err = models.UpdateTaskByUserIDAndTaskID(task, userID, taskIDInt64)
 	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusInternalServerError,
@@ -275,19 +328,29 @@ func UpdateTask(ctx *gin.Context) {
 //	@Accept		json
 //	@Produce	json
 //	@Param		task_id	path		uint64	true	"task ID"
+//	@Cookie		user_id								string	true	"User ID"
 //	@Success	200		integer		task	ID
 //	@Failure	400		{object}	models.HTTPError
 //	@Failure	401		{object}	models.HTTPError
 //	@Failure	500		{object}	models.HTTPError
 //	@Router		/v1/tasks/{task_id} [delete]
 func DeleteTask(ctx *gin.Context) {
-	// Get user ID from sessions
-	session := sessions.Default(ctx)
-	userID := session.Get("user_id")
-	if userID == nil {
+	// get userID from cookie
+	cookie, err := ctx.Cookie("user_id")
+	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusUnauthorized,
-			Error: "Unauthorized",
+			Error: "Unauthorized (cookie error)" + err.Error(),
+			Place: "controllers.DeleteTask",
+		}
+		ctx.JSON(http.StatusUnauthorized, httpError)
+		return
+	}
+	userID, err := strconv.ParseInt(cookie, 10, 64)
+	if err != nil {
+		httpError := models.HTTPError{
+			Code:  http.StatusUnauthorized,
+			Error: "Unauthorized (cookie Parse error)" + err.Error(),
 			Place: "controllers.DeleteTask",
 		}
 		ctx.JSON(http.StatusUnauthorized, httpError)
@@ -308,7 +371,7 @@ func DeleteTask(ctx *gin.Context) {
 	}
 
 	// Delete task from database
-	err = models.DeleteTaskByUserIDAndTaskID(userID.(int64), taskIDInt64)
+	err = models.DeleteTaskByUserIDAndTaskID(userID, taskIDInt64)
 	if err != nil {
 		httpError := models.HTTPError{
 			Code:  http.StatusInternalServerError,
