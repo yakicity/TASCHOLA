@@ -94,49 +94,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1": {
-            "get": {
-                "description": "for not found methods",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "default"
-                ],
-                "summary": "Not found",
-                "responses": {
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/models.HTTPError"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/auth/hello": {
-            "get": {
-                "description": "Hello",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "default"
-                ],
-                "summary": "Hello",
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
         "/v1/login": {
             "post": {
                 "description": "Set cookie \"user_id\" if login success",
