@@ -66,7 +66,5 @@ func Init() *gin.Engine {
 		}
 	}
 
-	engine.NoRoute(controllers.NotFound)
-
 	return engine
 }
