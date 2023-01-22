@@ -1,3 +1,4 @@
+import { formatDateTime } from '@/functions/task'
 import { Task, TaskForm } from '@/interfaces/task'
 import { url } from '@/utils/constants'
 import axios from 'axios'
@@ -96,7 +97,7 @@ const EditTaskForm = (props: EditTaskFormProps) => {
 
                   <div className="col-span-6 sm:col-span-4">
                     <label htmlFor="student_type" className="block text-sm font-medium text-gray-700">Due Date</label>
-                    <input type="date" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={dueDate} onChange={(event) => setDueDate(event?.target.value)} />
+                    <input type="date" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={formatDateTime(dueDate)} onChange={(event) => setDueDate(event?.target.value)} />
                   </div>
                 </div>
               </div>
