@@ -1,7 +1,9 @@
 import { TaskForm } from '@/interfaces/task'
 import { url } from '@/utils/constants'
 import axios, { AxiosResponse } from 'axios'
+import Router from 'next/router'
 import { useState } from 'react'
+import Cookies from 'universal-cookie'
 
 
 const NewTaskForm = () => {
@@ -18,6 +20,14 @@ const NewTaskForm = () => {
       status: status,
       priority: priority,
       due_date: dueDate,
+    }
+
+    // get user_id from cookie
+    const cookies = new Cookies()
+    const userID = cookies.get('user_id')
+    if (!userID) {
+      Router.push('/login')
+      return
     }
 
     axios.post(`${url}/v1/tasks/new`, taskForm, {
