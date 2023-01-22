@@ -36,22 +36,35 @@ const UserInfo = () => {
   return (
     <>
       <main className={styles.main}>
-        <h1>User Info</h1>
         {user && (
           <div>
-            <div>
-              <span>Id: </span>
-              <span>{user.id}</span>
-            </div>
-            <div>
-              <span>Username: </span>
-              <span>{user.name}</span>
-            </div>
-            <div>
-              <Link href={`/user/edit/`} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                Edit User
-              </Link>
-            </div>
+            <section className="flex font-medium items-center justify-center h-screen px-6 rounded-xl">
+
+              <section className="w-64 mx-auto bg-[#6f8ba9] rounded-2xl px-8 py-6 shadow-lg">
+                <div className="flex items-center justify-between">
+                  <span className="text-emerald-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+                    </svg>
+                  </span>
+                </div>
+                <div className="mt-6 w-fit mx-auto">
+                  <AiOutlineUser className="" />
+                </div>
+                <div className="mt-8 ">
+                  <h2 className="text-white font-bold text-2xl tracking-wide">{user.name}</h2>
+                </div>
+                <p className="text-emerald-400 font-semibold mt-2.5" >
+                  id: {user.id}
+                </p>
+
+                <div className="mt-10">
+                  <Link href={`/user/edit/`} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                    Edit User
+                  </Link>
+                </div>
+              </section>
+            </section>
           </div>
         )}
       </main>
