@@ -21,7 +21,11 @@ const LoginForm = () => {
 
     try {
       console.log("login post:" + data.name + " " + data.password)
-      axios.post(`${url}/v1/login`, data)
+      axios.post(`${url}/v1/login`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
         .then((res: AxiosResponse<AuthResponse>) => {
           const { data, status } = res
           switch (status) {

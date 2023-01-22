@@ -1,6 +1,7 @@
 import { TaskForm } from '@/interfaces/task'
 import { url } from '@/utils/constants'
 import axios, { AxiosResponse } from 'axios'
+import dayjs from 'dayjs'
 import Router from 'next/router'
 import { useState } from 'react'
 import Cookies from 'universal-cookie'
@@ -19,7 +20,7 @@ const NewTaskForm = () => {
       description: description,
       status: status,
       priority: priority,
-      due_date: dueDate,
+      due_date: dayjs(dueDate).format("YYYY-MM-DDTHH:mm:ssZ"),
     }
 
     // get user_id from cookie
@@ -32,7 +33,7 @@ const NewTaskForm = () => {
 
     axios.post(`${url}/v1/tasks/new`, taskForm, {
       headers: {
-        withCredentials: true,
+        'Content-Type': 'application/json',
       },
     })
       .then((res: AxiosResponse<number>) => {
