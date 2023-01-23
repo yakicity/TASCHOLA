@@ -23,6 +23,21 @@ const NewTaskForm = () => {
       due_date: dayjs(dueDate).format("YYYY-MM-DDTHH:mm:ssZ"),
     }
 
+    if (title === '') {
+      alert('Please type title')
+      return
+    }
+
+    if (description === '') {
+      alert('Please type description')
+      return
+    }
+
+    if (dueDate === '') {
+      alert('Please set deadline')
+      return
+    }
+
     // get user_id from cookie
     const cookies = new Cookies()
     const userID = cookies.get('user_id')
