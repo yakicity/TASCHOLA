@@ -9,7 +9,7 @@ const Header = () => {
             <div className="flex justify-start lg:w-0 lg:flex-1">
               <Link href="/">
                 <span className="sr-only">Your Company</span>
-                <img className="h-8 w-auto sm:h-10" src="/taschola.svg" alt="" />
+                <img className="h-8 w-auto sm:h-10" src="/taschola-logo.svg" alt="" />
               </Link>
             </div>
 
