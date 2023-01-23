@@ -64,7 +64,7 @@ const LoginForm = () => {
 
                   <div className="col-span-6 sm:col-span-4">
                     <label htmlFor="password1" className="block text-sm font-medium text-gray-700">Password</label>
-                    <input type="text" name="password1" id="password1" autoComplete="password" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={password} onChange={(event) => setPassword(event?.target.value)} />
+                    <input type="password" name="password1" id="password1" autoComplete="password" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={password} onChange={(event) => setPassword(event?.target.value)} />
                   </div>
                 </div>
               </div>
