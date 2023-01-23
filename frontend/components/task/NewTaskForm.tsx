@@ -23,6 +23,14 @@ const NewTaskForm = () => {
       due_date: dayjs(dueDate).format("YYYY-MM-DDTHH:mm:ssZ"),
     }
 
+    // get user_id from cookie
+    const cookies = new Cookies()
+    const userID = cookies.get('user_id')
+    if (!userID) {
+      Router.push('/login')
+      return
+    }
+
     if (title === '') {
       alert('Please type title')
       return
@@ -35,14 +43,6 @@ const NewTaskForm = () => {
 
     if (dueDate === '') {
       alert('Please set deadline')
-      return
-    }
-
-    // get user_id from cookie
-    const cookies = new Cookies()
-    const userID = cookies.get('user_id')
-    if (!userID) {
-      Router.push('/login')
       return
     }
 
