@@ -75,10 +75,6 @@ const UserEditPage = () => {
     }))
   }
 
-  let style = {
-    padding: 5,
-  }
-
   return (
     <>
       <main className={styles.main}>
