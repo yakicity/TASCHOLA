@@ -1,7 +1,6 @@
 import { AuthRequest, AuthResponse } from '@/interfaces/auth'
 import { url } from '@/utils/constants'
 import axios, { AxiosResponse } from 'axios'
-import router from 'next/router'
 import { useState } from 'react'
 
 const UserRegisterForm = () => {
@@ -64,22 +63,22 @@ const UserRegisterForm = () => {
                 <div className="grid grid-cols-6 gap-6">
                   <div className="col-span-6 sm:col-span-4">
                     <label htmlFor="user_name" className="block text-sm font-medium text-gray-700">User Name</label>
-                    <input type="text" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={userName} onChange={(event) => setUserName(event?.target.value)} />
+                    <input type="text" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm tascholaForm" value={userName} onChange={(event) => setUserName(event?.target.value)} />
                   </div>
 
                   <div className="col-span-6 sm:col-span-4">
                     <label htmlFor="password1" className="block text-sm font-medium text-gray-700">Password</label>
-                    <input type="text" name="password1" id="password1" autoComplete="password" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={password1} onChange={(event) => setPassword1(event?.target.value)} />
+                    <input type="password" name="password1" id="password1" autoComplete="password" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm tascholaForm" value={password1} onChange={(event) => setPassword1(event?.target.value)} />
                   </div>
 
                   <div className="col-span-6 sm:col-span-4">
                     <label htmlFor="password2" className="block text-sm font-medium text-gray-700">Password (for confirmed)</label>
-                    <input type="text" name="password2" id="password2" autoComplete="password" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={password2} onChange={(event) => setPassword2(event?.target.value)} />
+                    <input type="password" name="password2" id="password2" autoComplete="password" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm tascholaForm" value={password2} onChange={(event) => setPassword2(event?.target.value)} />
                   </div>
 
                   <div className="col-span-6 sm:col-span-3">
                     <label htmlFor="student_type" className="block text-sm font-medium text-gray-700">Student Type</label>
-                    <select id="student_type" name="student_type" autoComplete="degree" className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
+                    <select id="student_type" name="student_type" autoComplete="degree" className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm tascholaForm">
                       <option>Bachelor</option>
                       <option>Master</option>
                       <option>Doctor</option>
