@@ -55,8 +55,8 @@ const TasksPage = () => {
           </div>
 
           {loading && <div>Loading...</div>}
-          {/* {!loading && tasks.length === 0 && <div>No tasks found</div>} */}
-          {/* {!loading && tasks.length > 0 && <TaskList tasks={tasks} />} */}
+          {!loading && tasks.length === 0 && <div>No tasks found</div>}
+          {!loading && tasks.length > 0 && <TaskList tasks={tasks} />}
         </div>
       </main>
     </>

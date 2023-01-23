@@ -69,6 +69,9 @@ const NewTaskForm = () => {
       }
       )
   }
+  let style = {
+    padding: 5,
+  }
 
   return (
     <div className="mt-10 sm:mt-0">
@@ -86,17 +89,17 @@ const NewTaskForm = () => {
                 <div className="grid grid-cols-6 gap-6">
                   <div className="col-span-6 sm:col-span-4">
                     <label htmlFor="user_name" className="block text-sm font-medium text-gray-700">Title</label>
-                    <input type="text" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={title} onChange={(event) => setTitle(event?.target.value)} />
+                    <input type="text" style={style} className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value={title} onChange={(event) => setTitle(event?.target.value)} />
                   </div>
 
                   <div className="col-span-6 sm:col-span-4">
                     <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
-                    <input type="text" className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-20" value={description} onChange={(event) => setDescription(event?.target.value)} />
+                    <input type="text" style={style} className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-20" value={description} onChange={(event) => setDescription(event?.target.value)} />
                   </div>
 
                   <div className="col-span-6 sm:col-span-4">
                     <label htmlFor="status" className="block text-sm font-medium text-gray-700">Status</label>
-                    <select className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" value={status} onChange={(event) => setStatus(event?.target.value)}>
+                    <select style={style} className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" value={status} onChange={(event) => setStatus(event?.target.value)}>
                       <option value="TODO">TODO</option>
                       <option value="DOING">DOING</option>
                       <option value="DONE">DONE</option>
@@ -105,7 +108,7 @@ const NewTaskForm = () => {
 
                   <div className="col-span-6 sm:col-span-4">
                     <label htmlFor="priority" className="block text-sm font-medium text-gray-700">Priority</label>
-                    <select className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" value={priority} onChange={(event) => setPriority(Number(event?.target.value))}>
+                    <select style={style} className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" value={priority} onChange={(event) => setPriority(Number(event?.target.value))}>
                       <option value="1">1 (Highest)</option>
                       <option value="2">2 (High)</option>
                       <option value="3">3 (Middle)</option>
