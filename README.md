@@ -2,6 +2,25 @@
 
 TASCHOLA is a simple todo list manager which can sync with Tokyo Tech T2SCHOLA.
 
+## Set Up for me
+
+cd TASCHOLA
+
+1. `docker compose up -d`
+   2 ～ 4 は一度やったらいらないかも
+2. install sql-migrate (下記の 1. Installation を参照)
+3. `sql-migrate status`で、現在の DB の状態を確認する
+4. `sql-migrate up`で、migration を実行する
+
+5. `docker compose up --build`
+
+6. 別のコンソール開いて Move to the directory `cd frontend`
+7. `yarn`
+   おそらくバージョン違うから
+8. `nvm install v18.12.0`
+9. `yarn`
+10. `yarn dev`
+
 ## Set Up
 
 Docker 環境が用意されているのは、MySQL(DB)と Go Gin(Backend)のみである。
@@ -341,7 +360,6 @@ https://docs.moodle.org/dev/Web_service_API_functions
 
 mod_assign_get_assignments これを使うと良さそう。
 
-### Cookieの取り扱いについて
+### Cookie の取り扱いについて
 
 Set-Cookie: 参考: https://qiita.com/mogulla3/items/189c99c87a0fc827520e
-
